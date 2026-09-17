@@ -289,8 +289,7 @@ describe('DynamicFormField Component', () => {
             });
         });
 
-        it('renders the validated phone input when the field has a max length', async () => {
-            mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
+        it('renders the legacy phone input when the field has a max length, even when the setting is enabled', async () => {
             mockIsValidNumber.mockReturnValue(false);
 
             const { container } = renderMockFormField({
@@ -300,21 +299,22 @@ describe('DynamicFormField Component', () => {
 
             const input = screen.getByTestId('phone-text');
 
+            expect(input).toHaveAttribute('type', 'tel');
             expect(input).toHaveAttribute('maxlength', '10');
             // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-            expect(container.querySelector('.iti-wrapper')).toBeInTheDocument();
+            expect(container.querySelector('.iti-wrapper')).not.toBeInTheDocument();
 
+            // The legacy input does not apply IntlTelInput phone validation
             fireEvent.change(input, { target: { value: '123' } });
             await userEvent.click(screen.getByText('Submit'));
 
             await waitFor(() => {
-                expect(screen.getByRole('alert')).toBeInTheDocument();
+                expect(screen.queryByRole('alert')).not.toBeInTheDocument();
             });
         });
 
-        it('renders the validated phone input when the field has a placeholder', async () => {
+        it('renders the validated phone input when the field has a placeholder, dropping the placeholder', () => {
             mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
-            mockIsValidNumber.mockReturnValue(false);
 
             const { container } = renderMockFormField({
                 field: { ...phoneFieldMock, default: '1231232' },
@@ -322,17 +322,9 @@ describe('DynamicFormField Component', () => {
                 placeholder: '1231232',
             });
 
-            const input = screen.getByTestId('phone-text');
-
             // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
             expect(container.querySelector('.iti-wrapper')).toBeInTheDocument();
-
-            fireEvent.change(input, { target: { value: '123' } });
-            await userEvent.click(screen.getByText('Submit'));
-
-            await waitFor(() => {
-                expect(screen.getByRole('alert')).toBeInTheDocument();
-            });
+            expect(screen.getByTestId('phone-text')).not.toHaveAttribute('placeholder');
         });
 
         it('does not validate phone for non-telephone fields even when the setting is enabled', async () => {

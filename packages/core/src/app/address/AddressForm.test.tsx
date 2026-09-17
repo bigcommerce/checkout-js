@@ -163,6 +163,7 @@ describe('AddressForm Component', () => {
         const getConfigMockWithPhoneValidation = (
             isPhoneNumberValidationEnabled: boolean,
             isExperimentEnabled = false,
+            providerWithCustomCheckout: string | null = null,
         ) => {
             const config = getStoreConfig();
 
@@ -175,6 +176,7 @@ describe('AddressForm Component', () => {
                         ...config.checkoutSettings.features,
                         'CHECKOUT-9019.use_new_phone_number_validation': isExperimentEnabled,
                     },
+                    providerWithCustomCheckout,
                 },
             };
         };
@@ -182,6 +184,28 @@ describe('AddressForm Component', () => {
         it('renders new phone number field when setting and experiment are both true', () => {
             jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
                 getConfigMockWithPhoneValidation(true, true),
+            );
+
+            renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
+
+            expect(screen.getByTestId('intl-tel-input-mock')).toBeInTheDocument();
+            expect(screen.queryByTestId('phoneInput-text')).not.toBeInTheDocument();
+        });
+
+        it('renders legacy phone field when PayPal Fastlane powers custom checkout', () => {
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                getConfigMockWithPhoneValidation(true, true, 'bigcommerce_payments_fastlane'),
+            );
+
+            renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
+
+            expect(screen.queryByTestId('intl-tel-input-mock')).not.toBeInTheDocument();
+            expect(screen.getByTestId('phoneInput-text')).toBeInTheDocument();
+        });
+
+        it('renders new phone number field when custom checkout provider is not PayPal Fastlane', () => {
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                getConfigMockWithPhoneValidation(true, true, '100%_definitely_not_fastlane'),
             );
 
             renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
