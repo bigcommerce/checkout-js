@@ -35,12 +35,7 @@ describe('CartSummary Component', () => {
     });
 
     it('renders OrderSummary with Edit Cart link', () => {
-        Object.defineProperty(window, 'location', {
-            value: {
-                pathname: '/checkout',
-            },
-            writable: true,
-        });
+        window.history.replaceState({}, '', '/checkout');
         render(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
@@ -55,12 +50,7 @@ describe('CartSummary Component', () => {
     });
 
     it('renders OrderSummary without the Edit Cart link for Buy Now carts', () => {
-        Object.defineProperty(window, 'location', {
-            value: {
-                pathname: '/checkout',
-                search: '?action=buy&products=111:2',
-            },
-        });
+        window.history.replaceState({}, '', '/checkout?action=buy&products=111:2');
 
         render(
             <CheckoutProvider checkoutService={checkoutService}>

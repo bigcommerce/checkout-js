@@ -91,7 +91,7 @@ describe('AddressForm Component', () => {
             shouldShowSaveAddress: true,
         });
 
-        expect(screen.getByText('Save this address in my address book.')).toBeInTheDocument();
+        expect(screen.getByText('Save this address in my address book')).toBeInTheDocument();
     });
 
     it('renders google autocomplete address field instead of default address field', () => {

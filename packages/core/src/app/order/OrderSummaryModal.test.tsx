@@ -105,7 +105,7 @@ describe('OrderSummaryModal', () => {
                     name: `1 x ${taxIncludedOrder.lineItems.giftCertificates[0].name}`,
                 }),
             ).toBeInTheDocument();
-            expect(screen.getByText('Tax Included in Total:')).toBeInTheDocument();
+            expect(screen.getByText('Tax included in total:')).toBeInTheDocument();
         });
     });
 

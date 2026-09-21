@@ -1,6 +1,6 @@
 .layout {
     @include enhancedThemeV1 {
-        padding: 0;
+        padding: 0 #{spacing("single")} #{5 * spacing("single")};
         display: flex;
         flex-direction: column;
 
@@ -118,7 +118,7 @@
         }
 
         .checkout-button-container {
-            padding: 0 #{spacing("base") + spacing("base")};
+            padding: 0;
             margin-top: spacing("single");
             text-align: center;
 
@@ -129,14 +129,8 @@
     }
 
     @include enhancedThemeV1-mobile {
-        padding: 0 #{spacing("single")} #{5 * spacing("single")};
-
         .layout-main {
             @include grid-column(12);
-        }
-
-        .checkout-button-container {
-            padding: 0;
         }
     }
 

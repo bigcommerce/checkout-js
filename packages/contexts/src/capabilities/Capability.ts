@@ -13,8 +13,10 @@ export const defaultCapabilities: Capabilities = {
         requiresB2BToken: false,
         hasAddressLabel: false,
         quoteConfig: null,
+        invoiceConfig: null,
     },
     customer: {
+        reloadPageAfterSignIn: false,
         superAdminCompanySelector: false,
     },
     shipping: {

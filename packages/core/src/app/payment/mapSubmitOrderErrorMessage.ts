@@ -19,6 +19,9 @@ export default function mapSubmitOrderErrorMessage(
         case 'payment_method_invalid':
             return translate('payment.payment_method_disabled_error');
 
+        case 'bank_declined_authentication':
+            return translate('payment.errors.bank_declined_authentication');
+
         case 'tax_provider_unavailable':
             return translate('payment.tax_provider_unavailable');
 

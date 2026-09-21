@@ -125,7 +125,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
             <div className="checkout-billing" data-test="payment-billing-block">
                 <div className="form-legend-container">
                     <Legend testId="billing-address-heading">
-                        <TranslatedString id="billing.billing_address_heading" />
+                        <TranslatedString id="billing.billing_address_heading_v2" />
                     </Legend>
                 </div>
                 <PaymentBillingForm
