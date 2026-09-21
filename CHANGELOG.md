@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.302.0](https://github.com/bigcommerce/checkout-js/compare/v1.299.0...v1.302.0) (2023-03-29)
+
+
+### Features
+
+* **payment:** BOLT-483 Bump checkout-sdk-js version ([c0187ca](https://github.com/bigcommerce/checkout-js/commit/c0187caa1db62fba033b16bcf37760dd753cef0a))
+* **payment:** PAYPAL-1893 updated initialize payment option from paypalcommerce to paypalcommercecreditcards in PaypalCommerceCreditCardPaymentMethod ([#1226](https://github.com/bigcommerce/checkout-js/issues/1226)) ([17371e3](https://github.com/bigcommerce/checkout-js/commit/17371e329aa3a800c9cdc0958ac39a19a028305a))
+
 ## [1.301.0](https://github.com/bigcommerce/checkout-js/compare/v1.300.0...v1.301.0) (2023-03-27)
 
 

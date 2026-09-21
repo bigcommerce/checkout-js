@@ -1,4 +1,5 @@
 import {
+    BillingAddress,
     CartChangedError,
     CheckoutSelectors,
     CheckoutSettings,
@@ -53,6 +54,7 @@ export interface PaymentProps {
 
 interface WithCheckoutPaymentProps {
     availableStoreCredit: number;
+    billingAddress?: BillingAddress;
     cartUrl: string;
     defaultMethod?: PaymentMethod;
     finalizeOrderError?: Error;
@@ -74,6 +76,7 @@ interface WithCheckoutPaymentProps {
     loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
+    updateAddress(address: BillingAddress | unknown): Promise<CheckoutSelectors>;
 }
 
 interface PaymentState {
@@ -440,7 +443,9 @@ class Payment extends Component<
             onSubmit = noop,
             onSubmitError = noop,
             submitOrder,
-            analyticsTracker
+            analyticsTracker,
+            updateAddress,
+            billingAddress,
         } = this.props;
 
         const { selectedMethod = defaultMethod, submitFunctions } = this.state;
@@ -456,6 +461,8 @@ class Payment extends Component<
         }
 
         try {
+            await updateAddress(billingAddress);
+
             const state = await submitOrder(mapToOrderRequestBody(values, isPaymentDataRequired()));
             const order = state.data.getOrder();
 
@@ -535,6 +542,7 @@ export function mapToPaymentProps({
 }: CheckoutContextProps): WithCheckoutPaymentProps | null {
     const {
         data: {
+            getBillingAddress,
             getCheckout,
             getConfig,
             getCustomer,
@@ -548,6 +556,7 @@ export function mapToPaymentProps({
         statuses: { isInitializingPayment, isSubmittingOrder },
     } = checkoutState;
 
+    const billingAddress = getBillingAddress();
     const checkout = getCheckout();
     const config = getConfig();
     const customer = getCustomer();
@@ -624,6 +633,7 @@ export function mapToPaymentProps({
     return {
         applyStoreCredit: checkoutService.applyStoreCredit,
         availableStoreCredit: customer.storeCredit,
+        billingAddress,
         cartUrl: config.links.cartLink,
         clearError: checkoutService.clearError,
         defaultMethod: selectedPaymentMethod || filteredMethods[0],
@@ -650,6 +660,7 @@ export function mapToPaymentProps({
             isTermsConditionsRequired && termsConditionsType === TermsConditionsType.Link
                 ? termsCondtitionsUrl
                 : undefined,
+        updateAddress: checkoutService.updateBillingAddress,
         usableStoreCredit:
             checkout.grandTotal > 0 ? Math.min(checkout.grandTotal, customer.storeCredit || 0) : 0,
     };

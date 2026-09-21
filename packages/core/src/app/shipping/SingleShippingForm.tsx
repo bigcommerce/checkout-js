@@ -28,6 +28,7 @@ import { getCustomFormFieldsValidationSchema } from '../formFields';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { Fieldset, Form, FormContext } from '../ui/form';
 
+import BillingSameAsShippingField from './BillingSameAsShippingField';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
@@ -144,6 +145,11 @@ class SingleShippingForm extends PureComponent<
         const { isResettingAddress, isUpdatingShippingData, hasRequestedShippingOptions } =
             this.state;
 
+        const PAYMENT_METHOD_VALID = ['amazonpay'];
+        const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(
+            (method) => method === methodId,
+        );
+
         return (
             <Form autoComplete="on">
                 <Fieldset>
@@ -168,6 +174,11 @@ class SingleShippingForm extends PureComponent<
                         shouldShowSaveAddress={shouldShowSaveAddress}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
                     />
+                    {shouldShowBillingSameAsShipping && (
+                        <div className="form-body">
+                            <BillingSameAsShippingField />
+                        </div>
+                    )}
                 </Fieldset>
 
                 <ShippingFormFooter

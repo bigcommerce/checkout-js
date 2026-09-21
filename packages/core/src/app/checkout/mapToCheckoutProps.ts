@@ -40,8 +40,27 @@ export default function mapToCheckoutProps({
 
     const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop);
 
+    const billingAddress = data.getBillingAddress();
+    const customer = data.getCustomer();
+
+    if (billingAddress && customer) {
+        billingAddress.address1 = customer.addresses[0]?.address1;
+        billingAddress.address2 = customer.addresses[0]?.address2;
+        billingAddress.city = customer.addresses[0]?.city;
+        billingAddress.company = customer.addresses[0]?.company;
+        billingAddress.country = customer.addresses[0]?.country;
+        billingAddress.countryCode = customer.addresses[0]?.countryCode;
+        billingAddress.email = customer.email;
+        billingAddress.firstName = customer.addresses[0]?.firstName;
+        billingAddress.lastName = customer.addresses[0]?.lastName;
+        billingAddress.phone = customer.addresses[0]?.phone;
+        billingAddress.postalCode = customer.addresses[0]?.postalCode;
+        billingAddress.stateOrProvince = customer.addresses[0]?.stateOrProvince;
+        billingAddress.stateOrProvinceCode = customer.addresses[0]?.stateOrProvinceCode;
+    }
+
     return {
-        billingAddress: data.getBillingAddress(),
+        billingAddress,
         cart: data.getCart(),
         clearError: checkoutService.clearError,
         consignments: data.getConsignments(),
