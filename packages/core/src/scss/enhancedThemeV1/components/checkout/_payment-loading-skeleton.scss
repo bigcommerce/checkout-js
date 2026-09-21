@@ -13,7 +13,7 @@
         padding: spacing("half") 0;
 
         div {
-            animation: payment-method-skeleton-pulse 4000ms infinite cubic-bezier(0.13, 0.615, 0.315, 0.915);
+            animation: payment-method-skeleton-pulse $loading-skeleton-grey-box-timing;
             background: color("greys", "lighter");
         }
     }
