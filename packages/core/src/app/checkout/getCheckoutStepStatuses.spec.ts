@@ -198,6 +198,49 @@ describe('getCheckoutStepStatuses()', () => {
             expect(find(steps, { type: CheckoutStepType.Billing })!.isEditable).toBe(false);
         });
 
+        it('is marked as required if cart does not contain physical items', () => {
+            jest.spyOn(state.data, 'getCart').mockReturnValue({
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [],
+                },
+            });
+
+            const steps = getCheckoutStepStatuses(state);
+
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            expect(find(steps, { type: CheckoutStepType.Billing })!.isRequired).toBe(true);
+        });
+
+        it('is marked as not required if cart contains physical items and billing same as shipping is enabled', () => {
+            jest.spyOn(state.data, 'getCart').mockReturnValue(getCart());
+
+            jest.spyOn(state.data, 'getConfig').mockReturnValue(getStoreConfig());
+
+            const steps = getCheckoutStepStatuses(state);
+
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            expect(find(steps, { type: CheckoutStepType.Billing })!.isRequired).toBe(false);
+        });
+
+        it('is marked as required if billing same as shipping is disabled', () => {
+            jest.spyOn(state.data, 'getCart').mockReturnValue(getCart());
+
+            jest.spyOn(state.data, 'getConfig').mockReturnValue({
+                ...getStoreConfig(),
+                checkoutSettings: {
+                    ...getStoreConfig().checkoutSettings,
+                    checkoutBillingSameAsShippingEnabled: false,
+                },
+            });
+
+            const steps = getCheckoutStepStatuses(state);
+
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            expect(find(steps, { type: CheckoutStepType.Billing })!.isRequired).toBe(true);
+        });
+
         describe('amazonpay', () => {
             it('is marked as complete if billing address is not provided', () => {
                 jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());

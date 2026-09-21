@@ -461,7 +461,9 @@ class Payment extends Component<
         }
 
         try {
-            await updateAddress(billingAddress);
+            if (billingAddress) {
+                await updateAddress(billingAddress);
+            }
 
             const state = await submitOrder(mapToOrderRequestBody(values, isPaymentDataRequired()));
             const order = state.data.getOrder();

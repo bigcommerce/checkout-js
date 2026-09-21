@@ -60,6 +60,66 @@ const getCustomerStepStatus = createSelector(
     },
 );
 
+const getBillingStepStatus = createSelector(
+    ({ data }: CheckoutSelectors) => data.getCheckout(),
+    ({ data }: CheckoutSelectors) => data.getBillingAddress(),
+    ({ data }: CheckoutSelectors) => {
+        const billingAddress = data.getBillingAddress();
+
+        return billingAddress
+            ? data.getBillingAddressFields(billingAddress.countryCode)
+            : EMPTY_ARRAY;
+    },
+    ({ data }: CheckoutSelectors) => data.getCart(),
+    ({ data }: CheckoutSelectors) => data.getConfig(),
+    (checkout, billingAddress, billingAddressFields, cart, config) => {
+        const hasAddress = billingAddress
+            ? isValidAddress(billingAddress, billingAddressFields)
+            : false;
+        const isUsingWallet =
+            checkout && checkout.payments
+                ? checkout.payments.some(
+                      (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
+                  )
+                : false;
+        const isComplete = hasAddress || isUsingWallet;
+        const isUsingAmazonPay =
+            checkout && checkout.payments
+                ? checkout.payments.some((payment) => payment.providerId === 'amazonpay')
+                : false;
+        const isRequired =
+            !itemsRequireShipping(cart, config) ||
+            config?.checkoutSettings.checkoutBillingSameAsShippingEnabled === false;
+
+        if (isUsingAmazonPay) {
+            const billingAddressCustomFields = billingAddressFields.filter(
+                ({ custom }) => custom,
+            );
+            const hasCustomFields = billingAddressCustomFields.length > 0;
+            const isAmazonPayBillingStepComplete =
+                billingAddress && hasCustomFields
+                    ? isValidAddress(billingAddress, billingAddressCustomFields)
+                    : true;
+
+            return {
+                type: CheckoutStepType.Billing,
+                isActive: false,
+                isComplete: isAmazonPayBillingStepComplete,
+                isEditable: isAmazonPayBillingStepComplete && hasCustomFields,
+                isRequired,
+            };
+        }
+
+        return {
+            type: CheckoutStepType.Billing,
+            isActive: false,
+            isComplete,
+            isEditable: isComplete && !isUsingWallet,
+            isRequired,
+        };
+    },
+);
+
 const getShippingStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getShippingAddress(),
     ({ data }: CheckoutSelectors) => data.getConsignments(),
@@ -110,9 +170,10 @@ const getPaymentStepStatus = createSelector(
 const getCheckoutStepStatuses = createSelector(
     getCustomerStepStatus,
     getShippingStepStatus,
+    getBillingStepStatus,
     getPaymentStepStatus,
-    (customerStep, shippingStep, paymentStep) => {
-        const steps = compact([customerStep, shippingStep, paymentStep]);
+    (customerStep, shippingStep, billingStep, paymentStep) => {
+        const steps = compact([customerStep, shippingStep, billingStep, paymentStep]);
 
         const defaultActiveStep =
             steps.find((step) => !step.isComplete && step.isRequired) || steps[steps.length - 1];

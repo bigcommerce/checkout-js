@@ -13,15 +13,17 @@ import { act } from 'react-dom/test-utils';
 
 import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 
+import { getAddressFormFields } from '../address/formField.mock';
 import { BillingProps } from '../billing';
 import Billing from '../billing/Billing';
+import { getEmptyBillingAddress } from '../billing/billingAddresses.mock';
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
 import { createErrorLogger, CustomError, ErrorModal } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { CustomerInfo, CustomerInfoProps, CustomerProps, CustomerViewType } from '../customer';
 import Customer from '../customer/Customer';
-import { getCustomer } from '../customer/customers.mock';
+import { getCustomer, getGuestCustomer } from '../customer/customers.mock';
 import {
     createEmbeddedCheckoutStylesheet,
     createEmbeddedCheckoutSupport,
@@ -216,13 +218,13 @@ describe('Checkout', () => {
         const container = mount(<CheckoutTest {...defaultProps} />);
         const steps = container.find(CheckoutStep);
 
+        expect(steps).toHaveLength(3);
+
         expect(steps.at(0).prop('type')).toEqual(CheckoutStepType.Customer);
 
         expect(steps.at(1).prop('type')).toEqual(CheckoutStepType.Shipping);
 
-        expect(steps.at(2).prop('type')).toEqual(CheckoutStepType.Billing);
-
-        expect(steps.at(3).prop('type')).toEqual(CheckoutStepType.Payment);
+        expect(steps.at(2).prop('type')).toEqual(CheckoutStepType.Payment);
     });
 
     it('does not render checkout step if not required', () => {
@@ -630,7 +632,7 @@ describe('Checkout', () => {
             expect(customer.prop('viewType')).toEqual(CustomerViewType.Login);
         });
 
-        it('navigates to billing step if not using shipping address as billing address', () => {
+        it('navigates to payment step if not using shipping address as billing address', () => {
             const shipping: ReactWrapper<ShippingProps> = container.find(Shipping).at(0);
 
             shipping.prop('navigateNextStep')(false);
@@ -638,7 +640,7 @@ describe('Checkout', () => {
 
             const steps: ReactWrapper<CheckoutStepProps> = container.find(CheckoutStep);
             const nextStep: ReactWrapper<CheckoutStepProps> = steps
-                .findWhere((step) => step.prop('type') === CheckoutStepType.Billing)
+                .findWhere((step) => step.prop('type') === CheckoutStepType.Payment)
                 .at(0);
 
             expect(nextStep.prop('isActive')).toBe(true);
@@ -673,43 +675,90 @@ describe('Checkout', () => {
         });
     });
 
-    describe('billing step', () => {
-        let container: ReactWrapper<CheckoutProps>;
+    it('renders shipping step with summary data when step is complete', async () => {
         const consignment = {
             ...getConsignment(),
             lineItemIds: [`${getPhysicalItem().id}`],
         };
 
-        beforeEach(async () => {
-            jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([consignment]);
+        jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([consignment]);
 
-            jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(
-                getShippingAddress(),
-            );
+        jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(
+            getShippingAddress(),
+        );
+
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+
+        const container = mount(<CheckoutTest {...defaultProps} />);
+
+        // Wait for initial load to complete
+        await new Promise((resolve) => process.nextTick(resolve));
+        container.update();
+
+        expect(
+            (container.find(CheckoutStep) as ReactWrapper<CheckoutStepProps>)
+                .at(1)
+                .find(StaticConsignment)
+                .props(),
+        ).toMatchObject({
+            cart: getCart(),
+            compactView: true,
+            consignment,
+        });
+    });
+
+    describe('billing step', () => {
+        let container: ReactWrapper<CheckoutProps>;
+
+        beforeEach(async () => {
+            jest.useRealTimers();
+
+            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [],
+                },
+            });
 
             jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+
+            jest.spyOn(checkoutState.data, 'getBillingAddressFields').mockReturnValue(
+                getAddressFormFields(),
+            );
+
+            container = mount(<CheckoutTest {...defaultProps} />);
+
+            // Wait for initial load and the lazy-loaded billing component to resolve
+            await new Promise((resolve) => setTimeout(resolve, 10));
+            container.update();
+        });
+
+        it('renders billing component as active step when cart does not contain physical items', () => {
+            const billingStep = (container.find(CheckoutStep) as ReactWrapper<CheckoutStepProps>)
+                .findWhere((step) => step.prop('type') === CheckoutStepType.Billing)
+                .at(0);
+
+            expect(billingStep.prop('isActive')).toBe(true);
+
+            expect(container.find(Billing)).toHaveLength(1);
+        });
+
+        it('renders billing form for guest shopper whose billing address is email only', async () => {
+            checkoutState = { ...checkoutState };
+
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+
+            jest.spyOn(checkoutState.data, 'getBillingAddress').mockImplementation(() => ({
+                ...getEmptyBillingAddress(),
+            }));
 
             container = mount(<CheckoutTest {...defaultProps} />);
 
             // Wait for initial load to complete
-            await new Promise((resolve) => process.nextTick(resolve));
+            await new Promise((resolve) => setTimeout(resolve, 10));
             container.update();
-        });
 
-        it('renders shipping component with summary data', () => {
-            expect(
-                (container.find(CheckoutStep) as ReactWrapper<CheckoutStepProps>)
-                    .at(1)
-                    .find(StaticConsignment)
-                    .props(),
-            ).toMatchObject({
-                cart: getCart(),
-                compactView: true,
-                consignment,
-            });
-        });
-
-        it('renders billing component when billing step is active', () => {
             expect(container.find(Billing)).toHaveLength(1);
         });
 
