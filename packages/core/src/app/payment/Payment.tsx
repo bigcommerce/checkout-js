@@ -23,6 +23,20 @@ import {
     createCheckoutComSepaPaymentStrategy,
 } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createClearpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/clearpay';
+import {
+    createGooglePayAdyenV2PaymentStrategy,
+    createGooglePayAdyenV3PaymentStrategy,
+    createGooglePayAuthorizeNetPaymentStrategy,
+    createGooglePayBigCommercePaymentsPaymentStrategy,
+    createGooglePayBraintreePaymentStrategy,
+    createGooglePayCheckoutComPaymentStrategy,
+    createGooglePayCybersourcePaymentStrategy,
+    createGooglePayOrbitalPaymentStrategy,
+    createGooglePayPPCPPaymentStrategy,
+    createGooglePayStripePaymentStrategy,
+    createGooglePayTdOnlineMartPaymentStrategy,
+    createGooglePayWorldpayAccessPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/google-pay';
 import { createOffsitePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offsite';
 import { createPaypalExpressPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-express';
 import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
@@ -43,12 +57,16 @@ import {
     type AnalyticsContextProps,
     type CheckoutContextProps,
     useCapabilities,
+    useCheckout,
     useThemeContext,
 } from '@bigcommerce/checkout/contexts';
 import { assignTopLocation, replaceLocation } from '@bigcommerce/checkout/dom-utils';
 import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import {
+    isGooglePayHandleUnsuccessful3dsCheckExperimentOn,
+    type PaymentFormValues,
+} from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton, LoadingOverlay } from '@bigcommerce/checkout/ui';
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
@@ -183,6 +201,8 @@ const Payment = (
     // can't finalize before the entered billing address is validated and saved.
     const ensureBillingAddressSavedRef: MutableRefObject<EnsureBillingAddressSaved | null> =
         useRef(null);
+
+    const { checkoutState: initialCheckoutState } = useCheckout(() => undefined);
 
     const {
         orderConfirmation: { persistB2BMetadata, invoiceRedirect },
@@ -805,6 +825,11 @@ const Payment = (
                 }
             }
 
+            const isHandleUnsuccessful3dsCheckExperimentOn =
+                isGooglePayHandleUnsuccessful3dsCheckExperimentOn(
+                    initialCheckoutState.data.getConfig()?.checkoutSettings,
+                );
+
             try {
                 const state = await finalizeOrderIfNeeded({
                     integrations: [
@@ -817,6 +842,22 @@ const Payment = (
                         createCheckoutComIdealPaymentStrategy,
                         createCheckoutComSepaPaymentStrategy,
                         createClearpayPaymentStrategy,
+                        ...(isHandleUnsuccessful3dsCheckExperimentOn
+                            ? [
+                                  createGooglePayAdyenV2PaymentStrategy,
+                                  createGooglePayAdyenV3PaymentStrategy,
+                                  createGooglePayAuthorizeNetPaymentStrategy,
+                                  createGooglePayBigCommercePaymentsPaymentStrategy,
+                                  createGooglePayBraintreePaymentStrategy,
+                                  createGooglePayCheckoutComPaymentStrategy,
+                                  createGooglePayCybersourcePaymentStrategy,
+                                  createGooglePayOrbitalPaymentStrategy,
+                                  createGooglePayPPCPPaymentStrategy,
+                                  createGooglePayStripePaymentStrategy,
+                                  createGooglePayTdOnlineMartPaymentStrategy,
+                                  createGooglePayWorldpayAccessPaymentStrategy,
+                              ]
+                            : []),
                         createOffsitePaymentStrategy,
                         createPaypalExpressPaymentStrategy,
                         createSagePayPaymentStrategy,

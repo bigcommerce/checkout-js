@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.902.1](https://github.com/bigcommerce/checkout-js/compare/v1.902.0...v1.902.1) (2026-09-17)
+
+## [1.902.0](https://github.com/bigcommerce/checkout-js/compare/v1.901.1...v1.902.0) (2026-09-17)
+
+
+### Features
+
+* **payment:** PI-5643 [Google Pay] show error on 3ds challenge failure ([#3330](https://github.com/bigcommerce/checkout-js/issues/3330)) ([f4824b8](https://github.com/bigcommerce/checkout-js/commit/f4824b8d094d8a8983599d9267f40ec0280af2bf))
+
+### [1.901.1](https://github.com/bigcommerce/checkout-js/compare/v1.901.0...v1.901.1) (2026-09-17)
+
+## [1.901.0](https://github.com/bigcommerce/checkout-js/compare/v1.900.0...v1.901.0) (2026-09-17)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#3337](https://github.com/bigcommerce/checkout-js/issues/3337)) ([52a1bb9](https://github.com/bigcommerce/checkout-js/commit/52a1bb9c1280017b4d46ddd63bd292a99f53375b))
+
+## [1.900.0](https://github.com/bigcommerce/checkout-js/compare/v1.899.1...v1.900.0) (2026-09-16)
+
+
+### Features
+
+* **payment:** PI-5464 [FE] Remove experiment 'PI-4748_cba_resolver_configuration' ([#3344](https://github.com/bigcommerce/checkout-js/issues/3344)) ([a131a55](https://github.com/bigcommerce/checkout-js/commit/a131a5532d0d00205a5968dec64475329b0a2b14))
+
+### [1.899.1](https://github.com/bigcommerce/checkout-js/compare/v1.899.0...v1.899.1) (2026-09-16)
+
 ## [1.899.0](https://github.com/bigcommerce/checkout-js/compare/v1.898.2...v1.899.0) (2026-09-16)
 
 
