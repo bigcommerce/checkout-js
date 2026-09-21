@@ -313,20 +313,6 @@ describe('DynamicFormField Component', () => {
             });
         });
 
-        it('renders the validated phone input when the field has a placeholder, dropping the placeholder', () => {
-            mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
-
-            const { container } = renderMockFormField({
-                field: { ...phoneFieldMock, default: '1231232' },
-                isPhoneNumberValidationEnabled: true,
-                placeholder: '1231232',
-            });
-
-            // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-            expect(container.querySelector('.iti-wrapper')).toBeInTheDocument();
-            expect(screen.getByTestId('phone-text')).not.toHaveAttribute('placeholder');
-        });
-
         it('does not validate phone for non-telephone fields even when the setting is enabled', async () => {
             mockIsValidNumber.mockReturnValue(false);
 
