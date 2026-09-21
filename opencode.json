@@ -1,0 +1,43 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "permission": {
+        "bash": {
+            "cntrl": "allow"
+        },
+        "external_directory": {
+            "~/Developer/devspace/**": "allow",
+            "~/Developer/gcp-price-reduction/**": "allow",
+            "~/Developer/linz/**": "allow",
+            "~/Developer/ras-*/**": "allow",
+            "~/Developer/sso-lib/**": "allow"
+        },
+        "read": {
+            "~/Developer/devspace/**": "allow",
+            "~/Developer/gcp-price-reduction/**": "allow",
+            "~/Developer/linz/**": "allow",
+            "~/Developer/ras-*/**": "allow",
+            "~/Developer/sso-lib/**": "allow"
+        },
+        "glob": {
+            "~/Developer/devspace/**": "allow",
+            "~/Developer/gcp-price-reduction/**": "allow",
+            "~/Developer/linz/**": "allow",
+            "~/Developer/ras-*/**": "allow",
+            "~/Developer/sso-lib/**": "allow"
+        },
+        "grep": {
+            "~/Developer/devspace/**": "allow",
+            "~/Developer/gcp-price-reduction/**": "allow",
+            "~/Developer/linz/**": "allow",
+            "~/Developer/ras-*/**": "allow",
+            "~/Developer/sso-lib/**": "allow"
+        },
+        "list": {
+            "~/Developer/devspace/**": "allow",
+            "~/Developer/gcp-price-reduction/**": "allow",
+            "~/Developer/linz/**": "allow",
+            "~/Developer/ras-*/**": "allow",
+            "~/Developer/sso-lib/**": "allow"
+        }
+    }
+}

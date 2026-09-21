@@ -12,3 +12,7 @@ coverage
 /packages/payment-integration-test-framework/videos
 .DS_STORE
 dist
+.opencode/*
+!.opencode/skills/
+!.opencode/agents/
+!.opencode/commands/
