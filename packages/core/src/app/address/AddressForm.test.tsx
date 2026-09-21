@@ -153,7 +153,7 @@ describe('AddressForm Component', () => {
         expect(onChange).toHaveBeenCalledWith(fieldId, fieldValue);
     });
 
-    describe('new phone number validation setting and experiment', () => {
+    describe('new phone number validation setting', () => {
         const phoneFormFieldMock = {
             fieldType: 'text',
             id: 'phone',
@@ -162,11 +162,9 @@ describe('AddressForm Component', () => {
 
         const getConfigMockWithPhoneValidation = ({
             isPhoneNumberValidationEnabled,
-            isExperimentEnabled = false,
             providerWithCustomCheckout = null,
         }: {
             isPhoneNumberValidationEnabled: boolean;
-            isExperimentEnabled?: boolean;
             providerWithCustomCheckout?: string | null;
         }) => {
             const config = getStoreConfig();
@@ -176,20 +174,15 @@ describe('AddressForm Component', () => {
                 checkoutSettings: {
                     ...config.checkoutSettings,
                     isPhoneNumberValidationEnabled,
-                    features: {
-                        ...config.checkoutSettings.features,
-                        'CHECKOUT-9019.use_new_phone_number_validation': isExperimentEnabled,
-                    },
                     providerWithCustomCheckout,
                 },
             };
         };
 
-        it('renders new phone number field when setting and experiment are both true', () => {
+        it('renders new phone number field when setting is true', () => {
             jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
                 getConfigMockWithPhoneValidation({
                     isPhoneNumberValidationEnabled: true,
-                    isExperimentEnabled: true,
                 }),
             );
 
@@ -203,7 +196,6 @@ describe('AddressForm Component', () => {
             jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
                 getConfigMockWithPhoneValidation({
                     isPhoneNumberValidationEnabled: true,
-                    isExperimentEnabled: true,
                     providerWithCustomCheckout: 'bigcommerce_payments_fastlane',
                 }),
             );
@@ -218,7 +210,6 @@ describe('AddressForm Component', () => {
             jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
                 getConfigMockWithPhoneValidation({
                     isPhoneNumberValidationEnabled: true,
-                    isExperimentEnabled: true,
                     providerWithCustomCheckout: '100%_definitely_not_fastlane',
                 }),
             );
@@ -229,25 +220,10 @@ describe('AddressForm Component', () => {
             expect(screen.queryByTestId('phoneInput-text')).not.toBeInTheDocument();
         });
 
-        it('renders legacy phone field when setting is true but experiment is false', () => {
-            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
-                getConfigMockWithPhoneValidation({
-                    isPhoneNumberValidationEnabled: true,
-                    isExperimentEnabled: false,
-                }),
-            );
-
-            renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
-
-            expect(screen.queryByTestId('intl-tel-input-mock')).not.toBeInTheDocument();
-            expect(screen.getByTestId('phoneInput-text')).toBeInTheDocument();
-        });
-
-        it('renders legacy phone field when experiment is true but setting is false', () => {
+        it('renders legacy phone field when setting is false', () => {
             jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
                 getConfigMockWithPhoneValidation({
                     isPhoneNumberValidationEnabled: false,
-                    isExperimentEnabled: true,
                 }),
             );
 
@@ -257,21 +233,7 @@ describe('AddressForm Component', () => {
             expect(screen.getByTestId('phoneInput-text')).toBeInTheDocument();
         });
 
-        it('renders legacy phone field when setting and experiment are both false', () => {
-            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
-                getConfigMockWithPhoneValidation({
-                    isPhoneNumberValidationEnabled: false,
-                    isExperimentEnabled: false,
-                }),
-            );
-
-            renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
-
-            expect(screen.queryByTestId('intl-tel-input-mock')).not.toBeInTheDocument();
-            expect(screen.getByTestId('phoneInput-text')).toBeInTheDocument();
-        });
-
-        it('renders legacy phone field when setting and experiment are missing from config', () => {
+        it('renders legacy phone field when setting is missing from config', () => {
             jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
                 getStoreConfig(),
             );

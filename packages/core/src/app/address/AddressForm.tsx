@@ -70,16 +70,10 @@ const AddressForm: React.FC<AddressFormProps> = ({
     const isPayPalFastlaneEnabled = isPayPalFastlaneMethod(
         getProviderWithCustomCheckout(config?.checkoutSettings.providerWithCustomCheckout),
     );
-    const isPhoneValidationExperimentEnabled = isExperimentEnabled(
-        config?.checkoutSettings,
-        'CHECKOUT-9019.use_new_phone_number_validation',
-        false,
-    );
     // PayPal Fastlane stores keep the legacy phone input for now, due to incident
     const isPhoneNumberValidationEnabled =
         !isPayPalFastlaneEnabled &&
-        (config?.checkoutSettings.isPhoneNumberValidationEnabled ?? false) &&
-        isPhoneValidationExperimentEnabled;
+        (config?.checkoutSettings.isPhoneNumberValidationEnabled ?? false);
     const isNewGooglePlacesApiEnabled = isExperimentEnabled(
         config?.checkoutSettings,
         'CHECKOUT-10026.new_google_places_api',
