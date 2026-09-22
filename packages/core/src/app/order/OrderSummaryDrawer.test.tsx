@@ -176,7 +176,10 @@ describe('OrderSummaryDrawer', () => {
     });
 
     it('renders correct summary for line items for bundled products', async () => {
-        order.lineItems.physicalItems.push({ ...getPhysicalItem(), id: '888', parentId: 'test' });
+        const bundleChild = { ...getPhysicalItem(), id: '888', parentId: 'test' };
+
+        order.lineItems.physicalItems.push(bundleChild);
+        order.bundledItems.physicalItems.push(bundleChild);
 
         render(
             <CheckoutProvider checkoutService={checkoutService}>

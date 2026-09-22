@@ -1,4 +1,8 @@
-import { type CheckoutSelectors, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import {
+    type Address,
+    type CheckoutSelectors,
+    createCheckoutService,
+} from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React, { act } from 'react';
 
@@ -58,7 +62,7 @@ describe('StripeShippingForm', () => {
         isInitialValueLoaded: false,
         isMultiShippingMode: false,
         countriesWithAutocomplete: [],
-        shippingAddress: { ...rest, customFields: [] },
+        shippingAddress: rest as Address,
         customerMessage: '',
         addresses: [],
         consignments: [],
