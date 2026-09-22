@@ -52,6 +52,13 @@ function appConfig(options, argv) {
             mode,
             cache: {
                 type: 'filesystem',
+                // Without this, the persistent cache is not invalidated when this
+                // config (or anything it requires, e.g. ./scripts/webpack) changes,
+                // so config edits silently have no effect until the cache is deleted
+                // by hand. Tracks the config's whole require graph.
+                buildDependencies: {
+                    config: [__filename],
+                },
             },
             snapshot: {
                 managedPaths: [

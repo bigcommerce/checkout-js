@@ -34,6 +34,8 @@ const CheckoutInitializer: React.FC<CheckoutInitializerProps> = (props) => {
         return <CheckoutPageSkeleton />;
     }
 
+    console.log('test');
+
     return (
         <CheckoutPage
             {...props}
