@@ -30,6 +30,7 @@
             "enter_or_select_address_action": "Inserisci o seleziona un indirizzo diverso",
             "add_address_heading": "Aggiungi indirizzo",
             "save_address_action": "Salva indirizzo",
+            "add_address_heading_v2": "Aggiungi indirizzo",
             "first_name_label": "Nome",
             "first_name_required_error": "Il nome è obbligatorio",
             "last_name_label": "Cognome",
@@ -39,7 +40,7 @@
             "phone_number_required_error": "Il numero di telefono è obbligatorio",
             "postal_code_label": "Codice postale",
             "postal_code_required_error": "Il CAP è necessario",
-            "save_in_addressbook": "Salva l'indirizzo nella mia rubrica.",
+            "save_in_addressbook": "Salva l'indirizzo nella mia rubrica",
             "save_to_company_addressbook": "Salva nella rubrica aziendale.",
             "search_addresses": "Cerca indirizzi",
             "select_country_action": "Seleziona un paese",
@@ -52,6 +53,7 @@
         },
         "billing": {
             "billing_address_heading": "Indirizzo di fatturazione",
+            "billing_address_heading_v2": "Indirizzo di fatturazione",
             "billing_heading": "Fatturazione",
             "no_billing_addresses_warning": "Spiacenti, non è presente alcun indirizzo di fatturazione tra cui scegliere. Vai nella tua rubrica per crearne uno o contatta l'amministratore del sito.",
             "save_billing_address_error": "Si è verificato un errore durante il salvataggio dell'indirizzo di fatturazione nel preventivo. Riprova.",
@@ -96,7 +98,7 @@
             "gift_wrapping_text": "Confezione regalo",
             "show_details_action": "Mostra dettagli",
             "hide_details_action": "Nascondi dettagli",
-            "store_credit_text": "Credito del negozio",
+            "store_credit_text": "Credito dello store",
             "subtotal_text": "Subtotale",
             "taxes_text": "Tasse",
             "total_text": "Totale",
@@ -165,7 +167,7 @@
             "email_required_error": "L'indirizzo e-mail è obbligatorio",
             "forgot_password_action": "Hai dimenticato la password?",
             "guest_customer_text": "Cliente ospite",
-            "guest_subscribe_to_newsletter_text": "Iscriviti alla nostra newsletter.",
+            "guest_subscribe_to_newsletter_text": "Iscriviti alla nostra newsletter",
             "guest_marketing_consent": "Desidero ricevere aggiornamenti e offerte",
             "login_action": "Iscriviti ora",
             "login_text": "Hai già un account?",
@@ -495,7 +497,7 @@
                 "user_authorization_error": "Si è verificato un problema durante l'elaborazione del pagamento. Contattaci.",
                 "vaulting_service_unavailable": "Il servizio di vaulting non è attualmente disponibile.",
                 "voided_transaction": "Impossibile elaborare il pagamento in quanto la transazione è già stata annullata. Riprova o contattaci.",
-                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
+                "bank_declined_authentication": "La tua banca ha rifiutato l'autenticazione, ti invitiamo a utilizzare una carta diversa."
             },
             "ratepay": {
                 "payment_method_title": "Pagamento contro fattura",
@@ -540,6 +542,7 @@
             "continue_with_text": "Oppure continua con",
             "or_text": "O",
             "payment_method_error": "Si è verificato un errore nel recupero del metodo di pagamento remoto. Riprova.",
+            "retry_same_card_action": "Try again or select a different card",
             "select_different_card_action": "Seleziona un'altra carta",
             "session_error": "La sessione remota è scaduta. Esegui nuovamente l'accesso.",
             "shipping_address_error": "Si è verificato un errore nel recuperare l'indirizzo di spedizione da remoto. Riprova.",
@@ -555,6 +558,7 @@
             "cart_change_error": "È stato rilevato un aggiornamento del carrello e i costi di spedizione disponibili sono stati aggiornati. Per continuare, seleziona di nuovo un metodo di spedizione.",
             "enter_shipping_address_text": "Inserisci un indirizzo di spedizione per visualizzare i relativi costi",
             "order_comment_label": "Commenti sull'ordine",
+            "order_comment_label_v2": "Commenti sull'ordine",
             "assign_item_error": "Si è verificato un errore nell'assegnare l'articolo all'indirizzo inserito. Riprova.",
             "assign_item_invalid_address_error_heading": "Indirizzo non valido",
             "assign_item_invalid_address_error": "L'indirizzo selezionato non è valido. Vai sulla pagina del tuo account e aggiornalo.",
@@ -602,6 +606,7 @@
             "ship_to_single_message": "Se procedi, tutti i progressi per più indirizzi andranno persi. L'azione non si può annullare.",
             "shipping_heading": "Spedizioni",
             "shipping_method_label": "Metodo di spedizione",
+            "shipping_method_label_v2": "Metodo di spedizione",
             "shipping_option_expired_error": "Il costo di spedizione che ti era stato preventivato non è più valido. Fai clic su OK per vedere i costi di spedizione più aggiornati.",
             "shipping_option_expired_heading": "Il costo di spedizione è stato aggiornato",
             "view_shipping_options_action": "Visualizza altre opzioni",
@@ -638,8 +643,8 @@
         },
         "terms_and_conditions": {
             "agreement_required_error": "Accetta i termini e le condizioni",
-            "agreement_text": "Sì, accetto i termini e le condizioni di cui sopra.",
-            "agreement_with_link_text": "Sì, accetto i <a href=\"{url}\" target=\"_blank\">termini e le condizioni</a>.",
+            "agreement_text": "Sì, accetto i termini e le condizioni di cui sopra",
+            "agreement_with_link_text": "Sì, accetto i <a href=\"{url}\" target=\"_blank\">termini e le condizioni</a>",
             "terms_and_conditions_heading": "Termini e condizioni"
         },
         "order_confirmation": {

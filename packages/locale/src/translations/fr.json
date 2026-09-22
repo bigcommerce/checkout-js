@@ -30,6 +30,7 @@
             "enter_or_select_address_action": "Saisissez ou sélectionnez une autre adresse",
             "add_address_heading": "Ajouter une adresse",
             "save_address_action": "Enregistrer l'adresse",
+            "add_address_heading_v2": "Ajouter une adresse",
             "first_name_label": "Prénom",
             "first_name_required_error": "Le prénom est requis",
             "last_name_label": "Nom",
@@ -39,7 +40,7 @@
             "phone_number_required_error": "Le numéro de téléphone est requis",
             "postal_code_label": "Code postal",
             "postal_code_required_error": "Le code postal est requis",
-            "save_in_addressbook": "Enregistrer cette adresse dans mon carnet d'adresses.",
+            "save_in_addressbook": "Enregistrer cette adresse dans mon carnet d'adresses",
             "save_to_company_addressbook": "Enregistrer dans le carnet d'adresses de l'entreprise.",
             "search_addresses": "Rechercher des adresses",
             "select_country_action": "Sélectionnez un pays",
@@ -52,6 +53,7 @@
         },
         "billing": {
             "billing_address_heading": "Adresse de facturation",
+            "billing_address_heading_v2": "Adresse de facturation",
             "billing_heading": "Facturation",
             "no_billing_addresses_warning": "Nous sommes désolés, mais vous n'avez pas d'adresse de facturation. Veuillez accéder à votre carnet d'adresses pour en créer une ou contacter l'administrateur de votre site.",
             "save_billing_address_error": "Une erreur s'est produite lors de l'enregistrement de l'adresse de facturation pour le devis. Veuillez réessayer.",
@@ -165,7 +167,7 @@
             "email_required_error": "L'adresse e-mail est requise",
             "forgot_password_action": "Mot de passe oublié ?",
             "guest_customer_text": "Client invité",
-            "guest_subscribe_to_newsletter_text": "Abonnez-vous à notre newsletter.",
+            "guest_subscribe_to_newsletter_text": "Abonnez-vous à notre newsletter",
             "guest_marketing_consent": "Je souhaite recevoir des informations concernant les offres et les nouveautés.",
             "login_action": "Se connecter",
             "login_text": "Vous avez déjà un compte ?",
@@ -495,7 +497,7 @@
                 "user_authorization_error": "Une erreur s'est produite lors du traitement de votre paiement. Veuillez nous contacter.",
                 "vaulting_service_unavailable": "Le service de sauvegarde sécurisée est actuellement indisponible.",
                 "voided_transaction": "Impossible de traiter votre paiement car la transaction a déjà été annulée. Veuillez réessayer, ou contactez-nous.",
-                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
+                "bank_declined_authentication": "Votre banque a refusé l'authentification, veuillez utiliser une autre carte."
             },
             "ratepay": {
                 "payment_method_title": "Paiement sur facture",
@@ -540,6 +542,7 @@
             "continue_with_text": "Ou continuer avec",
             "or_text": "OU",
             "payment_method_error": "Une erreur s'est produite lors de la récupération de votre mode de paiement à distance. Veuillez réessayer.",
+            "retry_same_card_action": "Try again or select a different card",
             "select_different_card_action": "Sélectionner une autre carte",
             "session_error": "Votre session à distance a expiré. Veuillez vous reconnecter.",
             "shipping_address_error": "Une erreur s'est produite lors de la récupération de votre adresse de livraison à distance. Veuillez réessayer.",
@@ -553,15 +556,16 @@
         },
         "shipping": {
             "cart_change_error": "Nous avons détecté une mise à jour de votre panier. Les frais de livraison disponibles ont également été mis à jour. Veuillez sélectionner à nouveau un mode de livraison pour continuer.",
-            "enter_shipping_address_text": "Veuillez saisir une adresse de livraison pour obtenir une estimation des frais de livraison.",
+            "enter_shipping_address_text": "Saisissez une adresse de livraison pour obtenir une estimation des frais de livraison",
             "order_comment_label": "Commentaires sur la commande",
+            "order_comment_label_v2": "Commentaires sur la commande",
             "assign_item_error": "Une erreur s'est produite lors de l'attribution de l'article à une adresse. Veuillez réessayer.",
             "assign_item_invalid_address_error_heading": "Adresse non valide",
             "assign_item_invalid_address_error": "L'adresse sélectionnée n'est pas valide. Veuillez accéder à votre compte et la mettre à jour.",
             "unassign_item_error": "Une erreur s'est produite lors de la dissociation de l'article et de l'adresse.",
             "save_shipping_address_error": "Une erreur s'est produite lors de l'enregistrement de l'adresse de livraison pour le devis. Veuillez réessayer.",
             "save_shipping_option_error": "Une erreur s'est produite lors de l'enregistrement du devis de livraison pour votre commande. Veuillez réessayer.",
-            "select_shipping_address_text": "Veuillez sélectionner une adresse de livraison pour obtenir une estimation des frais de livraison.",
+            "select_shipping_address_text": "Sélectionnez une adresse de livraison pour obtenir une estimation des frais de livraison",
             "no_shipping_addresses_warning": "Nous sommes désolés, mais vous n'avez pas d'adresse de livraison. Veuillez accéder à votre carnet d'adresses pour en créer une ou contacter l'administrateur de votre site.",
             "shipping_address_heading": "Adresse de livraison",
             "multishipping_consignment_index_heading": "Destination #{consignmentNumber}",
@@ -602,6 +606,7 @@
             "ship_to_single_message": "Si vous continuez, toute la progression sera perdue pour plusieurs adresses. Cette action ne peut pas être annulée.",
             "shipping_heading": "Livraison",
             "shipping_method_label": "Mode de livraison",
+            "shipping_method_label_v2": "Mode de livraison",
             "shipping_option_expired_error": "Le devis de livraison que vous avez reçu n'est plus valide. Cliquez sur OK pour consulter les frais de livraison actualisés.",
             "shipping_option_expired_heading": "Les frais de port ont été mis à jour",
             "view_shipping_options_action": "Voir d'autres options",
@@ -638,8 +643,8 @@
         },
         "terms_and_conditions": {
             "agreement_required_error": "Veuillez accepter les conditions générales.",
-            "agreement_text": "Oui, j'accepte les conditions générales ci-dessus.",
-            "agreement_with_link_text": "Oui, j'accepte les <a href=\"{url}\" target=\"_blank\">conditions générales</a>.",
+            "agreement_text": "Oui, j'accepte les conditions générales ci-dessus",
+            "agreement_with_link_text": "Oui, j’accepte les <a href=\"{url}\" target=\"_blank\">conditions générales</a>",
             "terms_and_conditions_heading": "Conditions générales"
         },
         "order_confirmation": {

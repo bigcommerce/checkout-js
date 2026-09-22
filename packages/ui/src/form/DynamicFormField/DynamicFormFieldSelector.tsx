@@ -22,7 +22,7 @@ interface DynamicFormFieldSelectorProps {
     min?: FormFieldType['min'];
     maxLength?: FormFieldType['maxLength'];
     isFloatingLabelEnabled?: boolean;
-    isNewPhoneValidationExperimentEnabled: boolean;
+    isPhoneNumberValidationEnabled: boolean;
     selectedCountry?: string;
     onChange?(value: string | string[]): void;
 }
@@ -41,16 +41,14 @@ export const DynamicFormFieldSelector: FunctionComponent<DynamicFormFieldSelecto
         min,
         maxLength,
         isFloatingLabelEnabled,
-        isNewPhoneValidationExperimentEnabled,
+        isPhoneNumberValidationEnabled,
         selectedCountry,
         onChange,
     }) => {
-        // skipped for stores with maxLength as it caused formatting issues
-        // and for stores with a default value placeholder (to de-risk)
+        // skip for stores with maxLength as it causes formatting issues
         const isNewPhoneFieldWithValidation =
-            isNewPhoneValidationExperimentEnabled &&
+            isPhoneNumberValidationEnabled &&
             !maxLength &&
-            !placeholder &&
             dynamicFormFieldType === DynamicFormFieldType.TELEPHONE;
 
         const renderInput = useCallback(

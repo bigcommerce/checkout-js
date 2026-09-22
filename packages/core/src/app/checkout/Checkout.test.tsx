@@ -1,4 +1,5 @@
 import {
+    type Capabilities,
     type CheckoutService,
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
@@ -22,7 +23,7 @@ import {
     LocaleProvider,
     ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
-import { replaceLocation } from '@bigcommerce/checkout/dom-utils';
+import { reloadLocation, replaceLocation } from '@bigcommerce/checkout/dom-utils';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 import {
@@ -55,6 +56,7 @@ expect.extend(jestDomMatchers);
 
 jest.mock('@bigcommerce/checkout/dom-utils', () => ({
     ...jest.requireActual('@bigcommerce/checkout/dom-utils'),
+    reloadLocation: jest.fn(),
     replaceLocation: jest.fn(),
 }));
 
@@ -86,6 +88,7 @@ describe('Checkout', () => {
         window.scrollTo = jest.fn();
 
         (replaceLocation as jest.Mock).mockClear();
+        (reloadLocation as jest.Mock).mockClear();
 
         checkoutService = createCheckoutService();
         extensionService = new ExtensionService(checkoutService, createErrorLogger());
@@ -359,6 +362,194 @@ describe('Checkout', () => {
             expect(screen.getByText('test@example.com')).toBeInTheDocument();
         });
 
+        describe('reloadPageAfterSignIn capability', () => {
+            const reloadCapabilities = {
+                ...defaultCapabilities,
+                customer: {
+                    ...defaultCapabilities.customer,
+                    reloadPageAfterSignIn: true,
+                },
+            };
+
+            const showLoginForm = async () => {
+                await act(async () => {
+                    await userEvent.click(await screen.findByText('Sign in now'));
+                });
+            };
+
+            const submitLoginForm = async () => {
+                await act(async () => {
+                    await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
+                    await userEvent.type(screen.getByLabelText('Password'), 'Password123');
+                    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+                });
+            };
+
+            const submitCreateAccountForm = async () => {
+                await act(async () => {
+                    await userEvent.click(await screen.findByText('Create an account'));
+                });
+
+                await act(async () => {
+                    await userEvent.type(screen.getByLabelText('First Name'), 'Foo');
+                    await userEvent.type(screen.getByLabelText('Last Name'), 'Bar');
+                    await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
+                    await userEvent.type(screen.getByLabelText('Password'), 'Password123');
+                    await userEvent.type(screen.getByLabelText('Referral Code'), 'ABC');
+                    await userEvent.click(screen.getByRole('button', { name: 'Create Account' }));
+                });
+            };
+
+            const stepCompletedCount = () =>
+                (analyticsTracker.trackStepCompleted as jest.Mock).mock.calls.length;
+
+            beforeEach(() => {
+                jest.spyOn(checkoutService, 'signInCustomer').mockResolvedValue(
+                    checkoutService.getState(),
+                );
+                jest.spyOn(checkoutService, 'createCustomerAccount').mockResolvedValue(
+                    checkoutService.getState(),
+                );
+            });
+
+            it('reloads the page after signing in when the capability is enabled', async () => {
+                render(<CheckoutTest {...defaultProps} capabilities={reloadCapabilities} />);
+
+                await checkout.waitForCustomerStep();
+                await showLoginForm();
+
+                const stepsCompleted = stepCompletedCount();
+
+                await submitLoginForm();
+
+                expect(checkoutService.signInCustomer).toHaveBeenCalled();
+                expect(reloadLocation).toHaveBeenCalled();
+                expect(stepCompletedCount()).toBe(stepsCompleted);
+            });
+
+            it('navigates to the next step after signing in when the capability is disabled', async () => {
+                render(<CheckoutTest {...defaultProps} />);
+
+                await checkout.waitForCustomerStep();
+                await showLoginForm();
+
+                const stepsCompleted = stepCompletedCount();
+
+                await submitLoginForm();
+
+                expect(checkoutService.signInCustomer).toHaveBeenCalled();
+                expect(reloadLocation).not.toHaveBeenCalled();
+                expect(stepCompletedCount()).toBeGreaterThan(stepsCompleted);
+            });
+
+            it('reloads the page after creating an account when the capability is enabled', async () => {
+                render(<CheckoutTest {...defaultProps} capabilities={reloadCapabilities} />);
+
+                await checkout.waitForCustomerStep();
+                await showLoginForm();
+
+                const stepsCompleted = stepCompletedCount();
+
+                await submitCreateAccountForm();
+
+                expect(checkoutService.createCustomerAccount).toHaveBeenCalled();
+                expect(reloadLocation).toHaveBeenCalled();
+                expect(stepCompletedCount()).toBe(stepsCompleted);
+            });
+
+            it('navigates to the next step after creating an account when the capability is disabled', async () => {
+                render(<CheckoutTest {...defaultProps} />);
+
+                await checkout.waitForCustomerStep();
+                await showLoginForm();
+
+                const stepsCompleted = stepCompletedCount();
+
+                await submitCreateAccountForm();
+
+                expect(checkoutService.createCustomerAccount).toHaveBeenCalled();
+                expect(reloadLocation).not.toHaveBeenCalled();
+                expect(stepCompletedCount()).toBeGreaterThan(stepsCompleted);
+            });
+
+            it('does not reload the page when the shopper continues as a guest', async () => {
+                render(<CheckoutTest {...defaultProps} capabilities={reloadCapabilities} />);
+
+                await checkout.waitForCustomerStep();
+
+                const stepsCompleted = stepCompletedCount();
+
+                await act(async () => {
+                    await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
+                    await userEvent.click(screen.getByText('Continue'));
+                });
+
+                expect(reloadLocation).not.toHaveBeenCalled();
+                expect(stepCompletedCount()).toBeGreaterThan(stepsCompleted);
+            });
+
+            afterEach(() => {
+                window.history.replaceState({}, '', '/');
+            });
+
+            const signOut = async () => {
+                jest.spyOn(checkoutService, 'signOutCustomer').mockResolvedValue(
+                    checkoutService.getState(),
+                );
+
+                await act(async () => {
+                    await userEvent.click(await screen.findByTestId('sign-out-link'));
+                });
+            };
+
+            it('reloads the page after signing out when the capability is enabled', async () => {
+                checkoutService = checkout.use(CheckoutPreset.CheckoutWithLoggedInCustomer);
+
+                render(<CheckoutTest {...defaultProps} capabilities={reloadCapabilities} />);
+
+                await checkout.waitForShippingStep();
+                await signOut();
+
+                expect(checkoutService.signOutCustomer).toHaveBeenCalled();
+                expect(reloadLocation).toHaveBeenCalled();
+            });
+
+            it('returns to the customer step after signing out when the capability is disabled', async () => {
+                checkoutService = checkout.use(CheckoutPreset.CheckoutWithLoggedInCustomer);
+
+                render(<CheckoutTest {...defaultProps} />);
+
+                await checkout.waitForShippingStep();
+                await signOut();
+
+                expect(checkoutService.signOutCustomer).toHaveBeenCalled();
+                expect(reloadLocation).not.toHaveBeenCalled();
+                expect(await screen.findByTestId('checkout-customer-guest')).toBeInTheDocument();
+            });
+
+            it('renders the empty cart message instead of reloading when the cart is gone after signing out', async () => {
+                window.history.replaceState({}, '', '/embedded-checkout');
+
+                checkoutService = checkout.use(CheckoutPreset.CheckoutWithLoggedInCustomer);
+
+                render(<CheckoutTest {...defaultProps} capabilities={reloadCapabilities} />);
+
+                await checkout.waitForShippingStep();
+
+                jest.spyOn(checkoutService, 'signOutCustomer').mockRejectedValue({
+                    type: 'checkout_not_available',
+                });
+
+                await act(async () => {
+                    await userEvent.click(await screen.findByTestId('sign-out-link'));
+                });
+
+                expect(reloadLocation).not.toHaveBeenCalled();
+                expect(screen.queryByTestId('checkout-customer-guest')).not.toBeInTheDocument();
+                expect(screen.queryByTestId('sign-out-link')).not.toBeInTheDocument();
+            });
+        });
+
         it('renders checkout button container with ApplePay', async () => {
             (window as any).ApplePaySession = {};
 
@@ -616,7 +807,10 @@ describe('Checkout', () => {
             });
         });
 
-        it('redirects to B2B buyer portal after payment when invoiceRedirect capability is enabled', async () => {
+        const placeOrderWithInvoiceConfig = async (
+            invoiceConfig: Capabilities['userJourney']['invoiceConfig'],
+            invoiceRedirect = true,
+        ) => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
             jest.spyOn(checkoutService, 'submitOrder').mockResolvedValue({
@@ -637,26 +831,73 @@ describe('Checkout', () => {
                 return state;
             });
 
-            const invoiceRedirectCapabilities = {
-                ...defaultCapabilities,
-                orderConfirmation: {
-                    ...defaultCapabilities.orderConfirmation,
-                    invoiceRedirect: true,
-                    persistB2BMetadata: true,
-                },
-            };
-
-            render(<CheckoutTest {...defaultProps} capabilities={invoiceRedirectCapabilities} />);
+            render(
+                <CheckoutTest
+                    {...defaultProps}
+                    capabilities={{
+                        ...defaultCapabilities,
+                        userJourney: {
+                            ...defaultCapabilities.userJourney,
+                            invoiceConfig,
+                        },
+                        orderConfirmation: {
+                            ...defaultCapabilities.orderConfirmation,
+                            invoiceRedirect,
+                            persistB2BMetadata: true,
+                        },
+                    }}
+                />,
+            );
 
             await checkout.waitForPaymentStep();
 
             await userEvent.click(screen.getByText(/place order/i));
+        };
+
+        it('redirects to the buyer portal invoice page after payment', async () => {
+            await placeOrderWithInvoiceConfig({
+                invoiceListUrl: '/account.php?action=order_status/#/invoice',
+                receiptUrlTemplate: '/#/invoice?receiptId={receiptId}',
+            });
 
             await waitFor(() => {
                 expect(replaceLocation).toHaveBeenCalledWith(
                     'https://store.url/#/invoice?receiptId=123',
                 );
             });
+        });
+
+        it('redirects to the legacy theme invoice receipt page after payment', async () => {
+            await placeOrderWithInvoiceConfig({
+                invoiceListUrl: '/invoices',
+                receiptUrlTemplate: '/invoice-payment-receipt/?id={receiptId}',
+            });
+
+            await waitFor(() => {
+                expect(replaceLocation).toHaveBeenCalledWith(
+                    'https://store.url/invoice-payment-receipt/?id=123',
+                );
+            });
+        });
+
+        it('falls back to the buyer portal invoice page when invoiceConfig is unavailable', async () => {
+            await placeOrderWithInvoiceConfig(null);
+
+            await waitFor(() => {
+                expect(replaceLocation).toHaveBeenCalledWith(
+                    'https://store.url/#/invoice?receiptId=123',
+                );
+            });
+        });
+
+        it('navigates to the order confirmation page when the invoice redirect capability is disabled', async () => {
+            await placeOrderWithInvoiceConfig(null, false);
+
+            await waitFor(() => {
+                expect(replaceLocation).toHaveBeenCalled();
+            });
+
+            expect(replaceLocation).not.toHaveBeenCalledWith(expect.stringContaining('/invoice'));
         });
 
         it('persists cannotCreatePersonalAccount to session storage when navigating to order confirmation', async () => {

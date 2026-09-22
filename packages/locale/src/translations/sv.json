@@ -30,6 +30,7 @@
             "enter_or_select_address_action": "Ange eller välj en annan adress",
             "add_address_heading": "Lägg till adress",
             "save_address_action": "Spara adress",
+            "add_address_heading_v2": "Lägg till adress",
             "first_name_label": "Förnamn",
             "first_name_required_error": "Förnamn krävs",
             "last_name_label": "Efternamn",
@@ -39,7 +40,7 @@
             "phone_number_required_error": "Telefonnummer krävs",
             "postal_code_label": "Postnummer",
             "postal_code_required_error": "Postnummer krävs",
-            "save_in_addressbook": "Spara den här adressen i min adressbok.",
+            "save_in_addressbook": "Spara den här adressen i min adressbok",
             "save_to_company_addressbook": "Spara i företagets adressbok.",
             "search_addresses": "Sök efter adresser",
             "select_country_action": "Välj ett land",
@@ -52,6 +53,7 @@
         },
         "billing": {
             "billing_address_heading": "Fakturaadress",
+            "billing_address_heading_v2": "Fakturaadress",
             "billing_heading": "Fakturering",
             "no_billing_addresses_warning": "Förlåt, det finns ingen faktureringsadress att välja mellan, gå till adressboken för att skapa en adress eller kontakta webbplatsadministratören.",
             "save_billing_address_error": "Ett fel inträffade när faktureringsadressen skulle sparas i din prisoffert. Försök igen.",
@@ -165,7 +167,7 @@
             "email_required_error": "E-postadress måste anges",
             "forgot_password_action": "Glömt ditt lösenord?",
             "guest_customer_text": "Gästkund",
-            "guest_subscribe_to_newsletter_text": "Prenumerera på vårt nyhetsbrev.",
+            "guest_subscribe_to_newsletter_text": "Prenumerera på vårt nyhetsbrev",
             "guest_marketing_consent": "Jag vill få uppdateringar och erbjudanden.",
             "login_action": "Logga in nu",
             "login_text": "Har du redan ett konto?",
@@ -495,7 +497,7 @@
                 "user_authorization_error": "Det uppstod ett fel när betalningen bearbetades. Kontakta oss.",
                 "vaulting_service_unavailable": "Tjänsten för Vaulting är för närvarande inte tillgänglig.",
                 "voided_transaction": "Det gick inte att bearbeta din betalning eftersom transaktionen redan har annullerats. Försök igen eller kontakta oss.",
-                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
+                "bank_declined_authentication": "Din bank nekade autentiseringen, använd ett annat kort."
             },
             "ratepay": {
                 "payment_method_title": "Betala vid fakturering",
@@ -540,6 +542,7 @@
             "continue_with_text": "Eller fortsätt med",
             "or_text": "ELLER",
             "payment_method_error": "Det gick inte att hämta din fjärrbetalningsmetod. Försök igen.",
+            "retry_same_card_action": "Try again or select a different card",
             "select_different_card_action": "Välj ett annat kort",
             "session_error": "Din fjärrsession har gått ut. Logga in igen.",
             "shipping_address_error": "Det gick inte att hämta din fjärrleveransadress. Försök igen.",
@@ -555,6 +558,7 @@
             "cart_change_error": "En uppdatering av din kundvagn har upptäckts och dina tillgängliga fraktkostnader har uppdaterats. Välj en leveransmetod igen för att fortsätta.",
             "enter_shipping_address_text": "Ange en leveransadress för att se fraktkostnader",
             "order_comment_label": "Beställningskommentarer",
+            "order_comment_label_v2": "Beställningskommentarer",
             "assign_item_error": "Ett fel inträffade när varan skulle tilldelas till adressen. Försök igen",
             "assign_item_invalid_address_error_heading": "Ogiltig adress",
             "assign_item_invalid_address_error": "Den valda adressen är inte giltig. Gå till din kontosida och uppdatera den.",
@@ -602,6 +606,7 @@
             "ship_to_single_message": "Om du fortsätter kommer alla framsteg för flera adresser att gå förlorade. Denna åtgärd kan inte ångras.",
             "shipping_heading": "Frakt",
             "shipping_method_label": "Fraktmetod:",
+            "shipping_method_label_v2": "Fraktmetod:",
             "shipping_option_expired_error": "Fraktpriset du såg tidigare är inte längre giltigt. Klicka på OK för att se de senaste fraktpriserna.",
             "shipping_option_expired_heading": "Ditt fraktpris har uppdaterats",
             "view_shipping_options_action": "Se andra alternativ",
@@ -638,8 +643,8 @@
         },
         "terms_and_conditions": {
             "agreement_required_error": "Godkänn villkoren",
-            "agreement_text": "Ja, jag godkänner ovanstående villkor.",
-            "agreement_with_link_text": "Ja, jag godkänner <a href=\"{url}\" target=\"_blank\">villkoren</a>.",
+            "agreement_text": "Ja, jag godkänner ovanstående villkor",
+            "agreement_with_link_text": "Ja, jag godkänner <a href=\"{url}\" target=\"_blank\">villkoren</a>",
             "terms_and_conditions_heading": "Villkor"
         },
         "order_confirmation": {

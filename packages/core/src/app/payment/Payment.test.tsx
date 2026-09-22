@@ -6,6 +6,7 @@ import {
     type EmbeddedCheckoutMessenger,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { createGooglePayCheckoutComPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/google-pay';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import { rest } from 'msw';
@@ -1651,6 +1652,62 @@ describe('Payment step', () => {
             await waitFor(() => expect(finalizeSpy).toHaveBeenCalled());
 
             expect(persistSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('PI-5643.google_pay_handle_unsuccessful_3ds_check experiment', () => {
+        const createConfigWithExperimentOn = () => ({
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    features: {
+                        ...checkoutSettings.storeConfig.checkoutSettings.features,
+                        'PI-5643.google_pay_handle_unsuccessful_3ds_check': true,
+                    },
+                },
+            },
+        });
+
+        it('registers the Google Pay gateway-variant strategies for finalizeOrderIfNeeded when the experiment is on', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: createConfigWithExperimentOn(),
+            });
+
+            const finalizeSpy = jest
+                .spyOn(checkoutService, 'finalizeOrderIfNeeded')
+                .mockResolvedValue(checkoutService.getState());
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await waitFor(() =>
+                expect(finalizeSpy).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        integrations: expect.arrayContaining([
+                            createGooglePayCheckoutComPaymentStrategy,
+                        ]),
+                    }),
+                ),
+            );
+        });
+
+        it('does not register the Google Pay gateway-variant strategies for finalizeOrderIfNeeded when the experiment is off', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+            const finalizeSpy = jest
+                .spyOn(checkoutService, 'finalizeOrderIfNeeded')
+                .mockResolvedValue(checkoutService.getState());
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await waitFor(() => expect(finalizeSpy).toHaveBeenCalled());
+
+            const [{ integrations }] = finalizeSpy.mock.calls[0];
+
+            expect(integrations).not.toEqual(
+                expect.arrayContaining([createGooglePayCheckoutComPaymentStrategy]),
+            );
         });
     });
 });

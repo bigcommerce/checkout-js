@@ -104,7 +104,13 @@ const AddressFormModal: FunctionComponent<AddressFormModalProps> = ({
             })}
             header={
                 <ModalHeader>
-                    <TranslatedString id="address.add_address_heading" />
+                    <TranslatedString
+                        id={
+                            enhancedThemeV1
+                                ? 'address.add_address_heading_v2'
+                                : 'address.add_address_heading'
+                        }
+                    />
                 </ModalHeader>
             }
             isOpen={isOpen}

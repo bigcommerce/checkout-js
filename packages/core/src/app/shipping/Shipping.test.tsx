@@ -291,7 +291,7 @@ describe('Shipping step', () => {
             // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
                 screen
-                    .getByLabelText('Save this address in my address book.')
+                    .getByLabelText('Save this address in my address book')
                     .hasAttribute('checked'),
             ).toBeTruthy();
 
@@ -553,7 +553,7 @@ describe('Shipping step', () => {
             expect(await screen.findByLabelText('Last Name')).toHaveDisplayValue('Address');
             expect(screen.getByText('Address is required')).toBeInTheDocument();
             expect(
-                screen.getByLabelText('Save this address in my address book.'),
+                screen.getByLabelText('Save this address in my address book'),
             ).toBeInTheDocument();
 
             checkout.updateCheckout(
@@ -1233,7 +1233,7 @@ describe('Shipping step', () => {
             const modal = await screen.findByRole('dialog');
 
             expect(
-                within(modal).queryByLabelText('Save this address in my address book.'),
+                within(modal).queryByLabelText('Save this address in my address book'),
             ).not.toBeInTheDocument();
         });
 
@@ -1262,7 +1262,7 @@ describe('Shipping step', () => {
                 within(modal).getByTestId('addressLine1Input-text'),
                 shippingAddress.address1,
             );
-            await userEvent.click(within(modal).getByText('Save Address'));
+            await userEvent.click(within(modal).getByText('Save address'));
 
             await waitFor(() =>
                 expect(checkoutService.createCustomerAddress).not.toHaveBeenCalled(),

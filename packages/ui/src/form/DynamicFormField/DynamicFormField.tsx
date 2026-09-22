@@ -19,7 +19,7 @@ interface DynamicFormFieldProps {
     placeholder?: string;
     label?: ReactNode;
     isFloatingLabelEnabled?: boolean;
-    isNewPhoneValidationExperimentEnabled?: boolean;
+    isPhoneNumberValidationEnabled?: boolean;
     selectedCountry?: string;
     onChange?(value: string | string[]): void;
 }
@@ -46,7 +46,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     extraClass,
     isFloatingLabelEnabled,
     selectedCountry,
-    isNewPhoneValidationExperimentEnabled = false,
+    isPhoneNumberValidationEnabled = false,
 }) => {
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
@@ -112,7 +112,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 fieldType={fieldType}
                 id={fieldInputId}
                 isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
-                isNewPhoneValidationExperimentEnabled={isNewPhoneValidationExperimentEnabled}
+                isPhoneNumberValidationEnabled={isPhoneNumberValidationEnabled}
                 label={labelComponent}
                 max={max}
                 maxLength={maxLength}

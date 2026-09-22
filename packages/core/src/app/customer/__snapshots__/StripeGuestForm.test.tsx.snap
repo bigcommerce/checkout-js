@@ -54,7 +54,7 @@ exports[`StripeGuestForm matches snapshot 1`] = `
                         for="shouldSubscribe"
                       >
                         <span>
-                          Subscribe to our newsletter.
+                          Subscribe to our newsletter
                         </span>
                       </label>
                     </div>
@@ -159,7 +159,7 @@ exports[`StripeGuestForm matches snapshot 1`] = `
                       for="shouldSubscribe"
                     >
                       <span>
-                        Subscribe to our newsletter.
+                        Subscribe to our newsletter
                       </span>
                     </label>
                   </div>
@@ -321,7 +321,7 @@ exports[`StripeGuestForm matches snapshot with theme v2 1`] = `
                         for="shouldSubscribe"
                       >
                         <span>
-                          Subscribe to our newsletter.
+                          Subscribe to our newsletter
                         </span>
                       </label>
                     </div>
@@ -414,7 +414,7 @@ exports[`StripeGuestForm matches snapshot with theme v2 1`] = `
                       for="shouldSubscribe"
                     >
                       <span>
-                        Subscribe to our newsletter.
+                        Subscribe to our newsletter
                       </span>
                     </label>
                   </div>

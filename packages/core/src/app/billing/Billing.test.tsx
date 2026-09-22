@@ -180,7 +180,7 @@ describe('Billing step', () => {
         await checkout.fillAddressForm();
 
         expect(
-            screen.queryByLabelText('Save this address in my address book.'),
+            screen.queryByLabelText('Save this address in my address book'),
         ).not.toBeInTheDocument();
 
         checkout.updateCheckout(

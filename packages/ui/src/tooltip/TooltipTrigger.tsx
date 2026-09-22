@@ -106,6 +106,7 @@ const TooltipTrigger: React.FC<TooltipTriggerProps> = ({
                 {({ ref, style }) =>
                     shouldShow && (
                         <div
+                            className="tooltip-popper"
                             id={tooltipId}
                             onMouseEnter={handleTooltipEnter}
                             onMouseLeave={handleHide}
