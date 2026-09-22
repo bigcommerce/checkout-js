@@ -28,7 +28,7 @@ const CheckoutButtonV1Resolver = lazy(() =>
     ),
 );
 
-interface CheckoutButtonListProps {
+export interface CheckoutButtonListProps {
     hideText?: boolean;
     isInitializing?: boolean;
     methodIds?: string[];
