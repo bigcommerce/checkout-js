@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.903.0](https://github.com/bigcommerce/checkout-js/compare/v1.902.1...v1.903.0) (2026-09-22)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10352 Use new phone validation checkout setting ([#3287](https://github.com/bigcommerce/checkout-js/issues/3287)) ([bdef522](https://github.com/bigcommerce/checkout-js/commit/bdef5222ace37b1ed140a98871511f11377ea61e))
+
 ### [1.902.1](https://github.com/bigcommerce/checkout-js/compare/v1.902.0...v1.902.1) (2026-09-17)
 
 ## [1.902.0](https://github.com/bigcommerce/checkout-js/compare/v1.901.1...v1.902.0) (2026-09-17)
