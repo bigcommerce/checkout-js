@@ -1,4 +1,2 @@
-export {
-    default as isInstrumentFeatureAvailable,
-    IsInstrumentFeatureAvailableState,
-} from './isInstrumentFeatureAvailable';
+export type { IsInstrumentFeatureAvailableState } from './isInstrumentFeatureAvailable';
+export { default as isInstrumentFeatureAvailable } from './isInstrumentFeatureAvailable';

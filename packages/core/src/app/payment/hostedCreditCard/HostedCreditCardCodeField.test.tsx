@@ -56,7 +56,8 @@ describe('HostedCreditCardCodeField', () => {
 
         expect(toolTip).toBeInTheDocument();
 
-        await userEvent.hover(toolTip);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        await userEvent.hover(toolTip!);
 
         expect(
             screen.getByText(localeContext.language.translate('payment.credit_card_cvv_help_text')),

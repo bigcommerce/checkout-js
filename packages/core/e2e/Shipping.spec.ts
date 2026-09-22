@@ -9,6 +9,7 @@ test.describe('Shipping', () => {
         address1: `123 test`,
         address2: '',
         city: 'New York',
+        country: 'United States',
         countryCode: 'US',
         stateOrProvince: '',
         postalCode: '12333',
@@ -34,7 +35,6 @@ test.describe('Shipping', () => {
     test('`Shipping with Guest checkout with different billing address`', async ({
         assertions,
         checkout,
-        page,
     }) => {
         // Testing environment setup
         await checkout.use(new CustomerStepPreset(1, false));

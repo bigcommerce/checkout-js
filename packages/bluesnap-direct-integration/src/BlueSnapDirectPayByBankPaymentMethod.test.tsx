@@ -34,7 +34,7 @@ describe('BlueSnapDirectEcp payment method', () => {
         Promise<CheckoutSelectors>,
         [options: PaymentRequestOptions]
     >;
-    let checkoutState: CheckoutSelectors;
+    let checkoutState!: CheckoutSelectors;
     let props: PaymentMethodProps;
     let initialValues: { [key: string]: unknown };
     let BlueSnapDirectPayByBankTest: FunctionComponent;

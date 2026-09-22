@@ -1,2 +1,2 @@
-export { CommandHandler } from './commandHandlers/CommandHandler';
-export { QueryHandler } from './queryHandlers/QueryHandler';
+export type { CommandHandler } from './commandHandlers/CommandHandler';
+export type { QueryHandler } from './queryHandlers/QueryHandler';

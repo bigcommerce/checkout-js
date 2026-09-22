@@ -16,6 +16,7 @@ const timeString = new Date().toISOString();
 const physicalItem: PhysicalItem = {
     id: 'x',
     parentId: null,
+    addedByAttributeId: null,
     variantId: 71,
     productId: 103,
     sku: 'CLC',
@@ -55,7 +56,7 @@ const shippingAddress1 = {
     countryCode: 'CC',
     postalCode: '10000',
     phone: '0000000000',
-    type: 'residential',
+    type: 'residential' as const,
     customFields: [],
 };
 
@@ -72,7 +73,7 @@ const shippingAddress2 = {
     countryCode: 'CC',
     postalCode: '20000',
     phone: '0000000001',
-    type: 'residential',
+    type: 'residential' as const,
     customFields: [],
 };
 
@@ -89,7 +90,7 @@ const shippingAddress3 = {
     countryCode: 'CC',
     postalCode: '30000',
     phone: '0000000002',
-    type: 'residential',
+    type: 'residential' as const,
     customFields: [],
 };
 
@@ -196,6 +197,8 @@ const checkout: Checkout = {
     cart: {
         id: 'xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx',
         customerId: 0,
+        companyId: null,
+        companyName: null,
         email: '',
         currency: {
             name: 'US Dollar',

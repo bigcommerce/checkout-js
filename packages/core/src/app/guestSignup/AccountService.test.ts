@@ -45,7 +45,7 @@ describe('AccountService', () => {
                         customer,
                     },
                 },
-            } as Response);
+            } as Response<unknown>);
             response = await service.create(payload);
         });
 

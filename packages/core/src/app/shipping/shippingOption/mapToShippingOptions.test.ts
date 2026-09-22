@@ -1,8 +1,9 @@
 import { type Cart, type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 
+import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
+
 import { getCart } from '../../cart/carts.mock';
 import { getPhysicalItem } from '../../cart/lineItem.mock';
-import { type CheckoutContextProps } from '../../checkout';
 import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
@@ -64,6 +65,7 @@ describe('mapToShippingProps()', () => {
         expect(
             mapToShippingOptions(checkoutContextProps, {
                 shouldShowShippingOptions: true,
+                isInitialValueLoaded: true,
                 isMultiShippingMode: true,
             }),
         ).toBeNull();
@@ -82,6 +84,7 @@ describe('mapToShippingProps()', () => {
             expect(
                 mapToShippingOptions(checkoutContextProps, {
                     shouldShowShippingOptions: true,
+                    isInitialValueLoaded: true,
                     isMultiShippingMode: true,
                 })?.consignments,
             ).toEqual(sortedConsignments);

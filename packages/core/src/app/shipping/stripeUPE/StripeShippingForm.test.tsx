@@ -35,7 +35,7 @@ describe('StripeShippingForm', () => {
     const checkoutService = createCheckoutService();
     const errorLogger = new ConsoleErrorLogger();
     const extensionService = new ExtensionService(checkoutService, errorLogger);
-    const { customFields, ...rest } = getShippingAddress();
+    const { customFields: _customFields, ...rest } = getShippingAddress();
     const localeContext = createLocaleContext(getStoreConfig());
     let checkoutState: CheckoutSelectors;
 
@@ -44,6 +44,7 @@ describe('StripeShippingForm', () => {
     const defaultUseShippingValues = getUseShippingTestMock();
 
     const defaultProps = {
+        isLoading: false,
         isShippingMethodLoading: false,
         step: {
             isActive: true,
@@ -57,7 +58,7 @@ describe('StripeShippingForm', () => {
         isInitialValueLoaded: false,
         isMultiShippingMode: false,
         countriesWithAutocomplete: [],
-        shippingAddress: rest,
+        shippingAddress: { ...rest, customFields: [] },
         customerMessage: '',
         addresses: [],
         consignments: [],

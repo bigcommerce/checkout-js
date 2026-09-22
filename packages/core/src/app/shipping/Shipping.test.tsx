@@ -800,10 +800,10 @@ describe('Shipping step', () => {
 
         const customCheckbox = screen.getByText('Custom Checkbox');
 
-        // eslint-disable-next-line testing-library/no-node-access
-        await userEvent.click(within(customCheckbox.parentElement).getByLabelText('1'));
-        // eslint-disable-next-line testing-library/no-node-access
-        await userEvent.click(within(customCheckbox.parentElement).getByLabelText('2'));
+        // eslint-disable-next-line testing-library/no-node-access, @typescript-eslint/no-non-null-assertion
+        await userEvent.click(within(customCheckbox.parentElement!).getByLabelText('1'));
+        // eslint-disable-next-line testing-library/no-node-access, @typescript-eslint/no-non-null-assertion
+        await userEvent.click(within(customCheckbox.parentElement!).getByLabelText('2'));
 
         const customDropdown = screen.getByLabelText('Custom Dropdown');
 
@@ -811,8 +811,8 @@ describe('Shipping step', () => {
 
         const customRadio = screen.getByText('Custom Radio');
 
-        // eslint-disable-next-line testing-library/no-node-access
-        await userEvent.click(within(customRadio.parentElement).getByText('yes'));
+        // eslint-disable-next-line testing-library/no-node-access, @typescript-eslint/no-non-null-assertion
+        await userEvent.click(within(customRadio.parentElement!).getByText('yes'));
 
         await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
 

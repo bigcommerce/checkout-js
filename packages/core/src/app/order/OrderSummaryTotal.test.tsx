@@ -14,7 +14,7 @@ import { getStoreConfig } from '../config/config.mock';
 import OrderSummaryTotal from './OrderSummaryTotal';
 
 describe('OrderSummaryTotal', () => {
-    let localeContext: LocaleContextType;
+    let localeContext: Required<LocaleContextType>;
     let currencyService: CurrencyService;
 
     beforeEach(() => {

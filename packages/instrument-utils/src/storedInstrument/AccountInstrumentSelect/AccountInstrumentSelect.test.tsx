@@ -4,7 +4,6 @@ import { Field, type FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 import { type Omit } from 'utility-types';
-import { config } from 'yargs';
 
 import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';

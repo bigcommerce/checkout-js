@@ -12,6 +12,7 @@ import {
     LocaleContext,
     type LocaleContextType,
 } from '@bigcommerce/checkout/contexts';
+import { type HostedCreditCardFieldsetValues } from '@bigcommerce/checkout/hosted-credit-card-integration';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { type CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -23,7 +24,6 @@ import { getCustomer } from '../../customer/customers.mock';
 import { CreditCardInputStylesType, type getCreditCardInputStyles } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { type PaymentContextProps } from '../PaymentContext';
-import type HostedCreditCardFieldsetValues from '../paymentMethod/HostedCreditCardFieldsetValues';
 
 import withHostedCreditCardFieldset, {
     type WithHostedCreditCardFieldsetProps,
@@ -57,7 +57,6 @@ describe('withHostedCreditCardFieldset', () => {
         ReactNode,
         [FormikProps<HostedCreditCardFieldsetValues & CardInstrumentFieldsetValues>]
     >;
-    let formikProps: FormikProps<HostedCreditCardFieldsetValues & CardInstrumentFieldsetValues>;
     let initialValues: HostedCreditCardFieldsetValues & CardInstrumentFieldsetValues;
     let localeContext: LocaleContextType;
     let paymentContext: PaymentContextProps;
@@ -103,7 +102,7 @@ describe('withHostedCreditCardFieldset', () => {
         jest.spyOn(checkoutState.data, 'getPaymentMethod').mockReturnValue(defaultProps.method);
 
         InnerPaymentMethod = jest.fn(
-            ({ getHostedStoredCardValidationFieldset = noop, hostedFieldset }) => {
+            ({ getHostedStoredCardValidationFieldset = () => null, hostedFieldset }) => {
                 return (
                     <>
                         {hostedFieldset}
@@ -116,11 +115,9 @@ describe('withHostedCreditCardFieldset', () => {
         DecoratedPaymentMethod = withHostedCreditCardFieldset(InnerPaymentMethod);
 
         DecoratedPaymentMethodTest = (props) => {
-            formikRender = jest.fn((renderProps) => {
-                formikProps = renderProps;
-
-                return <DecoratedPaymentMethod {...props} />;
-            });
+            formikRender = jest.fn((renderProps) =>
+                renderProps ? <DecoratedPaymentMethod {...props} /> : null,
+            );
 
             return (
                 <CheckoutProvider checkoutService={checkoutService}>

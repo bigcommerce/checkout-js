@@ -41,7 +41,7 @@ describe('BoltClientPaymentMethod', () => {
         [options: PaymentInitializeOptions]
     >;
     let localeContext: LocaleContextType;
-    let paymentContext: PaymentFormContextProps;
+    let paymentContext!: PaymentFormContextProps;
     let PaymentMethodTest: FunctionComponent;
 
     beforeEach(() => {

@@ -45,9 +45,9 @@ const getAPMProps = {
             method: 'sepa',
             supportedCards: [],
             providesShippingAddress: false,
-            config: { cardCode: null, displayName: 'SEPA' },
+            config: { cardCode: undefined, displayName: 'SEPA' },
             type: 'PAYMENT_TYPE_API',
-            nonce: null,
+            nonce: undefined,
             initializationData: {
                 gateway: 'checkoutcom',
                 sepaCreditor: {
@@ -59,7 +59,7 @@ const getAPMProps = {
                     sepaCreditorPostalCode: 'sepaCreditorPostalCode',
                 },
             },
-            clientToken: null,
+            clientToken: undefined,
             returnUrl:
                 'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
             skipRedirectConfirmationAlert: false,
@@ -74,11 +74,11 @@ const getAPMProps = {
             method: 'oxxo',
             supportedCards: [],
             providesShippingAddress: false,
-            config: { cardCode: null, displayName: 'Oxxo' },
+            config: { cardCode: undefined, displayName: 'Oxxo' },
             type: 'PAYMENT_TYPE_API',
-            nonce: null,
+            nonce: undefined,
             initializationData: { gateway: 'checkoutcom' },
-            clientToken: null,
+            clientToken: undefined,
             returnUrl:
                 'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
             skipRedirectConfirmationAlert: false,
@@ -93,11 +93,11 @@ const getAPMProps = {
             method: 'oxxo',
             supportedCards: [],
             providesShippingAddress: false,
-            config: { cardCode: null, displayName: 'fawry' },
+            config: { cardCode: undefined, displayName: 'fawry' },
             type: 'PAYMENT_TYPE_API',
-            nonce: null,
+            nonce: undefined,
             initializationData: { gateway: 'checkoutcom' },
-            clientToken: null,
+            clientToken: undefined,
             returnUrl:
                 'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
             skipRedirectConfirmationAlert: false,
@@ -296,7 +296,9 @@ describe('CheckoutCustomFormFields', () => {
             render(
                 <CheckoutcomAPMsTest
                     {...oxxoProps}
-                    cardFieldset={<CcDocumentFormFieldset method={oxxoProps.method} />}
+                    cardFieldset={
+                        <CcDocumentFormFieldset debtor={billingAddress} method={oxxoProps.method} />
+                    }
                 />,
             );
             expect(
@@ -316,7 +318,9 @@ describe('CheckoutCustomFormFields', () => {
             render(
                 <CheckoutcomAPMsTest
                     {...fawryProps}
-                    cardFieldset={<FawryFormFieldset method={fawryProps.method} />}
+                    cardFieldset={
+                        <FawryFormFieldset debtor={billingAddress} method={fawryProps.method} />
+                    }
                 />,
             );
             expect(

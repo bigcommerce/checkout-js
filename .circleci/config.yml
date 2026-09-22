@@ -106,6 +106,16 @@ jobs:
           name: "Run lint"
           command: npm run lint
 
+  typecheck:
+    <<: *node_executor
+    resource_class: medium+
+    steps:
+      - ci/pre-setup
+      - node/npm-install
+      - run:
+          name: "Run typecheck"
+          command: npm run typecheck
+
   build:
     <<: *node_executor
     resource_class: medium+
@@ -249,6 +259,9 @@ workflows:
       - lint:
           filters:
             <<: *pull_request_filter
+      - typecheck:
+          filters:
+            <<: *pull_request_filter
       - e2e:
           filters:
             <<: *pull_request_filter
@@ -269,6 +282,7 @@ workflows:
             - test-packages
             - test-extension
             - lint
+            - typecheck
             - build-prerelease
             - e2e
             - "Gitleaks secrets scan"
@@ -291,6 +305,9 @@ workflows:
           filters:
             <<: *release_filter
       - lint:
+          filters:
+            <<: *release_filter
+      - typecheck:
           filters:
             <<: *release_filter
       - build:
@@ -318,6 +335,7 @@ workflows:
             - test-packages
             - test-extension
             - lint
+            - typecheck
             - build
             - e2e
             - sdk-on-cdn

@@ -116,7 +116,7 @@ describe('buildBundleItemsMapFromOrder()', () => {
     });
 
     describe('when a bundle child has no addedByAttributeId', () => {
-        const child = { ...getPhysicalItem(), id: 'orphan', addedByAttributeId: undefined };
+        const child = { ...getPhysicalItem(), id: 'orphan', addedByAttributeId: null };
         const lineItems = { ...emptyLineItems, physicalItems: [getPhysicalItem()] };
         const orderBundledItems = { ...emptyBundledItems, physicalItems: [child] };
 

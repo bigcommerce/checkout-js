@@ -1,9 +1,5 @@
 import '@testing-library/jest-dom';
-import {
-    type CheckoutSelectors,
-    type CheckoutService,
-    createCheckoutService,
-} from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/contexts';
@@ -19,12 +15,10 @@ import SingleLineStaticAddress, {
 describe('SingleLineStaticAddress Component', () => {
     let SingleLineStaticAddressTest: FunctionComponent<SingleLineStaticAddressProps>;
     let checkoutService: CheckoutService;
-    let checkoutState: CheckoutSelectors;
     let defaultProps: SingleLineStaticAddressProps;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
-        checkoutState = checkoutService.getState();
 
         defaultProps = {
             address: getAddress(),

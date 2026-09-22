@@ -353,7 +353,7 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
     it('passed form validation by calling onValidate callback', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onValidate', async (resolve, reject) => {
-                if (options.bigcommerce_payments?.onError) {
+                if (options.bigcommerce_payments?.onValidate) {
                     await options.bigcommerce_payments.onValidate(resolve, reject);
                 }
             });
@@ -381,7 +381,7 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
 
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onValidate', async (resolve, reject) => {
-                if (options.bigcommerce_payments?.onError) {
+                if (options.bigcommerce_payments?.onValidate) {
                     await options.bigcommerce_payments.onValidate(resolve, reject);
                 }
             });

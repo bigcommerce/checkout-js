@@ -1,4 +1,2 @@
-export {
-    default as isInstrumentCardNumberRequired,
-    IsInstrumentCardNumberRequiredState,
-} from './isInstrumentCardNumberRequired';
+export type { IsInstrumentCardNumberRequiredState } from './isInstrumentCardNumberRequired';
+export { default as isInstrumentCardNumberRequired } from './isInstrumentCardNumberRequired';

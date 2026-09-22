@@ -12,7 +12,7 @@ import { ShopperCurrency } from '../currency';
 import OrderModalSummarySubheader from './OrderModalSummarySubheader';
 
 describe('OrderModalSummarySubheader', () => {
-    let localeContext: LocaleContextType;
+    let localeContext: Required<LocaleContextType>;
     let currencyService: CurrencyService;
 
     const items = {

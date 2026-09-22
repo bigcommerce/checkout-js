@@ -7,4 +7,4 @@ export {
     getHostedCreditCardValidationSchema,
 } from './components';
 export { useHostedCreditCard } from './hooks';
-export { HostedCreditCardFieldsetValues, HostedCreditCardValidationValues } from './types';
+export type { HostedCreditCardFieldsetValues, HostedCreditCardValidationValues } from './types';

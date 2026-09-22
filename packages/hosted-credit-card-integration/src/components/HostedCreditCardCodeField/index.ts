@@ -1,4 +1,2 @@
-export {
-    default as HostedCreditCardCodeField,
-    HostedCreditCardCodeFieldProps,
-} from './HostedCreditCardCodeField';
+export type { HostedCreditCardCodeFieldProps } from './HostedCreditCardCodeField';
+export { default as HostedCreditCardCodeField } from './HostedCreditCardCodeField';

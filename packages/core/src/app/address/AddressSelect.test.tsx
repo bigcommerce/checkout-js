@@ -52,7 +52,7 @@ describe('AddressSelect component', () => {
         ...[100, 101, 102].map((id) => ({
             ...getAddress(),
             id,
-            type: 'company',
+            type: 'company' as const,
             address1: `${id} Extra Billing Way`,
             ...getCustomerAddressB2B({ isBilling: true }),
         })),

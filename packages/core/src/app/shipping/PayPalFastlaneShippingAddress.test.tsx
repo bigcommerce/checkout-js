@@ -61,7 +61,6 @@ describe('PayPalFastlaneShippingAddress', () => {
 
         defaultProps = {
             consignments: [],
-            countriesWithAutocomplete: [],
             handleFieldChange: jest.fn(),
             isShippingStepPending: false,
             hasRequestedShippingOptions: false,

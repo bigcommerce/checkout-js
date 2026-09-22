@@ -13,5 +13,6 @@ export { ManageAchInstrumentsTable } from './ManageAchInstrumentsTable';
 export { ManageInstrumentsAlert } from './ManageInstrumentsAlert';
 export { ManageInstrumentsModal } from './ManageInstrumentsModal';
 export { mapFromInstrumentCardType } from './mapFromInstrumentCardType';
-export { SignOutLink, SignOutLinkProps } from './SignOutLink';
+export type { SignOutLinkProps } from './SignOutLink';
+export { SignOutLink } from './SignOutLink';
 export { StoreInstrumentFieldset } from './StoreInstrumentFieldset';

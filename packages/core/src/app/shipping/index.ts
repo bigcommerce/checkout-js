@@ -1,4 +1,4 @@
-export { ShippingProps } from './Shipping';
+export type { ShippingProps } from './Shipping';
 export { default as StaticConsignment } from './StaticConsignment';
 export { default as StaticMultiConsignment } from './StaticMultiConsignment';
 export { default as ShippingSummary } from './ShippingSummary';

@@ -483,12 +483,7 @@ describe('Registered Customer', () => {
 
     it('does not render sign-in email link in embedded checkout', () => {
         render(
-            <CustomerTest
-                {...defaultProps}
-                isEmbedded={true}
-                isSignInEmailEnabled={true}
-                viewType={CustomerViewType.Login}
-            />,
+            <CustomerTest {...defaultProps} isEmbedded={true} viewType={CustomerViewType.Login} />,
         );
 
         expect(screen.queryByTestId('customer-signin-link')).not.toBeInTheDocument();
