@@ -49,6 +49,7 @@ export function getBigCommercePaymentsMethod() {
         method: 'paypal',
         nonce: undefined,
         returnUrl: undefined,
+        skipRedirectConfirmationAlert: false,
         supportedCards: [
             'PAYPAL',
             'PAYPALCREDIT',

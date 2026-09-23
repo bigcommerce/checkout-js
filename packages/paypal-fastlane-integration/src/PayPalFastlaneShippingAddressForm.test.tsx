@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import React, { createRef } from 'react';
+import React, { createRef, type MutableRefObject } from 'react';
 
 import { getCustomer } from '@bigcommerce/checkout/test-mocks';
 
@@ -35,7 +35,8 @@ describe('PayPalFastlaneShippingAddressForm', () => {
     beforeEach(() => {
         defaultProps = {
             address: getCustomer().addresses[0],
-            paypalFastlaneShippingComponentRef: createRef<PayPalFastlaneAddressComponentRef>(),
+            paypalFastlaneShippingComponentRef:
+                createRef<PayPalFastlaneAddressComponentRef>() as MutableRefObject<PayPalFastlaneAddressComponentRef>,
             formFields: [
                 {
                     custom: false,

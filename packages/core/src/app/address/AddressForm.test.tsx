@@ -21,7 +21,9 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 
-import AddressForm, { type AddressFormProps } from './AddressForm';
+import AddressForm from './AddressForm';
+import { type AddressFormProps } from './AddressFormType';
+import AddressType from './AddressType';
 import { getFormFields } from './formField.mock';
 
 jest.mock('@intl-tel-input/react', () => {
@@ -43,7 +45,7 @@ describe('AddressForm Component', () => {
     let formFields: FormField[];
 
     const renderAddressFormComponent = (
-        addressFormProps: AddressFormProps,
+        addressFormProps: Omit<AddressFormProps, 'type'> & Partial<Pick<AddressFormProps, 'type'>>,
         { enhancedThemeV1 = false }: { enhancedThemeV1?: boolean } = {},
     ): void => {
         render(
@@ -51,7 +53,7 @@ describe('AddressForm Component', () => {
                 <ThemeContext.Provider value={{ enhancedThemeV1 }}>
                     <LocaleContext.Provider value={localeContext}>
                         <Formik initialValues={{}} onSubmit={noop}>
-                            <AddressForm {...addressFormProps} />
+                            <AddressForm type={AddressType.Shipping} {...addressFormProps} />
                         </Formik>
                     </LocaleContext.Provider>
                 </ThemeContext.Provider>

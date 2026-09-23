@@ -1,1 +1,2 @@
-export { default as CreditCardFieldset, CreditCardFieldsetProps } from './CreditCardFieldset';
+export type { CreditCardFieldsetProps } from './CreditCardFieldset';
+export { default as CreditCardFieldset } from './CreditCardFieldset';

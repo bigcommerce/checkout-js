@@ -1,6 +1,5 @@
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
 import { type ObjectSchema, type ValidationError } from 'yup';
-
-import { type TranslateValidationErrorFunction } from '@bigcommerce/checkout/payment-integration-api';
 
 import getCheckoutcomFieldsetValidationSchemas from './getCheckoutcomFieldsetValidationSchemas';
 
@@ -15,7 +14,7 @@ const getFormfields = {
 };
 
 describe('getCheckoutcomFieldsetValidationSchemas', () => {
-    let translate: TranslateValidationErrorFunction;
+    let translate: LanguageService['translate'];
 
     beforeEach(() => {
         translate = jest.fn();
@@ -27,7 +26,7 @@ describe('getCheckoutcomFieldsetValidationSchemas', () => {
         beforeEach(() => {
             sepaValidationSchema = getCheckoutcomFieldsetValidationSchemas({
                 paymentMethod: 'sepa',
-                language: { translate },
+                language: { translate } as LanguageService,
             });
         });
 
@@ -72,7 +71,7 @@ describe('getCheckoutcomFieldsetValidationSchemas', () => {
         beforeEach(() => {
             ccDocumentValidationSchema = getCheckoutcomFieldsetValidationSchemas({
                 paymentMethod: 'oxxo',
-                language: { translate },
+                language: { translate } as LanguageService,
             });
         });
 

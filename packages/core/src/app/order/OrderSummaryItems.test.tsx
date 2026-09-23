@@ -71,13 +71,23 @@ describe('OrderSummaryItems', () => {
                     physicalItems: [
                         {
                             ...getPhysicalItem(),
-                            stockPosition: { quantityBackordered: 3 },
+                            stockPosition: {
+                                quantityBackordered: 3,
+                                quantityOnHand: 0,
+                                quantityOutOfStock: 0,
+                                backorderMessage: null,
+                            },
                         },
                     ],
                     digitalItems: [
                         {
                             ...getDigitalItem(),
-                            stockPosition: { quantityBackordered: 2 },
+                            stockPosition: {
+                                quantityBackordered: 2,
+                                quantityOnHand: 0,
+                                quantityOutOfStock: 0,
+                                backorderMessage: null,
+                            },
                         },
                     ],
                     giftCertificates: [],
@@ -98,7 +108,12 @@ describe('OrderSummaryItems', () => {
                     physicalItems: [
                         {
                             ...getPhysicalItem(),
-                            stockPosition: { quantityBackordered: 7 },
+                            stockPosition: {
+                                quantityBackordered: 7,
+                                quantityOnHand: 0,
+                                quantityOutOfStock: 0,
+                                backorderMessage: null,
+                            },
                         },
                     ],
                     digitalItems: [getDigitalItem()],
@@ -152,7 +167,12 @@ describe('OrderSummaryItems', () => {
                     physicalItems: [
                         {
                             ...getPhysicalItem(),
-                            stockPosition: { quantityBackordered: 0 },
+                            stockPosition: {
+                                quantityBackordered: 0,
+                                quantityOnHand: 0,
+                                quantityOutOfStock: 0,
+                                backorderMessage: null,
+                            },
                         },
                     ],
                     digitalItems: [],
@@ -170,7 +190,12 @@ describe('OrderSummaryItems', () => {
             physicalItems: [
                 {
                     ...getPhysicalItem(),
-                    stockPosition: { quantityBackordered: 3 },
+                    stockPosition: {
+                        quantityBackordered: 3,
+                        quantityOnHand: 0,
+                        quantityOutOfStock: 0,
+                        backorderMessage: null,
+                    },
                 },
             ],
             digitalItems: [],

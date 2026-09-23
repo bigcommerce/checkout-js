@@ -1703,7 +1703,7 @@ describe('Payment step', () => {
 
             await waitFor(() => expect(finalizeSpy).toHaveBeenCalled());
 
-            const [{ integrations }] = finalizeSpy.mock.calls[0];
+            const [{ integrations } = {}] = finalizeSpy.mock.calls[0];
 
             expect(integrations).not.toEqual(
                 expect.arrayContaining([createGooglePayCheckoutComPaymentStrategy]),

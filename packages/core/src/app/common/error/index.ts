@@ -1,6 +1,7 @@
 export { default as CustomError } from './CustomError';
 export { default as ErrorCode } from './ErrorCode';
-export { default as ErrorModal, ErrorModalOnCloseProps, ErrorModalProps } from './ErrorModal';
+export type { ErrorModalOnCloseProps, ErrorModalProps } from './ErrorModal';
+export { default as ErrorModal } from './ErrorModal';
 export { default as computeErrorCode } from './computeErrorCode';
 export { default as createErrorLogger } from './createErrorLogger';
 export { default as isCustomError } from './isCustomError';

@@ -200,9 +200,15 @@ export class PollyObject {
 
         if (this.polly && recordingsDir) {
             const api = new API({ recordingsDir });
+
             // PollyJS type bug: The type definition does not match with the actual implementation.
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-            const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
+            interface PollyApiWithGetRecording {
+                getRecording(id: string): { body?: { log?: { entries?: unknown } } };
+            }
+
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            const typedApi = api as unknown as PollyApiWithGetRecording;
+            const entries = typedApi.getRecording(this.polly.recordingId).body?.log?.entries;
 
             if (entries) {
                 return entries;

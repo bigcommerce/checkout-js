@@ -1,5 +1,6 @@
 export { default as configureCardValidator } from './configureCardValidator';
-export { default as CreditCardFieldset, CreditCardFieldsetProps } from './CreditCardFieldset';
+export type { CreditCardFieldsetProps } from './CreditCardFieldset';
+export { default as CreditCardFieldset } from './CreditCardFieldset';
 export { default as CreditCardCodeField } from './CreditCardCodeField';
 export { default as CreditCardCodeTooltip } from './CreditCardCodeTooltip';
 export { default as CreditCardCustomerCodeField } from './CreditCardCustomerCodeField';

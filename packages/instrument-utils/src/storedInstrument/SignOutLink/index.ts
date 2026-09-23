@@ -1,1 +1,2 @@
-export { default as SignOutLink, SignOutLinkProps } from './SignOutLink';
+export type { SignOutLinkProps } from './SignOutLink';
+export { default as SignOutLink } from './SignOutLink';

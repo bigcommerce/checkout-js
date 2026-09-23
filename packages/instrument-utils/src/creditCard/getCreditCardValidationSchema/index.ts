@@ -1,4 +1,2 @@
-export {
-    default as getCreditCardValidationSchema,
-    CreditCardValidationSchemaOptions,
-} from './getCreditCardValidationSchema';
+export type { CreditCardValidationSchemaOptions } from './getCreditCardValidationSchema';
+export { default as getCreditCardValidationSchema } from './getCreditCardValidationSchema';

@@ -1,8 +1,8 @@
 export { default as CheckoutcomCustomPaymentMethod } from './CheckoutcomCustomPaymentMethod';
-export {
-    default as getCheckoutcomValidationSchemas,
+export type {
     checkoutcomPaymentMethods,
     documentPaymentMethods,
     checkoutcomCustomPaymentMethods,
 } from './checkoutcomFieldsets/getCheckoutcomFieldsetValidationSchemas';
-export * from './checkoutcomFieldsets/CheckoutcomFormValues';
+export { default as getCheckoutcomValidationSchemas } from './checkoutcomFieldsets/getCheckoutcomFieldsetValidationSchemas';
+export type * from './checkoutcomFieldsets/CheckoutcomFormValues';

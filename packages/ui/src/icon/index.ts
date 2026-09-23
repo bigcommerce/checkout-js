@@ -5,7 +5,8 @@ export {
     getPaymentMethodIconComponent,
     filterInstrumentTypes,
 } from './mapFromPaymentMethodCardType';
-export { IconSize, IconProps } from './IconContainer';
+export type { IconProps } from './IconContainer';
+export { IconSize } from './IconContainer';
 export { default as IconBitCoin } from './IconBitCoin';
 export { default as IconBitCoinCash } from './IconBitCoinCash';
 export { default as IconBolt } from './IconBolt';

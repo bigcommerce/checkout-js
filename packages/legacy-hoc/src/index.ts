@@ -1,3 +1,3 @@
-export { default as InjectHoc, MatchedProps } from './InjectHoc';
+export type { default as InjectHoc, MatchedProps } from './InjectHoc';
 export { default as createInjectHoc } from './createInjectHoc';
-export { MapToProps, MapToPropsFactory } from './MappableInjectHoc';
+export type { MapToProps, MapToPropsFactory } from './MappableInjectHoc';

@@ -1,4 +1,4 @@
-export {
+export type {
     CreditCardPaymentMethodProps,
     CreditCardPaymentMethodValues,
 } from './CreditCardPaymentMethodComponent';

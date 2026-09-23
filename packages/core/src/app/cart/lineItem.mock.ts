@@ -19,6 +19,7 @@ export function getCustomItem(): CustomItem {
 export function getPhysicalItem(): PhysicalItem {
     return {
         id: '666',
+        addedByAttributeId: null,
         variantId: 71,
         productId: 103,
         sku: 'CLC',
@@ -55,6 +56,7 @@ export function getPhysicalItem(): PhysicalItem {
 export function getDigitalItem(): DigitalItem {
     return {
         id: '667',
+        addedByAttributeId: null,
         variantId: 72,
         productId: 104,
         sku: 'CLX',
@@ -113,6 +115,7 @@ export function getPicklistItem(): PhysicalItem[] {
     return [
         {
             id: '666',
+            addedByAttributeId: null,
             variantId: 71,
             productId: 103,
             sku: 'CLC',
@@ -146,6 +149,7 @@ export function getPicklistItem(): PhysicalItem[] {
         },
         {
             id: '777',
+            addedByAttributeId: null,
             variantId: 72,
             productId: 104,
             sku: 'BLB',

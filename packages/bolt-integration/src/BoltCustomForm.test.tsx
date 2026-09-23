@@ -78,7 +78,9 @@ describe('BoltCustomForm', () => {
             />,
         );
 
-        const checkbox = container.getElementsByClassName('optimizedCheckout-form-checkbox')[0];
+        const checkbox = container.getElementsByClassName(
+            'optimizedCheckout-form-checkbox',
+        )[0] as HTMLInputElement;
 
         expect(checkbox.checked).toBe(true);
     });

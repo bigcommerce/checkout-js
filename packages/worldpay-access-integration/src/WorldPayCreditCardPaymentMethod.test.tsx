@@ -39,15 +39,6 @@ import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-u
 
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
 
-const hostedFormOptions = {
-    fields: {
-        cardCode: { containerId: 'cardCode', placeholder: 'Card code' },
-        cardName: { containerId: 'cardName', placeholder: 'Card name' },
-        cardNumber: { containerId: 'cardNumber', placeholder: 'Card number' },
-        cardExpiry: { containerId: 'cardExpiry', placeholder: 'Card expiry' },
-    },
-};
-
 describe('WorldpayCreditCardPaymentMethod', () => {
     let initialValues: CreditCardPaymentMethodValues;
     let method: PaymentMethod;

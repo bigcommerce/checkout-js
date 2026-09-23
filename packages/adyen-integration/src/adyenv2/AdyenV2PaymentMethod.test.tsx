@@ -146,7 +146,8 @@ describe('when using Adyen V2 payment', () => {
 
             const initializeOptions = initializePayment.mock.calls[0][0];
 
-            initializeOptions.adyenv2.additionalActionOptions.onBeforeLoad(true);
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            initializeOptions.adyenv2!.additionalActionOptions.onBeforeLoad!(true);
 
             await new Promise((resolve) => process.nextTick(resolve));
 
@@ -176,7 +177,8 @@ describe('when using Adyen V2 payment', () => {
                 .mock.calls[0][0];
 
             act(() => {
-                initializeOptions.adyenv2.additionalActionOptions.onBeforeLoad(false);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                initializeOptions.adyenv2!.additionalActionOptions.onBeforeLoad!(false);
             });
 
             await new Promise((resolve) => process.nextTick(resolve));
@@ -203,13 +205,15 @@ describe('when using Adyen V2 payment', () => {
             const initializeOptions = initializePayment.mock.calls[0][0];
 
             act(() => {
-                initializeOptions.adyenv2.additionalActionOptions.onBeforeLoad(true);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                initializeOptions.adyenv2!.additionalActionOptions.onBeforeLoad!(true);
             });
 
             await new Promise((resolve) => process.nextTick(resolve));
 
             act(() => {
-                initializeOptions.adyenv2.additionalActionOptions.onLoad(
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                initializeOptions.adyenv2!.additionalActionOptions.onLoad!(
                     cancelAdditionalActionModalFlow,
                 );
             });

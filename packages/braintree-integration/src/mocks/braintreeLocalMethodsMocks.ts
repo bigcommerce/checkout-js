@@ -43,6 +43,7 @@ export function getBraintreeLocalMethodMock() {
         method: 'braintree',
         nonce: undefined,
         returnUrl: undefined,
+        skipRedirectConfirmationAlert: false,
         supportedCards: [
             'PAYPAL',
             'PAYPALCREDIT',

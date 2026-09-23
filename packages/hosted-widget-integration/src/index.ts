@@ -1,4 +1,2 @@
-export {
-    default as HostedWidgetPaymentComponent,
-    HostedWidgetComponentProps,
-} from './HostedWidgetPaymentComponent';
+export type { HostedWidgetComponentProps } from './HostedWidgetPaymentComponent';
+export { default as HostedWidgetPaymentComponent } from './HostedWidgetPaymentComponent';

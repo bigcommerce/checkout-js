@@ -1,1 +1,1 @@
-export { LocalizedGeography } from './country';
+export type { LocalizedGeography } from './country';

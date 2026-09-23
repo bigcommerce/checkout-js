@@ -2,6 +2,7 @@ import * as CheckoutSdk from '@bigcommerce/checkout-sdk/essential';
 import { render } from '@testing-library/react';
 import React, { useEffect } from 'react';
 
+import { type AnalyticsEvents } from './AnalyticsContext';
 import AnalyticsProvider from './AnalyticsProvider';
 import * as createAnalyticsService from './createAnalyticsService';
 import useAnalytics from './useAnalytics';
@@ -20,14 +21,13 @@ const AnalyticsProviderChildrenMock = ({
     eventName,
     eventProps = [],
 }: {
-    eventName: string;
+    eventName: keyof AnalyticsEvents;
     eventProps?: EventPropsItem[];
 }) => {
     const { analyticsTracker } = useAnalytics();
 
     useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        analyticsTracker[eventName](...eventProps);
+        (analyticsTracker[eventName] as (...args: EventPropsItem[]) => void)(...eventProps);
     }, [analyticsTracker, eventName, eventProps]);
 
     return null;
@@ -37,7 +37,7 @@ const TestComponent = ({
     eventName,
     eventProps,
 }: {
-    eventName: string;
+    eventName: keyof AnalyticsEvents;
     eventProps?: EventPropsItem[];
 }) => {
     const checkoutService = CheckoutSdk.createCheckoutService();

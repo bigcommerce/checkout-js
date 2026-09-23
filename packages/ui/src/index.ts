@@ -1,18 +1,18 @@
 /* istanbul ignore file */
 export { CollapseCSSTransition, prefersReducedMotion } from './animation';
 export { Alert, AlertType } from './alert';
-export {
-    Accordion,
+export type {
     AccordionProps,
-    AccordionItem,
     AccordionItemHeaderProps,
     AccordionItemProps,
-    AccordionContext,
     AccordionContextProps,
 } from './accordion';
-export { Autocomplete, AutocompleteItem } from './autocomplete';
+export { Accordion, AccordionItem, AccordionContext } from './accordion';
+export type { AutocompleteItem } from './autocomplete';
+export { Autocomplete } from './autocomplete';
 export { Button, ButtonSize, ButtonVariant } from './button';
 export { DropdownTrigger } from './dropdown';
+export type { FormContextType } from './form';
 export {
     AddressFormSkeleton,
     BasicFormField,
@@ -33,7 +33,6 @@ export {
     FormContext,
     FormProvider,
     FormFieldContainer,
-    FormContextType,
     Label,
     Legend,
     Input,
@@ -43,6 +42,7 @@ export {
     WalletButtonsContainerSkeleton,
     RadioInput,
 } from './form';
+export type { IconProps } from './icon';
 export {
     CreditCardIcon,
     CreditCardIconList,
@@ -90,7 +90,6 @@ export {
     IconGiftCertificate,
     IconGiftCertificateNew,
     IconLiteCoin,
-    IconProps,
     IconShibaInu,
     IconSepa,
     IconUsdCoin,
@@ -112,14 +111,8 @@ export {
     LoadingOverlay,
     LoadingSpinner,
 } from './loading';
-export {
-    ConfirmationModal,
-    Modal,
-    ModalHeader,
-    ModalLink,
-    ModalTrigger,
-    ModalTriggerModalProps,
-} from './modal';
+export type { ModalTriggerModalProps } from './modal';
+export { ConfirmationModal, Modal, ModalHeader, ModalLink, ModalTrigger } from './modal';
 export { Tooltip, TooltipTrigger } from './tooltip';
 export { MultiLineText } from './text';
 export { Toggle } from './toggle';
