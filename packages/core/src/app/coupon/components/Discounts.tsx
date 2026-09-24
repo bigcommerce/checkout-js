@@ -27,10 +27,7 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
                             </span>
                         )}
                     </div>
-                    <span
-                        className="cart-priceItem-value body-medium"
-                        data-test="cart-price-value"
-                    >
+                    <span className="cart-priceItem-value body-medium" data-test="cart-price-value">
                         -<ShopperCurrency amount={coupon.amount} />
                     </span>
                 </div>
@@ -97,10 +94,7 @@ export const Discounts: FunctionComponent = () => {
                 <span className="cart-priceItem-label body-regular">
                     <TranslatedString id="cart.subtotal_text" />
                 </span>
-                <span
-                    className="cart-priceItem-value body-medium"
-                    data-test="cart-price-value"
-                >
+                <span className="cart-priceItem-value body-medium" data-test="cart-price-value">
                     <ShopperCurrency amount={subtotal} />
                 </span>
             </div>

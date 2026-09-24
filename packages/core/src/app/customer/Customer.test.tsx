@@ -201,12 +201,12 @@ describe('Customer Component', () => {
         await userEvent.type(await screen.findByLabelText('Last Name'), faker.person.lastName());
         await userEvent.type(await screen.findByLabelText('Email'), customerEmail);
         await userEvent.type(await screen.findByLabelText('Password'), 'abc');
-        await userEvent.click(screen.getByText('Create Account'));
+        await userEvent.click(screen.getByText('Create account'));
 
         expect(await screen.findByText('Password needs to contain a number')).toBeInTheDocument();
 
         await userEvent.type(await screen.findByLabelText('Password'), '123');
-        await userEvent.click(screen.getByText('Create Account'));
+        await userEvent.click(screen.getByText('Create account'));
 
         expect(await screen.findByText('Password is too short')).toBeInTheDocument();
 
@@ -240,7 +240,7 @@ describe('Customer Component', () => {
         expect(screen.getByText('Referral Code is required')).toBeInTheDocument();
 
         await userEvent.type(await screen.findByLabelText('Referral Code'), 'bigcommerce');
-        await userEvent.click(screen.getByText('Create Account'));
+        await userEvent.click(screen.getByText('Create account'));
 
         expect(await screen.findByText(customerEmail)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Sign out' })).toBeInTheDocument();

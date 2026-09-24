@@ -30,10 +30,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
     const SelectedAddress = () => {
         if (!selectedAddress) {
             return (
-                <span
-                    className="body-regular"
-                    data-test="address-select-placeholder"
-                >
+                <span className="body-regular" data-test="address-select-placeholder">
                     {placeholderText ?? (
                         <TranslatedString
                             id={

@@ -396,7 +396,7 @@ describe('Checkout', () => {
                     await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
                     await userEvent.type(screen.getByLabelText('Password'), 'Password123');
                     await userEvent.type(screen.getByLabelText('Referral Code'), 'ABC');
-                    await userEvent.click(screen.getByRole('button', { name: 'Create Account' }));
+                    await userEvent.click(screen.getByRole('button', { name: 'Create account' }));
                 });
             };
 
