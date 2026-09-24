@@ -8,6 +8,8 @@ import classNames from 'classnames';
 import DOMPurify from 'dompurify';
 import React, { type ReactElement } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
+
 import { ErrorModal } from '../../common/error';
 import { getPasswordRequirementsFromConfig } from '../../customer';
 import { isEmbedded } from '../../embeddedCheckout';
@@ -60,53 +62,62 @@ export const OrderConfirmationPage = ({
     siteLink,
     supportEmail,
     supportPhoneNumber,
-}: OrderConfirmationPageProps): ReactElement => (
-    <div
-        className={classNames('layout optimizedCheckout-contentPrimary', {
-            'is-embedded': isEmbedded(),
-        })}
-    >
-        <div className="layout-main">
-            <div className="orderConfirmation">
-                <ThankYouHeader name={order.billingAddress.firstName} />
-                <OrderStatus
-                    order={order}
-                    supportEmail={supportEmail}
-                    supportPhoneNumber={supportPhoneNumber}
-                />
-                {paymentInstructions && (
-                    <OrderConfirmationSection>
-                        <div
-                            dangerouslySetInnerHTML={{
-                                __html: DOMPurify.sanitize(paymentInstructions),
-                            }}
-                            data-test="payment-instructions"
-                        />
-                    </OrderConfirmationSection>
-                )}
+}: OrderConfirmationPageProps): ReactElement => {
+    const { enhancedThemeV1 } = useThemeContext();
 
-                {!cannotCreatePersonalAccount && shouldShowPasswordForm && !hasSignedUp && (
-                    <GuestSignUpForm
-                        customerCanBeCreated={customerCanBeCreated}
-                        isSigningUp={isSigningUp}
-                        onSignUp={onSignUp}
-                        passwordRequirements={getPasswordRequirementsFromConfig(shopperConfig)}
+    return (
+        <div
+            className={classNames('layout optimizedCheckout-contentPrimary', {
+                'is-embedded': isEmbedded(),
+                enhancedThemeV1,
+            })}
+        >
+            <div className="layout-main">
+                <div className="orderConfirmation">
+                    <ThankYouHeader name={order.billingAddress.firstName} />
+                    <OrderStatus
+                        order={order}
+                        supportEmail={supportEmail}
+                        supportPhoneNumber={supportPhoneNumber}
                     />
-                )}
+                    {paymentInstructions && (
+                        <OrderConfirmationSection>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: DOMPurify.sanitize(paymentInstructions),
+                                }}
+                                data-test="payment-instructions"
+                            />
+                        </OrderConfirmationSection>
+                    )}
 
-                {hasSignedUp &&
-                    (order?.customerId ? <PasswordSavedSuccessAlert /> : <SignedUpSuccessAlert />)}
+                    {!cannotCreatePersonalAccount && shouldShowPasswordForm && !hasSignedUp && (
+                        <GuestSignUpForm
+                            customerCanBeCreated={customerCanBeCreated}
+                            isSigningUp={isSigningUp}
+                            onSignUp={onSignUp}
+                            passwordRequirements={getPasswordRequirementsFromConfig(shopperConfig)}
+                        />
+                    )}
 
-                <ContinueButton siteLink={siteLink} />
+                    {hasSignedUp &&
+                        (order?.customerId ? (
+                            <PasswordSavedSuccessAlert />
+                        ) : (
+                            <SignedUpSuccessAlert />
+                        ))}
+
+                    <ContinueButton siteLink={siteLink} />
+                </div>
             </div>
+
+            <OrderSummaryContainer
+                currency={currency}
+                order={order}
+                shopperCurrency={shopperCurrency}
+            />
+
+            <ErrorModal error={error} onClose={onErrorModalClose} shouldShowErrorCode={false} />
         </div>
-
-        <OrderSummaryContainer
-            currency={currency}
-            order={order}
-            shopperCurrency={shopperCurrency}
-        />
-
-        <ErrorModal error={error} onClose={onErrorModalClose} shouldShowErrorCode={false} />
-    </div>
-);
+    );
+};
