@@ -144,7 +144,7 @@ const CreateAccountForm: FunctionComponent<
 
             <div className="form-actions">
                 <Button
-                    className="optimizedCheckout-contentPrimary body-bold"
+                    className="body-bold"
                     disabled={isCreatingAccount || isExecutingPaymentMethodCheckout}
                     id="checkout-customer-create"
                     isLoading={isCreatingAccount || isExecutingPaymentMethodCheckout}

@@ -59,7 +59,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
 
     if (showNoAddressesWarning) {
         return (
-            <div className="no-addresses-warning optimizedCheckout-contentPrimary body-regular">
+            <div className="no-addresses-warning body-regular">
                 <TranslatedString id="billing.no_billing_addresses_warning" />
             </div>
         );

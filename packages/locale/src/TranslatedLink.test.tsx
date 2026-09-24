@@ -42,7 +42,7 @@ describe('TranslatedLink', () => {
             </LocaleProvider>,
         );
 
-        expect(screen.getByText('Create Account')).toBeInTheDocument();
+        expect(screen.getByText('Create account')).toBeInTheDocument();
         expect(screen.queryByRole('link')).not.toBeInTheDocument();
     });
 
