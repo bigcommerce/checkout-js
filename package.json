@@ -181,7 +181,6 @@
     "terser-webpack-plugin": "^5.4.0",
     "thread-loader": "^4.0.4",
     "ts-jest": "29.4.11",
-    "ts-loader": "^9.6.2",
     "tslib": "^2.5.3",
     "typescript": "6.0.3",
     "webpack": "^5.105.0",

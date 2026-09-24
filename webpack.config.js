@@ -52,6 +52,9 @@ function appConfig(options, argv) {
             mode,
             cache: {
                 type: 'filesystem',
+                buildDependencies: {
+                    config: [__filename],
+                },
             },
             snapshot: {
                 managedPaths: [
@@ -194,25 +197,6 @@ function appConfig(options, argv) {
                         include: tsLoaderIncludes,
                         use: [
                             {
-                                loader: 'ts-loader',
-                                options: {
-                                    onlyCompileBundledFiles: true,
-                                    // transpileOnly: true,
-                                },
-                            },
-                        ],
-                    },
-                    {
-                        test: /app\/polyfill\.ts$/,
-                        include: [
-                            join(__dirname, 'packages', 'core', 'src'),
-                            join(__dirname, 'packages', 'contexts', 'src'),
-                            join(__dirname, 'packages', 'payment-integration-api', 'src'),
-                            join(__dirname, 'packages', 'locale', 'src'),
-                            join(__dirname, 'packages', 'test-mocks', 'src'),
-                        ],
-                        use: [
-                            {
                                 loader: 'thread-loader',
                                 options: {
                                     workers: 2,
@@ -221,8 +205,11 @@ function appConfig(options, argv) {
                             {
                                 loader: 'esbuild-loader',
                                 options: {
+                                    // No explicit `loader` option: esbuild-loader infers
+                                    // ts/tsx per file extension. Forcing 'tsx' uniformly
+                                    // breaks plain .ts files with generic arrow functions
+                                    // (e.g. `<T>(x) => ...`) — esbuild parses `<T>` as JSX.
                                     target: 'es2015', // Matches the Babel preset-env targets.
-                                    loader: 'ts', // Handles TypeScript files.
                                     legalComments: 'none', // Removes comments for cleaner output.
                                 },
                             },
