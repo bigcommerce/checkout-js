@@ -65,11 +65,10 @@ export const OrderConfirmationPage = ({
 }: OrderConfirmationPageProps): ReactElement => {
     const { enhancedThemeV1 } = useThemeContext();
 
-    return (
+    const content = (
         <div
             className={classNames('layout optimizedCheckout-contentPrimary', {
                 'is-embedded': isEmbedded(),
-                enhancedThemeV1,
             })}
         >
             <div className="layout-main">
@@ -120,4 +119,6 @@ export const OrderConfirmationPage = ({
             <ErrorModal error={error} onClose={onErrorModalClose} shouldShowErrorCode={false} />
         </div>
     );
+
+    return enhancedThemeV1 ? <div className="enhancedThemeV1">{content}</div> : content;
 };
