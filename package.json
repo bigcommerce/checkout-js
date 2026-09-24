@@ -5,8 +5,8 @@
   "description": "Browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout.",
   "license": "MIT",
   "engines": {
-    "node": "22",
-    "npm": "10"
+    "node": "24",
+    "npm": "11"
   },
   "scripts": {
     "nx:build": "nx run core:build",
@@ -48,7 +48,7 @@
   "prettier": "@bigcommerce/eslint-config/prettier",
   "homepage": "https://github.com/bigcommerce/checkout-js#readme",
   "dependencies": {
-    "@bigcommerce/checkout-sdk": "^1.983.2",
+    "@bigcommerce/checkout-sdk": "^1.983.3",
     "@bigcommerce/citadel": "^2.16.1",
     "@bigcommerce/form-poster": "^1.2.2",
     "@bigcommerce/memoize": "^1.0.0",
@@ -207,5 +207,22 @@
     "scripts": {
       "prebump": "./scripts/standard-version/prebump.js"
     }
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "@swc/core@1.5.7": true,
+    "core-js@3.45.0": true,
+    "cwebp-bin@7.0.1": true,
+    "esbuild@0.28.1": true,
+    "fsevents@2.3.3": true,
+    "fsevents@2.3.2": true,
+    "gifsicle@5.3.0": true,
+    "mozjpeg@7.1.1": true,
+    "msw@1.3.5": true,
+    "nx@19.8.9": true,
+    "optipng-bin@7.0.1": true,
+    "pngquant-bin@6.0.1": true,
+    "puppeteer@24.10.1": true,
+    "unrs-resolver@1.12.2": true
   }
 }
