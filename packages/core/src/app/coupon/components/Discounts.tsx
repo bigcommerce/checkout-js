@@ -17,18 +17,18 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
             <div data-test={coupon.testId} key={coupon.name}>
                 <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary">
                     <div>
-                        <span className="cart-priceItem-label optimizedCheckout-contentPrimary body-regular">
+                        <span className="cart-priceItem-label body-regular">
                             <IconCoupon />
                             {coupon.name}
                         </span>
                         {coupon.showMaxLimitInfo && (
-                            <span className="optimizedCheckout-contentPrimary sub-text cart-priceItem-label-info">
+                            <span className="sub-text cart-priceItem-label-info">
                                 <TranslatedString id="redeemable.maximum_discount_applied_text" />
                             </span>
                         )}
                     </div>
                     <span
-                        className="cart-priceItem-value optimizedCheckout-contentPrimary body-medium"
+                        className="cart-priceItem-value body-medium"
                         data-test="cart-price-value"
                     >
                         -<ShopperCurrency amount={coupon.amount} />
@@ -63,13 +63,13 @@ const DiscountsCollapsible: FunctionComponent<{
                 role="button"
                 tabIndex={0}
             >
-                <span className="cart-priceItem-label optimizedCheckout-contentPrimary body-regular">
+                <span className="cart-priceItem-label body-regular">
                     <div className="toggle-button">
                         <TranslatedString id="redeemable.discounts_text" />
                         {isCouponDiscountsVisible ? <IconDownArrow /> : <IconUpArrow />}
                     </div>
                 </span>
-                <span className="cart-priceItem-value optimizedCheckout-contentPrimary body-medium">
+                <span className="cart-priceItem-value body-medium">
                     -<ShopperCurrency amount={discounts} />
                 </span>
             </div>
@@ -94,11 +94,11 @@ export const Discounts: FunctionComponent = () => {
     return (
         <div data-test="cart-subtotal">
             <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary">
-                <span className="cart-priceItem-label optimizedCheckout-contentPrimary body-regular">
+                <span className="cart-priceItem-label body-regular">
                     <TranslatedString id="cart.subtotal_text" />
                 </span>
                 <span
-                    className="cart-priceItem-value optimizedCheckout-contentPrimary body-medium"
+                    className="cart-priceItem-value body-medium"
                     data-test="cart-price-value"
                 >
                     <ShopperCurrency amount={subtotal} />

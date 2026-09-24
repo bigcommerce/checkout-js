@@ -42,7 +42,7 @@ export const MultiShippingOptions = ({
 
     return (
         <div>
-            <h3 className="shipping-option-header optimizedCheckout-contentPrimary body-bold">
+            <h3 className="shipping-option-header body-bold">
                 <TranslatedString
                     id={
                         enhancedThemeV1

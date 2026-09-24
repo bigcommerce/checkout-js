@@ -93,7 +93,7 @@ export const CouponForm: FunctionComponent<CouponFormProps> = ({ formInstanceId 
                     value={code}
                 />
                 <Button
-                    className="coupon-button optimizedCheckout-contentPrimary body-bold"
+                    className="coupon-button body-bold"
                     disabled={isCouponFormDisabled}
                     id={`${formInstanceId}applyRedeemableButton`}
                     isLoading={isApplyingCouponOrGiftCertificate}

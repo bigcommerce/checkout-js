@@ -23,7 +23,7 @@ const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({
                     {item.imageUrl && <img alt={item.name} src={item.imageUrl} />}
                 </figure>
                 <div>
-                    <p className="left-to-allocate-item-name optimizedCheckout-contentPrimary body-regular">
+                    <p className="left-to-allocate-item-name body-regular">
                         {item.name}
                     </p>
                     {item.options?.map((option) => (
@@ -37,9 +37,9 @@ const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({
                 </div>
             </td>
             {!isMobileView && (
-                <td className="optimizedCheckout-contentPrimary body-regular">{item.quantity}</td>
+                <td className="body-regular">{item.quantity}</td>
             )}
-            <td className="optimizedCheckout-contentPrimary body-regular">
+            <td className="body-regular">
                 {isMobileView && (
                     <TranslatedString
                         data={{ count: item.quantity }}

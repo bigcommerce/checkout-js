@@ -31,7 +31,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
         if (!selectedAddress) {
             return (
                 <span
-                    className="optimizedCheckout-contentPrimary body-regular"
+                    className="body-regular"
                     data-test="address-select-placeholder"
                 >
                     {placeholderText ?? (
