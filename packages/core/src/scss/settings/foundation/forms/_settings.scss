@@ -15,7 +15,8 @@
 $include-html-form-classes:          $include-html-classes;
 
 // We use these to style CSS loading skeletons
-$loading-skeleton-grey-box-animation:lightColorTransition 4000ms infinite cubic-bezier(0.13, 0.615, 0.315, 0.915);
+$loading-skeleton-grey-box-timing:    4000ms infinite cubic-bezier(0.13, 0.615, 0.315, 0.915);
+$loading-skeleton-grey-box-animation:lightColorTransition $loading-skeleton-grey-box-timing;
 $loading-skeleton-grey-box-color:    color("greys", "light");
 $loading-skeleton-grey-box-color-2:  color("greys", "lightest");
 $loading-skeleton-cart-min-height:   479px;

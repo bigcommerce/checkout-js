@@ -27,6 +27,7 @@ export {
     CheckboxInput,
     ChecklistSkeleton,
     OrderConfirmationPageSkeleton,
+    PaymentMethodSkeleton,
     Fieldset,
     Form,
     FormField,

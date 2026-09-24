@@ -21,6 +21,7 @@ export {
     CheckoutPageSkeleton,
     ChecklistSkeleton,
     OrderConfirmationPageSkeleton,
+    PaymentMethodSkeleton,
     WalletButtonsContainerSkeleton,
 } from './LoadingSkeleton';
 export { Label } from './Label';
