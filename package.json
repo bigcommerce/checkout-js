@@ -12,6 +12,7 @@
     "nx:build": "nx run core:build",
     "nx:prerelease-build": "nx run core:prerelease-build",
     "nx:dev": "nx run core:dev",
+    "nx:serve": "nx run core:serve",
     "preinstall": "npx check-node-version --package",
     "prebuild": "rm -rf dist && rm -rf packages/test-framework/report",
     "build": "npm-run-all nx:build",
@@ -20,6 +21,7 @@
     "dev": "npm-run-all nx:dev",
     "dev:vm": "WEBPACK_DONE='rsync -rvc --progress --delete --compress-level=9 build store.bcdev:/opt/bigcommerce_app/vagrant_code/vendor/bower_components/checkout-js/' npm run dev",
     "dev:server": "http-server build --cors -c-1",
+    "dev:hmr": "npm-run-all nx:serve",
     "e2e": "npm run build && npx playwright install && PORT=5005 MODE=REPLAY npx playwright test",
     "release": "echo 'Please do not release locally, use CircleCi'",
     "release:alpha": "npm run lint && npm run test -- --coverage && npm run nx:prerelease-build && npm run release:version",
@@ -186,6 +188,7 @@
     "webpack": "^5.105.0",
     "webpack-assets-manifest": "^5.1.0",
     "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.15.2",
     "webpack-inject-plugin": "^1.5.3",
     "webpack-subresource-integrity": "^5.1.0",
     "yargs": "^14.0.0"
