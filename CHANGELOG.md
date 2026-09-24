@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.906.0](https://github.com/bigcommerce/checkout-js/compare/v1.905.4...v1.906.0) (2026-09-24)
+
+
+### Features
+
+* **payment:** PI-5661 [Adyen] upgrade SDK to 6.44.0 ([#3354](https://github.com/bigcommerce/checkout-js/issues/3354)) ([06556d1](https://github.com/bigcommerce/checkout-js/commit/06556d1d4fd5ebb04637633266796775f82cb7c0))
+
 ### [1.905.4](https://github.com/bigcommerce/checkout-js/compare/v1.905.3...v1.905.4) (2026-09-24)
 
 ### [1.905.3](https://github.com/bigcommerce/checkout-js/compare/v1.905.2...v1.905.3) (2026-09-24)
