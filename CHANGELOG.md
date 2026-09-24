@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.905.2](https://github.com/bigcommerce/checkout-js/compare/v1.905.1...v1.905.2) (2026-09-24)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10427 revert contentPrimary matching extra elements ([#3359](https://github.com/bigcommerce/checkout-js/issues/3359)) ([1b6efc5](https://github.com/bigcommerce/checkout-js/commit/1b6efc535a06f9762033b41ed8bd567224a1a996))
+
 ### [1.905.1](https://github.com/bigcommerce/checkout-js/compare/v1.905.0...v1.905.1) (2026-09-24)
 
 ## [1.905.0](https://github.com/bigcommerce/checkout-js/compare/v1.904.5...v1.905.0) (2026-09-24)
