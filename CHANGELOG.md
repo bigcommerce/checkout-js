@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.905.0](https://github.com/bigcommerce/checkout-js/compare/v1.904.5...v1.905.0) (2026-09-24)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10399 Redesign payment loaders ([#3324](https://github.com/bigcommerce/checkout-js/issues/3324)) ([4817390](https://github.com/bigcommerce/checkout-js/commit/48173907dc54e386c296b7924054587b2714c51e))
+
 ### [1.904.5](https://github.com/bigcommerce/checkout-js/compare/v1.904.4...v1.904.5) (2026-09-23)
 
 ### [1.904.4](https://github.com/bigcommerce/checkout-js/compare/v1.904.3...v1.904.4) (2026-09-23)
