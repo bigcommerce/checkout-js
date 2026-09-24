@@ -29,12 +29,11 @@ const OrderSummaryDrawer = lazy(() =>
 );
 
 const OrderSummaryDrawerV2 = lazy(() =>
-    retry(
-        () =>
-            import(
-                /* webpackChunkName: "order-summary-drawer-v2" */
-                '../OrderSummaryDrawerV2'
-            ).then((m) => ({ default: m.OrderSummaryDrawerV2 })),
+    retry(() =>
+        import(
+            /* webpackChunkName: "order-summary-drawer-v2" */
+            '../OrderSummaryDrawerV2'
+        ).then((m) => ({ default: m.OrderSummaryDrawerV2 })),
     ),
 );
 

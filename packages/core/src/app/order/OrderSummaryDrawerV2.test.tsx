@@ -66,10 +66,9 @@ describe('OrderSummaryDrawerV2', () => {
             '2 Items',
         );
 
-        // 250 * 1.12 exchangeRate = $280.00
-        expect(
-            within(getCollapsedBar()).getByTestId('cart-outstanding-balance'),
-        ).toHaveTextContent('$280.00 (USD)');
+        expect(within(getCollapsedBar()).getByTestId('cart-outstanding-balance')).toHaveTextContent(
+            '$280.00 (USD)',
+        );
     });
 
     it('opens the sheet and shows the print link instead of an edit-cart link', async () => {
