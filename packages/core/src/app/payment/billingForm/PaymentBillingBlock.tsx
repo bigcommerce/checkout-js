@@ -9,7 +9,7 @@ import { type AddressFormValues, isEqualAddress, mapAddressFromFormValues } from
 import { type BillingFormValues } from '../../billing/billingFormConfig';
 import { useBilling } from '../../billing/hooks/useBilling';
 
-import { PaymentBillingForm } from './PaymentBillingForm';
+import { PaymentBillingForm, type PaymentBillingFormWithOrderComment } from './PaymentBillingForm';
 
 export interface PaymentBillingBlockProps {
     // Id of the payment method currently selected on the payment step. Drives the
@@ -61,6 +61,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         }
     };
 
+    const orderCommentRef = useRef<PaymentBillingFormWithOrderComment>({});
     const lastRequestedCountryCodeRef = useRef<string | undefined>();
 
     const handleBillingCountryChange = (countryCode: string, addressValues: AddressFormValues) => {
@@ -139,6 +140,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     onBillingSameAsShippingChange={handleBillingSameAsShippingChange}
                     onPersist={handlePersist}
                     onUnhandledError={onUnhandledError}
+                    orderCommentRef={orderCommentRef}
                     updateBillingAddress={updateBillingAddress}
                 />
             </div>

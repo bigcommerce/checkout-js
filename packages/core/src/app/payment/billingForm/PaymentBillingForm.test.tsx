@@ -60,6 +60,27 @@ describe('PaymentBillingForm', () => {
     const renderForm = (props: PaymentBillingFormProps) =>
         render(<PaymentBillingFormTest {...props} />);
 
+    const getFieldsWithCountry = (): FormField[] => [
+        ...getFormFields(),
+        {
+            custom: false,
+            default: '',
+            fieldType: 'dropdown',
+            id: 'field_country',
+            label: 'Country',
+            name: 'countryCode',
+            options: {
+                helperLabel: 'Choose a Country',
+                items: [
+                    { label: 'United States', value: 'US' },
+                    { label: 'Canada', value: 'CA' },
+                ],
+            },
+            required: true,
+            type: 'array',
+        },
+    ];
+
     beforeEach(() => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
@@ -92,6 +113,7 @@ describe('PaymentBillingForm', () => {
             onBillingSameAsShippingChange: jest.fn(),
             onPersist,
             onUnhandledError: noop,
+            orderCommentRef: { current: {} },
             updateBillingAddress: jest.fn().mockResolvedValue(undefined),
         };
     });
@@ -208,27 +230,6 @@ describe('PaymentBillingForm', () => {
     });
 
     describe('billing country change', () => {
-        const getFieldsWithCountry = (): FormField[] => [
-            ...getFormFields(),
-            {
-                custom: false,
-                default: '',
-                fieldType: 'dropdown',
-                id: 'field_country',
-                label: 'Country',
-                name: 'countryCode',
-                options: {
-                    helperLabel: 'Choose a Country',
-                    items: [
-                        { label: 'United States', value: 'US' },
-                        { label: 'Canada', value: 'CA' },
-                    ],
-                },
-                required: true,
-                type: 'array',
-            },
-        ];
-
         it('notifies onBillingCountryChange with the new country and the current form values', async () => {
             renderForm({ ...defaultProps, getFields: getFieldsWithCountry });
 
@@ -351,6 +352,116 @@ describe('PaymentBillingForm', () => {
             fireEvent.click(screen.getByTestId('billingSameAsShipping'));
 
             await waitFor(() => expect(onBillingSameAsShippingChange).toHaveBeenCalledWith(true));
+        });
+    });
+
+    describe('order comments', () => {
+        const orderCommentInput = () => screen.getByLabelText('Order Comments');
+
+        beforeEach(() => {
+            const cart = getCart();
+
+            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+                ...cart,
+                lineItems: { ...cart.lineItems, physicalItems: [] },
+            });
+
+            defaultProps = { ...defaultProps, getFields: getFieldsWithCountry };
+        });
+
+        it('seeds the order comment from the checkout customer message', () => {
+            renderForm({ ...defaultProps, customerMessage: 'leave at reception' });
+
+            expect(orderCommentInput()).toHaveValue('leave at reception');
+        });
+
+        it('keeps the typed order comment when the billing address is reinitialized', async () => {
+            const { rerender } = renderForm(defaultProps);
+
+            await userEvent.type(orderCommentInput(), 'leave at reception');
+
+            rerender(
+                <PaymentBillingFormTest
+                    {...defaultProps}
+                    billingAddress={{ ...getBillingAddress(), countryCode: 'CA' }}
+                />,
+            );
+
+            expect(orderCommentInput()).toHaveValue('leave at reception');
+        });
+
+        it('still reinitializes the address fields from the new billing address', async () => {
+            const { rerender } = renderForm(defaultProps);
+
+            await userEvent.type(orderCommentInput(), 'leave at reception');
+
+            rerender(
+                <PaymentBillingFormTest
+                    {...defaultProps}
+                    billingAddress={{ ...getBillingAddress(), firstName: 'Reloaded' }}
+                />,
+            );
+
+            expect(screen.getByTestId('firstNameInput-text')).toHaveValue('Reloaded');
+            expect(orderCommentInput()).toHaveValue('leave at reception');
+        });
+
+        it('does not reset unsaved address edits when only the order comment changed', async () => {
+            const { rerender } = renderForm(defaultProps);
+
+            await userEvent.clear(screen.getByTestId('firstNameInput-text'));
+            await userEvent.type(screen.getByTestId('firstNameInput-text'), 'Jane');
+            await userEvent.type(orderCommentInput(), 'leave at reception');
+
+            rerender(
+                <PaymentBillingFormTest
+                    {...defaultProps}
+                    billingAddress={getBillingAddress()}
+                    methodId="cybersource"
+                />,
+            );
+
+            expect(screen.getByTestId('firstNameInput-text')).toHaveValue('Jane');
+            expect(orderCommentInput()).toHaveValue('leave at reception');
+        });
+
+        it('keeps a cleared order comment cleared across a reinitialize', async () => {
+            const props = { ...defaultProps, customerMessage: 'leave at reception' };
+            const { rerender } = renderForm(props);
+
+            await userEvent.clear(orderCommentInput());
+
+            rerender(
+                <PaymentBillingFormTest
+                    {...props}
+                    billingAddress={{ ...getBillingAddress(), countryCode: 'CA' }}
+                />,
+            );
+
+            expect(orderCommentInput()).toHaveValue('');
+        });
+
+        it('persists the typed order comment after a reinitialize', async () => {
+            const { rerender } = renderForm(defaultProps);
+
+            await userEvent.type(orderCommentInput(), 'leave at reception');
+
+            rerender(
+                <PaymentBillingFormTest
+                    {...defaultProps}
+                    billingAddress={{ ...getBillingAddress(), countryCode: 'CA' }}
+                />,
+            );
+
+            await waitFor(() =>
+                expect(capturedEnsureBillingAddressSaved).toEqual(expect.any(Function)),
+            );
+
+            await capturedEnsureBillingAddressSaved?.();
+
+            expect(onPersist).toHaveBeenCalledWith(
+                expect.objectContaining({ orderComment: 'leave at reception' }),
+            );
         });
     });
 });
