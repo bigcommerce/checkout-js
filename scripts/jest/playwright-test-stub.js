@@ -1,8 +1,5 @@
-// `@playwright/test` pulls in playwright-core's browser-automation runtime, which is not
-// safe to evaluate under Jest's jsdom environment (see CHECKOUT-10435). Jest never runs
-// Playwright fixtures/assertions itself - those only execute under `npx playwright test` -
-// so modules that import `test`/`expect`/`request` purely to compose e2e fixtures can load
-// this stub instead without triggering playwright-core's module-load crash.
+// Stubs `@playwright/test` for Jest, since playwright-core's runtime crashes under jsdom
+// and Jest never actually executes Playwright fixtures/assertions (only `npx playwright test` does).
 const test = {
     extend: () => test,
 };
