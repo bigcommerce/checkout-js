@@ -1,5 +1,5 @@
-import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import { type FunctionComponent, useEffect, useRef } from 'react';
+import { type HostedInstrument, type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import {
@@ -8,6 +8,7 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 
 import googlePayIntegrations from './googlePayIntegrations';
+import { WalletVaultingFields } from './WalletVaultingFields';
 
 const GOOGLE_PAY_BUTTON_CONTAINER_ID = 'checkout-payment-continue';
 
@@ -18,14 +19,12 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
     onUnhandledError,
 }) => {
     const {
-        checkoutState: {
-            data: { getConfig },
-        },
-    } = useCheckout();
+        selectedState: { config },
+    } = useCheckout(({ data }) => ({
+        config: data.getConfig(),
+    }));
 
-    const isTermsConditionsRequired = Boolean(
-        getConfig()?.checkoutSettings.enableTermsAndConditions,
-    );
+    const isTermsConditionsRequired = Boolean(config?.checkoutSettings.enableTermsAndConditions);
 
     const paymentFormRef = useRef<PaymentFormService>(paymentForm);
 
@@ -79,6 +78,13 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
                         buttonType: 'pay',
                         loadingContainerId: 'checkout-app',
                         onError: onUnhandledError,
+                        getFieldsValues: (): HostedInstrument => ({
+                            shouldSaveInstrument: Boolean(
+                                paymentFormRef.current.getFieldValue<boolean>(
+                                    'shouldSaveInstrument',
+                                ),
+                            ),
+                        }),
                     },
                 };
 
@@ -104,7 +110,7 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return null;
+    return <WalletVaultingFields method={method} />;
 };
 
 export default GooglePayPaymentMethodComponent;
