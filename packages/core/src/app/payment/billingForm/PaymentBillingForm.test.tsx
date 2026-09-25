@@ -112,9 +112,8 @@ describe('PaymentBillingForm', () => {
             onBillingCountryChange: jest.fn(),
             onBillingSameAsShippingChange: jest.fn(),
             onPersist,
+            onSelectAddress: jest.fn().mockResolvedValue(undefined),
             onUnhandledError: noop,
-            orderCommentRef: { current: {} },
-            updateBillingAddress: jest.fn().mockResolvedValue(undefined),
         };
     });
 
@@ -159,13 +158,13 @@ describe('PaymentBillingForm', () => {
             isGuest: false,
         });
 
-        // Keep updateBillingAddress in flight so isResettingAddress stays true.
-        const updateBillingAddress = jest.fn().mockReturnValue(new Promise(() => undefined));
+        // Keep the address selection in flight so isResettingAddress stays true.
+        const onSelectAddress = jest.fn().mockReturnValue(new Promise(() => undefined));
 
-        renderForm({ ...defaultProps, updateBillingAddress });
+        renderForm({ ...defaultProps, onSelectAddress });
 
         // Trigger an address-book selection ("Enter a new address"), which sets
-        // isResettingAddress while updateBillingAddress runs.
+        // isResettingAddress while onSelectAddress runs.
         fireEvent.click(await screen.findByTestId('address-select-button'));
         fireEvent.click(await screen.findByTestId('add-new-address'));
 
@@ -241,6 +240,7 @@ describe('PaymentBillingForm', () => {
             expect(defaultProps.onBillingCountryChange).toHaveBeenCalledWith(
                 'CA',
                 expect.objectContaining({ firstName: 'Jane' }),
+                '',
             );
 
             const [, addressValues] = (defaultProps.onBillingCountryChange as jest.Mock).mock
@@ -375,73 +375,49 @@ describe('PaymentBillingForm', () => {
             expect(orderCommentInput()).toHaveValue('leave at reception');
         });
 
-        it('keeps the typed order comment when the billing address is reinitialized', async () => {
-            const { rerender } = renderForm(defaultProps);
+        it('sends the typed order comment to onBillingCountryChange', async () => {
+            renderForm(defaultProps);
 
             await userEvent.type(orderCommentInput(), 'leave at reception');
+            await userEvent.selectOptions(screen.getByTestId('countryCodeInput-select'), 'CA');
 
-            rerender(
-                <PaymentBillingFormTest
-                    {...defaultProps}
-                    billingAddress={{ ...getBillingAddress(), countryCode: 'CA' }}
-                />,
+            expect(defaultProps.onBillingCountryChange).toHaveBeenCalledWith(
+                'CA',
+                expect.anything(),
+                'leave at reception',
             );
-
-            expect(orderCommentInput()).toHaveValue('leave at reception');
         });
 
-        it('still reinitializes the address fields from the new billing address', async () => {
-            const { rerender } = renderForm(defaultProps);
-
-            await userEvent.type(orderCommentInput(), 'leave at reception');
-
-            rerender(
-                <PaymentBillingFormTest
-                    {...defaultProps}
-                    billingAddress={{ ...getBillingAddress(), firstName: 'Reloaded' }}
-                />,
-            );
-
-            expect(screen.getByTestId('firstNameInput-text')).toHaveValue('Reloaded');
-            expect(orderCommentInput()).toHaveValue('leave at reception');
-        });
-
-        it('does not reset unsaved address edits when only the order comment changed', async () => {
-            const { rerender } = renderForm(defaultProps);
-
-            await userEvent.clear(screen.getByTestId('firstNameInput-text'));
-            await userEvent.type(screen.getByTestId('firstNameInput-text'), 'Jane');
-            await userEvent.type(orderCommentInput(), 'leave at reception');
-
-            rerender(
-                <PaymentBillingFormTest
-                    {...defaultProps}
-                    billingAddress={getBillingAddress()}
-                    methodId="cybersource"
-                />,
-            );
-
-            expect(screen.getByTestId('firstNameInput-text')).toHaveValue('Jane');
-            expect(orderCommentInput()).toHaveValue('leave at reception');
-        });
-
-        it('keeps a cleared order comment cleared across a reinitialize', async () => {
+        it('sends a cleared order comment to onBillingCountryChange', async () => {
             const props = { ...defaultProps, customerMessage: 'leave at reception' };
-            const { rerender } = renderForm(props);
+
+            renderForm(props);
 
             await userEvent.clear(orderCommentInput());
+            await userEvent.selectOptions(screen.getByTestId('countryCodeInput-select'), 'CA');
 
-            rerender(
-                <PaymentBillingFormTest
-                    {...props}
-                    billingAddress={{ ...getBillingAddress(), countryCode: 'CA' }}
-                />,
-            );
-
-            expect(orderCommentInput()).toHaveValue('');
+            expect(props.onBillingCountryChange).toHaveBeenCalledWith('CA', expect.anything(), '');
         });
 
-        it('persists the typed order comment after a reinitialize', async () => {
+        it('sends the typed order comment to onSelectAddress', async () => {
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
+                ...getCustomer(),
+                isGuest: false,
+            });
+
+            renderForm(defaultProps);
+
+            await userEvent.type(orderCommentInput(), 'leave at reception');
+
+            fireEvent.click(await screen.findByTestId('address-select-button'));
+            fireEvent.click(await screen.findByTestId('add-new-address'));
+
+            await waitFor(() =>
+                expect(defaultProps.onSelectAddress).toHaveBeenCalledWith({}, 'leave at reception'),
+            );
+        });
+
+        it('shows the saved order comment once it lands in checkout state', async () => {
             const { rerender } = renderForm(defaultProps);
 
             await userEvent.type(orderCommentInput(), 'leave at reception');
@@ -450,18 +426,14 @@ describe('PaymentBillingForm', () => {
                 <PaymentBillingFormTest
                     {...defaultProps}
                     billingAddress={{ ...getBillingAddress(), countryCode: 'CA' }}
+                    customerMessage="leave at reception"
                 />,
             );
 
-            await waitFor(() =>
-                expect(capturedEnsureBillingAddressSaved).toEqual(expect.any(Function)),
+            expect(screen.getByTestId('firstNameInput-text')).toHaveValue(
+                getBillingAddress().firstName,
             );
-
-            await capturedEnsureBillingAddressSaved?.();
-
-            expect(onPersist).toHaveBeenCalledWith(
-                expect.objectContaining({ orderComment: 'leave at reception' }),
-            );
+            expect(orderCommentInput()).toHaveValue('leave at reception');
         });
     });
 });

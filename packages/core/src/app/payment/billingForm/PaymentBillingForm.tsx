@@ -1,7 +1,6 @@
 import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, setNestedObjectValues, withFormik } from 'formik';
-import { isEqual, omit } from 'lodash';
-import React, { type MutableRefObject, useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -33,7 +32,6 @@ export interface PaymentBillingFormProps {
     methodId?: string;
     billingAddress?: Address;
     customerMessage: string;
-    orderCommentRef: MutableRefObject<PaymentBillingFormWithOrderComment>;
     isLoading: boolean;
     isBillingSameAsShipping: boolean;
     getFields(countryCode?: string): FormField[];
@@ -41,44 +39,17 @@ export interface PaymentBillingFormProps {
     // so the pre-submit ensureBillingAddressSaved can block the order.
     onPersist(values: BillingFormValues): Promise<void>;
     onBillingSameAsShippingChange(isBillingSameAsShipping: boolean): void;
-    onBillingCountryChange(countryCode: string, addressValues: AddressFormValues): void;
+    onBillingCountryChange(
+        countryCode: string,
+        addressValues: AddressFormValues,
+        orderComment: string,
+    ): void;
+    onSelectAddress(address: Partial<Address>, orderComment: string): Promise<unknown>;
     onUnhandledError(error: Error): void;
-    updateBillingAddress(address: Partial<Address>): Promise<unknown>;
 }
-
-export interface PaymentBillingFormWithOrderComment {
-    initialValues?: PaymentBillingFormValues;
-    orderComment?: string;
-}
-
-const getInitialValuesPreservingOrderComment = ({
-    billingAddress,
-    customerMessage,
-    getFields,
-    isBillingSameAsShipping,
-    orderCommentRef,
-}: PaymentBillingFormProps): PaymentBillingFormValues => {
-    const { initialValues, orderComment } = orderCommentRef.current;
-    const nextValues = {
-        ...getBillingFormInitialValues(getFields, billingAddress, orderComment ?? customerMessage),
-        billingSameAsShipping: isBillingSameAsShipping,
-    };
-
-    if (
-        initialValues &&
-        isEqual(omit(initialValues, 'orderComment'), omit(nextValues, 'orderComment'))
-    ) {
-        return initialValues;
-    }
-
-    orderCommentRef.current.initialValues = nextValues;
-
-    return nextValues;
-};
 
 const PaymentBillingFormComponent = ({
     methodId,
-    orderCommentRef,
     getFields,
     billingAddress,
     isLoading,
@@ -89,8 +60,8 @@ const PaymentBillingFormComponent = ({
     onPersist,
     onBillingSameAsShippingChange,
     onBillingCountryChange,
+    onSelectAddress,
     onUnhandledError,
-    updateBillingAddress,
 }: PaymentBillingFormProps & WithLanguageProps & FormikProps<PaymentBillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
@@ -203,15 +174,11 @@ const PaymentBillingFormComponent = ({
         };
     }, [paymentContext, ensureBillingAddressSaved]);
 
-    useEffect(() => {
-        orderCommentRef.current.orderComment = values.orderComment;
-    }, [orderCommentRef, values.orderComment]);
-
     const handleSelectAddress = async (address: Partial<Address>) => {
         setIsResettingAddress(true);
 
         try {
-            await updateBillingAddress(address);
+            await onSelectAddress(address, values.orderComment);
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);
@@ -230,11 +197,11 @@ const PaymentBillingFormComponent = ({
             if (fieldName === 'countryCode' && typeof value === 'string' && value) {
                 const {
                     billingSameAsShipping: _billingSameAsShipping,
-                    orderComment: _orderComment,
+                    orderComment,
                     ...addressValues
                 } = values;
 
-                onBillingCountryChange(value, addressValues);
+                onBillingCountryChange(value, addressValues, orderComment);
             }
         },
         [onBillingCountryChange, values],
@@ -300,7 +267,15 @@ export const PaymentBillingForm = withLanguage(
     withFormik<PaymentBillingFormProps & WithLanguageProps, PaymentBillingFormValues>({
         // No submit button — persistence happens via ensureBillingAddressSaved.
         handleSubmit: () => undefined,
-        mapPropsToValues: getInitialValuesPreservingOrderComment,
+        mapPropsToValues: ({
+            getFields,
+            customerMessage,
+            billingAddress,
+            isBillingSameAsShipping,
+        }) => ({
+            ...getBillingFormInitialValues(getFields, billingAddress, customerMessage),
+            billingSameAsShipping: isBillingSameAsShipping,
+        }),
         validateOnMount: true,
         validationSchema: ({
             language,

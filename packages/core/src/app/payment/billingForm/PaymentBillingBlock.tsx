@@ -1,4 +1,4 @@
-import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import type { Address } from '@bigcommerce/checkout-sdk';
 import { omit } from 'lodash';
 import React, { type FunctionComponent, useRef } from 'react';
 
@@ -9,7 +9,7 @@ import { type AddressFormValues, isEqualAddress, mapAddressFromFormValues } from
 import { type BillingFormValues } from '../../billing/billingFormConfig';
 import { useBilling } from '../../billing/hooks/useBilling';
 
-import { PaymentBillingForm, type PaymentBillingFormWithOrderComment } from './PaymentBillingForm';
+import { PaymentBillingForm } from './PaymentBillingForm';
 
 export interface PaymentBillingBlockProps {
     // Id of the payment method currently selected on the payment step. Drives the
@@ -61,10 +61,27 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         }
     };
 
-    const orderCommentRef = useRef<PaymentBillingFormWithOrderComment>({});
+    const saveOrderComment = async (orderComment: string): Promise<void> => {
+        if (customerMessage === orderComment) {
+            return;
+        }
+
+        await updateCheckout({ customerMessage: orderComment });
+    };
+
+    const handleSelectAddress = async (address: Partial<Address>, orderComment: string) => {
+        await saveOrderComment(orderComment);
+
+        return updateBillingAddress(address);
+    };
+
     const lastRequestedCountryCodeRef = useRef<string | undefined>();
 
-    const handleBillingCountryChange = (countryCode: string, addressValues: AddressFormValues) => {
+    const handleBillingCountryChange = (
+        countryCode: string,
+        addressValues: AddressFormValues,
+        orderComment: string,
+    ) => {
         const lastCountryCode =
             lastRequestedCountryCodeRef.current ?? getBillingAddress()?.countryCode;
 
@@ -74,12 +91,15 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
 
         lastRequestedCountryCodeRef.current = countryCode;
 
-        updateBillingAddress({
-            ...mapAddressFromFormValues(addressValues),
-            countryCode,
-            stateOrProvince: '',
-            stateOrProvinceCode: '',
-        })
+        saveOrderComment(orderComment)
+            .then(() =>
+                updateBillingAddress({
+                    ...mapAddressFromFormValues(addressValues),
+                    countryCode,
+                    stateOrProvince: '',
+                    stateOrProvinceCode: '',
+                }),
+            )
             .catch((error) => {
                 if (error instanceof Error) {
                     onUnhandledError(error);
@@ -99,15 +119,11 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         ...addressValues
     }: BillingFormValues): Promise<void> => {
         const currentBillingAddress = getBillingAddress();
-        const promises: Array<Promise<CheckoutSelectors>> = [];
+        const promises: Array<Promise<unknown>> = [saveOrderComment(orderComment)];
         const address = mapAddressFromFormValues(addressValues);
 
         if (address && !isEqualAddress(address, currentBillingAddress)) {
             promises.push(updateBillingAddress(address));
-        }
-
-        if (customerMessage !== orderComment) {
-            promises.push(updateCheckout({ customerMessage: orderComment }));
         }
 
         await Promise.all(promises);
@@ -139,9 +155,8 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     onBillingCountryChange={handleBillingCountryChange}
                     onBillingSameAsShippingChange={handleBillingSameAsShippingChange}
                     onPersist={handlePersist}
+                    onSelectAddress={handleSelectAddress}
                     onUnhandledError={onUnhandledError}
-                    orderCommentRef={orderCommentRef}
-                    updateBillingAddress={updateBillingAddress}
                 />
             </div>
         </AddressFormSkeleton>
