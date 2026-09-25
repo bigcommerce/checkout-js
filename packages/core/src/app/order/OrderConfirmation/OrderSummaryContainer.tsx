@@ -61,6 +61,7 @@ export const OrderSummaryContainer = ({
                                     <OrderSummaryDrawerV2
                                         {...mapToOrderSummarySubtotalsProps(order)}
                                         bundledItems={order.bundledItems}
+                                        headerLink={<PrintLink />}
                                         lineItems={order.lineItems}
                                         shopperCurrency={shopperCurrency}
                                         storeCurrency={currency}

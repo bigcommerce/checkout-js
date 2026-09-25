@@ -14,6 +14,7 @@ import { getStoreConfig } from '../config/config.mock';
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { getOrder } from './orders.mock';
 import { OrderSummaryDrawerV2 } from './OrderSummaryDrawerV2';
+import PrintLink from './PrintLink';
 
 configure({ testIdAttribute: 'data-test' });
 
@@ -40,6 +41,7 @@ describe('OrderSummaryDrawerV2', () => {
                         <OrderSummaryDrawerV2
                             {...mapToOrderSummarySubtotalsProps(order)}
                             bundledItems={order.bundledItems}
+                            headerLink={<PrintLink />}
                             lineItems={order.lineItems}
                             shopperCurrency={config.shopperCurrency}
                             storeCurrency={config.currency}

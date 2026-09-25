@@ -7,11 +7,12 @@ import { useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconChevronDown, IconChevronUp } from '@bigcommerce/checkout/ui';
 
-import { CartOutstandingBalance } from '../../cart/CartOutstandingBalance';
-import { CartSummaryItemImage } from '../../cart/CartSummaryItemImage';
-import { useSheetDismissDrag } from '../../cart/useSheetDismissDrag';
-import getItemsCount from '../../order/getItemsCount';
-import getLineItemsCount from '../../order/getLineItemsCount';
+import { CartOutstandingBalance } from '../cart/CartOutstandingBalance';
+import { CartSummaryItemImage } from '../cart/CartSummaryItemImage';
+import { useSheetDismissDrag } from '../cart/useSheetDismissDrag';
+
+import getItemsCount from './getItemsCount';
+import getLineItemsCount from './getLineItemsCount';
 
 const SHEET_TRANSITION_DURATION = 600;
 

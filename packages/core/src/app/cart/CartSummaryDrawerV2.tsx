@@ -2,9 +2,7 @@ import React, { type FunctionComponent } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 
-import { SummaryDrawerV2 } from '../common/components/SummaryDrawerV2';
-import OrderSummary from '../order/OrderSummary';
-import { removeBundledItems } from '../order/removeBundledItems';
+import { OrderSummaryDrawerV2 } from '../order/OrderSummaryDrawerV2';
 
 import { CartHeaderLink } from './CartHeaderLink';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
@@ -24,27 +22,18 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
         return null;
     }
 
-    const { cartUrl, isBuyNowCart, checkout, shopperCurrency } = props;
-    const nonBundledLineItems = removeBundledItems(checkout.cart.lineItems);
+    const { cartUrl, isBuyNowCart } = props;
 
-    return (
-        <SummaryDrawerV2
-            amount={checkout.outstandingBalance}
-            currencyCode={shopperCurrency.code}
-            nonBundledItems={nonBundledLineItems}
-        >
-            {withRedeemable(OrderSummary)({
-                ...props,
-                headerLink: (
-                    <CartHeaderLink
-                        cartUrl={cartUrl}
-                        isBuyNowCart={isBuyNowCart}
-                        isMultiShippingMode={isMultiShippingMode}
-                    />
-                ),
-            })}
-        </SummaryDrawerV2>
-    );
+    return withRedeemable(OrderSummaryDrawerV2)({
+        ...props,
+        headerLink: (
+            <CartHeaderLink
+                cartUrl={cartUrl}
+                isBuyNowCart={isBuyNowCart}
+                isMultiShippingMode={isMultiShippingMode}
+            />
+        ),
+    });
 };
 
 export default CartSummaryDrawerV2;
