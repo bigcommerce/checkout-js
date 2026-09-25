@@ -68,7 +68,9 @@ const Modal: FunctionComponent<ModalProps> = ({
             closeTimeoutMS={200}
             onRequestClose={onRequestClose}
             overlayClassName={{
-                base: 'modalOverlay',
+                base: classNames('modalOverlay', {
+                    'modalOverlay--enhancedThemeV1': enhancedThemeV1,
+                }),
                 afterOpen: 'modalOverlay--afterOpen',
                 beforeClose: 'modalOverlay--beforeClose',
             }}

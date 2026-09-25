@@ -58,6 +58,9 @@ describe('Modal', () => {
         );
 
         expect(screen.getByRole('dialog')).toHaveClass('enhancedThemeV1');
+        expect(screen.getByRole('dialog').parentElement).toHaveClass(
+            'modalOverlay--enhancedThemeV1',
+        );
     });
 
     it('does not add enhancedThemeV1 class when enhanced theme is disabled', () => {
@@ -68,5 +71,8 @@ describe('Modal', () => {
         );
 
         expect(screen.getByRole('dialog')).not.toHaveClass('enhancedThemeV1');
+        expect(screen.getByRole('dialog').parentElement).not.toHaveClass(
+            'modalOverlay--enhancedThemeV1',
+        );
     });
 });

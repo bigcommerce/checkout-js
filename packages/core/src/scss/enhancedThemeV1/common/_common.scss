@@ -22,6 +22,9 @@ body:has(#checkout-page-container.enhancedThemeV1) {
         }
     }
 }
+
+.modalOverlay--enhancedThemeV1 {
+    background: $overlay-fill-dark;
 }
 
 @include enhancedThemeV1 {
