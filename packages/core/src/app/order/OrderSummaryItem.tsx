@@ -148,7 +148,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                     className="product-title optimizedCheckout-contentPrimary body-medium"
                     data-test="cart-item-product-title"
                 >
-                    <span className="optimizedCheckout-contentPrimary body-bold">{`${quantity} x `}</span>
+                    <span className="body-bold">{`${quantity} x `}</span>
                     {name}
                 </h4>
                 <OrderSummaryItemBackorderDetails
@@ -203,7 +203,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
             <div className="product-column product-actions">
                 {isNumber(amountAfterDiscount) && amountAfterDiscount !== amount && (
                     <div
-                        className="product-price optimizedCheckout-contentPrimary body-medium"
+                        className="product-price body-medium"
                         data-test="cart-item-product-price--afterDiscount"
                     >
                         <ShopperCurrency amount={amountAfterDiscount} />

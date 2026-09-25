@@ -40,6 +40,7 @@
             getElement: stripeElement,
             update: stripeElement,
             fetchUpdates: stripeElement,
+            submit: () => Promise.resolve({}),
         }),
     })
 })()

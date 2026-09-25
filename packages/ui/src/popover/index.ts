@@ -1,2 +1,3 @@
 export { default as Popover } from './Popover';
-export { default as PopoverList, PopoverListItem } from './PopoverList';
+export type { PopoverListItem } from './PopoverList';
+export { default as PopoverList } from './PopoverList';

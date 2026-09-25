@@ -153,6 +153,10 @@ describe('OrderSummaryModal', () => {
                     shouldDisplayBackorderMessagesOnStorefront: true,
                 },
             });
+
+            // Keep order.bundledItems consistent with the bundle child declared in
+            // bundleItems above, matching how the SDK's own bundledItems contract works.
+            order.bundledItems.physicalItems.push(bundleItems.physicalItems[1]);
         });
 
         const renderModal = () =>

@@ -48,7 +48,6 @@ describe('MultiShippingForm Component', () => {
         defaultProps = {
             cartHasChanged: false,
             customerMessage: 'x',
-            isLoading: false,
             onUnhandledError: jest.fn(),
             onSubmit: jest.fn(),
         };
@@ -78,7 +77,7 @@ describe('MultiShippingForm Component', () => {
             consignments: [
                 {
                     ...getConsignment(),
-                    lineItemIds: [getPhysicalItem().id],
+                    lineItemIds: [String(getPhysicalItem().id)],
                 },
             ],
         });
@@ -207,8 +206,8 @@ describe('MultiShippingForm Component', () => {
         expect(screen.getByText('Destination #1')).toBeInTheDocument();
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
 
-        // eslint-disable-next-line testing-library/no-node-access
-        const destination1 = screen.getByText('Destination #1').parentElement?.parentElement;
+        // eslint-disable-next-line testing-library/no-node-access, @typescript-eslint/no-non-null-assertion
+        const destination1 = screen.getByText('Destination #1').parentElement!.parentElement!;
 
         expect(
             within(destination1).getByText('Canvas Laundry Cart', { exact: false }),
@@ -310,14 +309,14 @@ describe('MultiShippingForm Component', () => {
             ).not.toBeInTheDocument();
         });
 
-        // eslint-disable-next-line testing-library/no-node-access
-        const destination2 = screen.getByText('Destination #2').parentElement?.parentElement;
+        // eslint-disable-next-line testing-library/no-node-access, @typescript-eslint/no-non-null-assertion
+        const destination2 = screen.getByText('Destination #2').parentElement!.parentElement!;
         const addressSelectButton = within(destination2).getByTestId('address-select-button');
 
         await userEvent.click(addressSelectButton);
 
         // eslint-disable-next-line testing-library/no-node-access
-        const addressOption = screen.getAllByTestId('address-select-option')[0].firstChild;
+        const addressOption = screen.getAllByTestId('address-select-option')[0].firstElementChild;
 
         expect(addressOption).toBeInTheDocument();
 
@@ -444,14 +443,14 @@ describe('MultiShippingForm Component', () => {
             ).not.toBeInTheDocument();
         });
 
-        // eslint-disable-next-line testing-library/no-node-access
-        const destination2 = screen.getByText('Destination #2').parentElement?.parentElement;
+        // eslint-disable-next-line testing-library/no-node-access, @typescript-eslint/no-non-null-assertion
+        const destination2 = screen.getByText('Destination #2').parentElement!.parentElement!;
         const addressSelectButton = within(destination2).getByTestId('address-select-button');
 
         await userEvent.click(addressSelectButton);
 
         // eslint-disable-next-line testing-library/no-node-access
-        const addressOption = screen.getAllByTestId('address-select-option')[0].firstChild;
+        const addressOption = screen.getAllByTestId('address-select-option')[0].firstElementChild;
 
         expect(addressOption).toBeInTheDocument();
 
@@ -910,7 +909,12 @@ describe('MultiShippingForm Component', () => {
                     physicalItems: [
                         {
                             ...getPhysicalItem(),
-                            stockPosition: { quantityBackordered: 2 },
+                            stockPosition: {
+                                quantityBackordered: 2,
+                                quantityOnHand: 0,
+                                quantityOutOfStock: 0,
+                                backorderMessage: null,
+                            },
                         },
                     ],
                 },

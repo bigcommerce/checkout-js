@@ -1,4 +1,2 @@
-export {
-    default as HostedCreditCardFieldset,
-    HostedCreditCardFieldsetProps,
-} from './HostedCreditCardFieldset';
+export type { HostedCreditCardFieldsetProps } from './HostedCreditCardFieldset';
+export { default as HostedCreditCardFieldset } from './HostedCreditCardFieldset';

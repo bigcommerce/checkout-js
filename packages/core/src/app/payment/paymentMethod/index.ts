@@ -11,8 +11,6 @@ export { default as hasPaymentMethodWithId } from './hasPaymentMethodWithId';
 export { default as isSamePaymentMethod } from './isSamePaymentMethod';
 export { default as useFallbackWhenMethodRemoved } from './useFallbackWhenMethodRemoved';
 export { usePoMethodDisabledReason } from './usePoMethodDisabledReason';
-export {
-    default as CreditCardFieldsetValues,
-    hasCreditCardExpiry,
-    hasCreditCardNumber,
-} from './CreditCardFieldsetValues';
+export { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValues';
+export type { default as CreditCardFieldsetValues } from './CreditCardFieldsetValues';
+export { hasCreditCardExpiry, hasCreditCardNumber } from './CreditCardFieldsetValues';

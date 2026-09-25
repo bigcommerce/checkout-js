@@ -1,4 +1,2 @@
-export {
-    default as withHostedCreditCardFieldset,
-    WithInjectedHostedCreditCardFieldsetProps,
-} from './withHostedCreditCardFieldset';
+export type { WithInjectedHostedCreditCardFieldsetProps } from './withHostedCreditCardFieldset';
+export { default as withHostedCreditCardFieldset } from './withHostedCreditCardFieldset';

@@ -1,27 +1,15 @@
 export { getHostedCreditCardValidationSchema } from './getHostedCreditCardValidationSchema';
 export { getHostedInstrumentValidationSchema } from './getHostedInstrumentValidationSchema';
 export { default as HostedCreditCardComponent } from './HostedCreditCardComponent';
-export {
-    HostedCreditCardCodeField,
-    HostedCreditCardCodeFieldProps,
-} from './HostedCreditCardCodeField';
-export {
-    HostedCreditCardFieldset,
-    HostedCreditCardFieldsetProps,
-} from './HostedCreditCardFieldset';
-export {
-    HostedCreditCardNumberField,
-    HostedCreditCardNumberFieldProps,
-} from './HostedCreditCardNumberField';
-export {
-    HostedCreditCardValidation,
-    HostedCreditCardValidationProps,
-} from './HostedCreditCardValidation';
-export {
-    default as HostedCreditCardExpiryField,
-    HostedCreditCardExpiryFieldProps,
-} from './HostedCreditCardExpiryField';
-export {
-    default as HostedCreditCardNameField,
-    HostedCreditCardNameFieldProps,
-} from './HostedCreditCardNameField';
+export type { HostedCreditCardCodeFieldProps } from './HostedCreditCardCodeField';
+export { HostedCreditCardCodeField } from './HostedCreditCardCodeField';
+export type { HostedCreditCardFieldsetProps } from './HostedCreditCardFieldset';
+export { HostedCreditCardFieldset } from './HostedCreditCardFieldset';
+export type { HostedCreditCardNumberFieldProps } from './HostedCreditCardNumberField';
+export { HostedCreditCardNumberField } from './HostedCreditCardNumberField';
+export type { HostedCreditCardValidationProps } from './HostedCreditCardValidation';
+export { HostedCreditCardValidation } from './HostedCreditCardValidation';
+export type { HostedCreditCardExpiryFieldProps } from './HostedCreditCardExpiryField';
+export { default as HostedCreditCardExpiryField } from './HostedCreditCardExpiryField';
+export type { HostedCreditCardNameFieldProps } from './HostedCreditCardNameField';
+export { default as HostedCreditCardNameField } from './HostedCreditCardNameField';

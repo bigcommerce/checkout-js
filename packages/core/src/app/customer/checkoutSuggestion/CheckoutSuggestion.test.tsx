@@ -34,7 +34,7 @@ describe('CheckoutSuggestion', () => {
             executePaymentMethodCheckout: jest.fn(),
             initializeCustomer: jest.fn(),
             isExecutingPaymentMethodCheckout: false,
-            providerWithCustomCheckout: null,
+            providerWithCustomCheckout: undefined,
             onUnhandledError: jest.fn(),
         };
 

@@ -10,6 +10,7 @@
     "importHelpers": true,
     "ignoreDeprecations": "6.0",
     "incremental": true,
+    "isolatedModules": true,
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext", "scripthost"],
     "module": "esnext",
@@ -112,6 +113,7 @@
       "@bigcommerce/checkout/contexts": ["packages/contexts/src/index.ts"]
     },
     "resolveJsonModule": true,
+    "rootDir": ".",
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,

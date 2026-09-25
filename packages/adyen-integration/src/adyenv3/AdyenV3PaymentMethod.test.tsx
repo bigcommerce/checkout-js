@@ -135,7 +135,8 @@ describe('when using AdyenV3 payment', () => {
 
             const initializeOptions = initializePayment.mock.calls[0][0];
 
-            initializeOptions.adyenv3.additionalActionOptions.onBeforeLoad(true);
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            initializeOptions.adyenv3!.additionalActionOptions.onBeforeLoad!(true);
 
             await new Promise((resolve) => process.nextTick(resolve));
 
@@ -160,8 +161,10 @@ describe('when using AdyenV3 payment', () => {
 
             const initializeOptions = initializePayment.mock.calls[0][0];
 
-            initializeOptions.adyenv3.additionalActionOptions.onBeforeLoad(true);
-            initializeOptions.adyenv3.additionalActionOptions.onActionHandled();
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            initializeOptions.adyenv3!.additionalActionOptions.onBeforeLoad!(true);
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            initializeOptions.adyenv3!.additionalActionOptions.onActionHandled!();
 
             await new Promise((resolve) => process.nextTick(resolve));
 
@@ -191,7 +194,8 @@ describe('when using AdyenV3 payment', () => {
             const initializeOptions: PaymentInitializeOptions = (initializePayment as jest.Mock)
                 .mock.calls[0][0];
 
-            initializeOptions.adyenv3.additionalActionOptions.onBeforeLoad(false);
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            initializeOptions.adyenv3!.additionalActionOptions.onBeforeLoad!(false);
 
             await new Promise((resolve) => process.nextTick(resolve));
 
@@ -217,12 +221,14 @@ describe('when using AdyenV3 payment', () => {
             const initializeOptions = initializePayment.mock.calls[0][0];
 
             act(() => {
-                initializeOptions.adyenv3.additionalActionOptions.onBeforeLoad(true);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                initializeOptions.adyenv3!.additionalActionOptions.onBeforeLoad!(true);
             });
 
             await new Promise((resolve) => process.nextTick(resolve));
 
-            initializeOptions.adyenv3.additionalActionOptions.onLoad(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            initializeOptions.adyenv3!.additionalActionOptions.onLoad!(
                 cancelAdditionalActionModalFlow,
             );
 

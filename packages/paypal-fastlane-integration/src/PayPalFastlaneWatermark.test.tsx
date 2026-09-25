@@ -26,6 +26,7 @@ describe('PayPalFastlaneWatermark Component', () => {
         initializationData: {
             isFastlanePrivacySettingEnabled: true,
         },
+        skipRedirectConfirmationAlert: false,
         type: 'PAYMENT_TYPE_API',
         clientToken: 'clientToken',
     };

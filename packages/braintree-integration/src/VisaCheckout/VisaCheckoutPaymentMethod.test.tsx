@@ -36,6 +36,12 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import VisaCheckoutPaymentMethod from './VisaCheckoutPaymentMethod';
 
+// The SDK declares braintreevisacheckout on the braintree integration's option
+// type, which it does not export; only the strategy factory is public.
+type VisaCheckoutInitializeOptions = PaymentInitializeOptions & {
+    braintreevisacheckout?: { onPaymentSelect?(): void };
+};
+
 describe('when using Visa Checkout payment', () => {
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
@@ -129,8 +135,9 @@ describe('when using Visa Checkout payment', () => {
     it('reinitializes method once payment option is selected', async () => {
         render(<VisaCheckoutPaymentMethodTest {...defaultProps} method={method} />);
 
-        const options: PaymentInitializeOptions = (checkoutService.initializePayment as jest.Mock)
-            .mock.calls[0][0];
+        const options: VisaCheckoutInitializeOptions = (
+            checkoutService.initializePayment as jest.Mock
+        ).mock.calls[0][0];
 
         (checkoutService.initializePayment as jest.Mock).mockReset();
 
@@ -153,8 +160,9 @@ describe('when using Visa Checkout payment', () => {
             Promise.reject(new Error('test error')),
         );
 
-        const options: PaymentInitializeOptions = (checkoutService.initializePayment as jest.Mock)
-            .mock.calls[0][0];
+        const options: VisaCheckoutInitializeOptions = (
+            checkoutService.initializePayment as jest.Mock
+        ).mock.calls[0][0];
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         options.braintreevisacheckout!.onPaymentSelect!();

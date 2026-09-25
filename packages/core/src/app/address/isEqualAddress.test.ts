@@ -14,7 +14,7 @@ describe('isEqualAddress', () => {
                 id: 'x',
                 email: 'y',
                 shouldSaveAddress: false,
-                type: 'z',
+                type: 'residential',
             }),
         ).toBeTruthy();
     });

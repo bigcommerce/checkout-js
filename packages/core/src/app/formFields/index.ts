@@ -1,13 +1,11 @@
-export {
-    default as getFormFieldsValidationSchema,
-    FormFieldValues,
-} from './getFormFieldsValidationSchema';
-export {
-    default as getCustomFormFieldsValidationSchema,
+export type { FormFieldValues } from './getFormFieldsValidationSchema';
+export { default as getFormFieldsValidationSchema } from './getFormFieldsValidationSchema';
+export type {
     FormFieldsValidationSchemaOptions,
     TranslateValidationErrorFunction,
     CustomFormFieldValues,
 } from './getCustomFormFieldsValidationSchema';
+export { default as getCustomFormFieldsValidationSchema } from './getCustomFormFieldsValidationSchema';
 export {
     getAddressExtraFieldsValidationSchema,
     getOrderExtraFieldsValidationSchema,

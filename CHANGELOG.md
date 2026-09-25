@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.906.0](https://github.com/bigcommerce/checkout-js/compare/v1.905.4...v1.906.0) (2026-09-24)
+
+
+### Features
+
+* **payment:** PI-5661 [Adyen] upgrade SDK to 6.44.0 ([#3354](https://github.com/bigcommerce/checkout-js/issues/3354)) ([06556d1](https://github.com/bigcommerce/checkout-js/commit/06556d1d4fd5ebb04637633266796775f82cb7c0))
+
+### [1.905.4](https://github.com/bigcommerce/checkout-js/compare/v1.905.3...v1.905.4) (2026-09-24)
+
+### [1.905.3](https://github.com/bigcommerce/checkout-js/compare/v1.905.2...v1.905.3) (2026-09-24)
+
+### [1.905.2](https://github.com/bigcommerce/checkout-js/compare/v1.905.1...v1.905.2) (2026-09-24)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10427 revert contentPrimary matching extra elements ([#3359](https://github.com/bigcommerce/checkout-js/issues/3359)) ([1b6efc5](https://github.com/bigcommerce/checkout-js/commit/1b6efc535a06f9762033b41ed8bd567224a1a996))
+
+### [1.905.1](https://github.com/bigcommerce/checkout-js/compare/v1.905.0...v1.905.1) (2026-09-24)
+
+## [1.905.0](https://github.com/bigcommerce/checkout-js/compare/v1.904.5...v1.905.0) (2026-09-24)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10399 Redesign payment loaders ([#3324](https://github.com/bigcommerce/checkout-js/issues/3324)) ([4817390](https://github.com/bigcommerce/checkout-js/commit/48173907dc54e386c296b7924054587b2714c51e))
+
+### [1.904.5](https://github.com/bigcommerce/checkout-js/compare/v1.904.4...v1.904.5) (2026-09-23)
+
+### [1.904.4](https://github.com/bigcommerce/checkout-js/compare/v1.904.3...v1.904.4) (2026-09-23)
+
+### [1.904.3](https://github.com/bigcommerce/checkout-js/compare/v1.904.2...v1.904.3) (2026-09-23)
+
+### [1.904.2](https://github.com/bigcommerce/checkout-js/compare/v1.904.1...v1.904.2) (2026-09-22)
+
+### [1.904.1](https://github.com/bigcommerce/checkout-js/compare/v1.904.0...v1.904.1) (2026-09-22)
+
 ## [1.904.0](https://github.com/bigcommerce/checkout-js/compare/v1.903.0...v1.904.0) (2026-09-22)
 
 

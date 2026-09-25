@@ -18,6 +18,7 @@ export const getUseShippingTestMock: () => ReturnType<typeof useShipping> = () =
     defaultShippingExpectationMessage: undefined,
     deinitializeShippingMethod: jest.fn(),
     deleteConsignments: jest.fn(),
+    getConsignments: jest.fn(),
     getFields: jest.fn(() => []),
     hasMultiShippingEnabled: false,
     initializeShippingMethod: jest.fn(),

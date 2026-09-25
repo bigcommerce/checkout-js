@@ -125,7 +125,7 @@ export class Checkout {
     }: {
         formId: string;
         address: Address;
-        addressAppendText: string;
+        addressAppendText?: string;
     }): Promise<void> {
         await this.page.locator(formId).waitFor({ state: 'visible' });
         await this.page

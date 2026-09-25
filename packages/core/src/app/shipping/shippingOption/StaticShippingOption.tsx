@@ -43,7 +43,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                     />
                 </span>
             )}
-            <span className="shippingOption-desc optimizedCheckout-contentPrimary body-medium">
+            <span className="shippingOption-desc body-medium">
                 {method.description}
                 {method.transitTime && (
                     <span className="shippingOption-transitTime">{method.transitTime}</span>
@@ -54,9 +54,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                     />
                 )}
             </span>
-            <span className="shippingOption-price optimizedCheckout-contentPrimary body-medium">
-                {renderShippingPrice()}
-            </span>
+            <span className="shippingOption-price body-medium">{renderShippingPrice()}</span>
         </div>
     );
 };

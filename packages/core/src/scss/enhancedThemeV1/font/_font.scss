@@ -1,5 +1,16 @@
 @include enhancedThemeV1 {
 
+    // Headings take a dark colour from the base stylesheet, which an inherited
+    // value cannot override - unreadable on the dark variant. Excluded inside
+    // modals: those force a light background, where inheriting would hide text.
+    .layout {
+        h1, h2, h3, h4, h5, h6 {
+            &:not([class*="optimizedCheckout-"]) {
+                color: inherit;
+            }
+        }
+    }
+
     // optimizedCheckout-headingPrimary
     .header, .header-secondary, .sub-header {
         font-family: $fontFamily-montserrat;

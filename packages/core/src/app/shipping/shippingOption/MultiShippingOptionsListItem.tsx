@@ -23,7 +23,7 @@ export const MultiShippingOptionsListItem: FunctionComponent<MultiShippingOption
         costAfterDiscount !== undefined && costAfterDiscount !== shippingOption.cost;
 
     const label = (
-        <span className="optimizedCheckout-contentPrimary body-regular">
+        <span className="body-regular">
             {`${shippingOption.description} - `}
             {showDiscount ? (
                 <>

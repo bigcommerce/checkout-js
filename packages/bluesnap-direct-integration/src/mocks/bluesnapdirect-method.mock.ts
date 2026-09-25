@@ -4,6 +4,7 @@ const DISPLAY_NAME_MAP = {
     credit_card: 'Credit Card',
     ecp: 'Electronic Check Presentment',
     sepa_direct_debit: 'SEPA',
+    ideal: 'iDEAL',
     pay_by_bank: 'Pay by Bank',
 };
 

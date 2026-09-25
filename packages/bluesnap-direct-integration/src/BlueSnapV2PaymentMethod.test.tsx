@@ -126,7 +126,11 @@ describe('when using BlueSnapV2 payment', () => {
         const initializeOptions = initializePayment.mock.calls[0][0];
 
         act(() => {
-            initializeOptions.bluesnapv2?.onLoad(undefined, jest.fn());
+            // Deliberately out-of-contract: exercises the guard for a missing iframe.
+            initializeOptions.bluesnapv2?.onLoad(
+                undefined as unknown as HTMLIFrameElement,
+                jest.fn(),
+            );
         });
 
         await new Promise((resolve) => process.nextTick(resolve));

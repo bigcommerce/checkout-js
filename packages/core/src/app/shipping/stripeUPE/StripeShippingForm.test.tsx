@@ -1,4 +1,8 @@
-import { type CheckoutSelectors, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import {
+    type Address,
+    type CheckoutSelectors,
+    createCheckoutService,
+} from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React, { act } from 'react';
 
@@ -35,7 +39,7 @@ describe('StripeShippingForm', () => {
     const checkoutService = createCheckoutService();
     const errorLogger = new ConsoleErrorLogger();
     const extensionService = new ExtensionService(checkoutService, errorLogger);
-    const { customFields, ...rest } = getShippingAddress();
+    const { customFields: _customFields, ...rest } = getShippingAddress();
     const localeContext = createLocaleContext(getStoreConfig());
     let checkoutState: CheckoutSelectors;
 
@@ -44,6 +48,7 @@ describe('StripeShippingForm', () => {
     const defaultUseShippingValues = getUseShippingTestMock();
 
     const defaultProps = {
+        isLoading: false,
         isShippingMethodLoading: false,
         step: {
             isActive: true,
@@ -57,7 +62,7 @@ describe('StripeShippingForm', () => {
         isInitialValueLoaded: false,
         isMultiShippingMode: false,
         countriesWithAutocomplete: [],
-        shippingAddress: rest,
+        shippingAddress: rest as Address,
         customerMessage: '',
         addresses: [],
         consignments: [],
