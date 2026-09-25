@@ -17,8 +17,10 @@ body:has(#checkout-page-container.enhancedThemeV1) {
     }
 
     .checkoutHeader-heading {
-        @media (max-width: #{$screen-small - 1}) {
-            font-size: $fontSize-large;
+        font-size: $fontSize-large;
+
+        @include breakpoint("small") {
+            @include headingStyle("h1");
         }
     }
 }
