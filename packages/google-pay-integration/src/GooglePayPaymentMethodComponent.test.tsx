@@ -3,14 +3,26 @@ import {
     type CheckoutSelectors,
     type CheckoutService,
     createCheckoutService,
+    type HostedInstrument,
     type LanguageService,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { Formik } from 'formik';
+import { noop } from 'lodash';
 import React from 'react';
 
-import { CheckoutProvider } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+    PaymentFormContext,
+} from '@bigcommerce/checkout/contexts';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import {
+    getCustomer,
+    getGuestCustomer,
     getPaymentFormServiceMock,
     getPaymentMethod,
     getStoreConfig,
@@ -99,6 +111,7 @@ describe('GooglePayPaymentMethodComponent', () => {
                     buttonType: 'pay',
                     loadingContainerId: 'checkout-app',
                     onError: expect.any(Function),
+                    getFieldsValues: expect.any(Function),
                 },
             }),
         );
@@ -328,6 +341,94 @@ describe('GooglePayPaymentMethodComponent', () => {
 
             expect(paymentForm.setSubmitted).not.toHaveBeenCalled();
             expect(paymentForm.setFieldTouched).not.toHaveBeenCalled();
+        });
+    });
+    describe('save payment method checkbox', () => {
+        const SAVE_LABEL = 'Save this card for future transactions';
+
+        let localeContext: LocaleContextType;
+        let vaultingMethod: PaymentMethod;
+
+        const renderWithForm = (methodOverride: PaymentMethod = vaultingMethod) =>
+            render(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <PaymentFormContext.Provider value={{ paymentForm }}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <Formik initialValues={{}} onSubmit={noop}>
+                                <GooglePayPaymentMethodComponent
+                                    {...buildProps()}
+                                    method={methodOverride}
+                                />
+                            </Formik>
+                        </LocaleContext.Provider>
+                    </PaymentFormContext.Provider>
+                </CheckoutProvider>,
+            );
+
+        beforeEach(() => {
+            localeContext = createLocaleContext(getStoreConfig());
+
+            vaultingMethod = {
+                ...method,
+                id: 'googlepaystripeocs',
+                config: { ...method.config, vaultingWalletEnabled: true },
+            };
+
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+        });
+
+        it('renders the checkbox when the shopper can vault an instrument', () => {
+            renderWithForm();
+
+            expect(screen.getByLabelText(SAVE_LABEL)).toBeInTheDocument();
+        });
+
+        it('does not render the checkbox for a guest shopper', () => {
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+
+            renderWithForm();
+
+            expect(screen.queryByLabelText(SAVE_LABEL)).not.toBeInTheDocument();
+        });
+
+        it('does not render the checkbox when the merchant has wallet vaulting disabled', () => {
+            renderWithForm({
+                ...vaultingMethod,
+                config: { ...method.config, vaultingWalletEnabled: false },
+            });
+
+            expect(screen.queryByLabelText(SAVE_LABEL)).not.toBeInTheDocument();
+        });
+
+        it('reports the shopper choice to the SDK at pay time', () => {
+            (paymentForm.getFieldValue as jest.Mock).mockReturnValue(true);
+
+            renderWithForm();
+
+            jest.runAllTimers();
+
+            const initializeOptions = (checkoutService.initializePayment as jest.Mock).mock
+                .calls[0][0] as Record<string, { getFieldsValues(): HostedInstrument }>;
+
+            expect(initializeOptions[vaultingMethod.id].getFieldsValues()).toEqual({
+                shouldSaveInstrument: true,
+            });
+            expect(paymentForm.getFieldValue).toHaveBeenCalledWith('shouldSaveInstrument');
+        });
+
+        it('reports false when the shopper leaves the checkbox unchecked', () => {
+            (paymentForm.getFieldValue as jest.Mock).mockReturnValue(undefined);
+
+            renderWithForm();
+
+            jest.runAllTimers();
+
+            const initializeOptions = (checkoutService.initializePayment as jest.Mock).mock
+                .calls[0][0] as Record<string, { getFieldsValues(): HostedInstrument }>;
+
+            expect(initializeOptions[vaultingMethod.id].getFieldsValues()).toEqual({
+                shouldSaveInstrument: false,
+            });
         });
     });
 });
