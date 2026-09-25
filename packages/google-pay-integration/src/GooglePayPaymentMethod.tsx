@@ -181,8 +181,6 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     return (
         <>
-            <WalletVaultingFields method={method} />
-
             <WalletButtonPaymentMethodComponent
                 {...rest}
                 buttonId="walletButton"
@@ -193,6 +191,8 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 shouldShowEditButton
                 signOutCustomer={checkoutService.signOutCustomer}
             />
+
+            <WalletVaultingFields method={method} />
         </>
     );
 };
