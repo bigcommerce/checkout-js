@@ -15,6 +15,13 @@ body:has(#checkout-page-container.enhancedThemeV1) {
     #checkout-page-container {
         flex: 1 0 auto;
     }
+
+    .checkoutHeader-heading {
+        @media (max-width: #{$screen-small - 1}) {
+            font-size: $fontSize-large;
+        }
+    }
+}
 }
 
 @include enhancedThemeV1 {
