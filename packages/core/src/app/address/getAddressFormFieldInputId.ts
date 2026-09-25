@@ -1,6 +1,6 @@
 import { type AddressKeyMap } from './address';
 
-export const ADDRESS_FIELD_IDS: AddressKeyMap = {
+const ADDRESS_FIELD_IDS: AddressKeyMap = {
     address1: 'addressLine1',
     address2: 'addressLine2',
     postalCode: 'postCode',

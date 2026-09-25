@@ -11,7 +11,7 @@ import CheckoutStepType from '../CheckoutStepType';
 
 import { BackorderQuantitiesChangedBanner } from './BackorderQuantitiesChangedBanner';
 
-export interface CheckoutHeaderProps {
+interface CheckoutHeaderProps {
     activeStepType?: CheckoutStepType;
     defaultStepType?: CheckoutStepType;
     buttonConfigs: PaymentMethod[];
@@ -20,7 +20,7 @@ export interface CheckoutHeaderProps {
     onWalletButtonClick: (methodName: string) => void;
 }
 
-export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
+const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
     activeStepType,
     defaultStepType,
     buttonConfigs,

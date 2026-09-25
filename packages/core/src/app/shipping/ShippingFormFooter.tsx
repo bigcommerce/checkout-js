@@ -18,7 +18,7 @@ import { OrderComments } from '../orderComments';
 import { ShippingExpectationMessage } from './ShippingExpectationMessage';
 import { ShippingOptions } from './shippingOption';
 
-export interface ShippingFormFooterProps {
+interface ShippingFormFooterProps {
     cartHasChanged: boolean;
     defaultShippingExpectationMessage?: string;
     isMultiShippingMode: boolean;

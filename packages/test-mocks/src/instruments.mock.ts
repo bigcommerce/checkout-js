@@ -8,7 +8,7 @@ import {
 
 import { getYear } from './getYear';
 
-export enum UntrustedShippingCardVerificationType {
+enum UntrustedShippingCardVerificationType {
     CVV = 'cvv',
     PAN = 'pan',
 }

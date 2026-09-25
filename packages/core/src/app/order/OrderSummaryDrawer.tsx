@@ -17,7 +17,7 @@ import getLineItemsCount from './getLineItemsCount';
 import OrderSummaryModal from './OrderSummaryModal';
 import { removeBundledItems } from './removeBundledItems';
 
-export interface OrderSummaryDrawerProps {
+interface OrderSummaryDrawerProps {
     lineItems: LineItemMap;
     total: number;
     headerLink: ReactNode;

@@ -3,10 +3,6 @@ import { type GatewayOrderPayment, type Order, type OrderPayment } from '@bigcom
 import { isGiftCertificatePayment } from '../giftCertificate';
 import { isStoreCreditPayment } from '../payment/storeCredit';
 
-export interface PaymentInstructionsProps {
-    order: Order;
-}
-
 function isDefaultOrderPayment(payment: OrderPayment): payment is GatewayOrderPayment {
     return !isGiftCertificatePayment(payment) && !isStoreCreditPayment(payment);
 }

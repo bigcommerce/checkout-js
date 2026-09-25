@@ -27,7 +27,7 @@ const Customer = lazy(() =>
     ),
 );
 
-export interface CustomerStepProps extends CustomerProps {
+interface CustomerStepProps extends CustomerProps {
     onEdit(type: CheckoutStepType): void;
     onExpanded(type: CheckoutStepType): void;
     onSignOut(event: CustomerSignOutEvent): void;

@@ -14,7 +14,7 @@ import { BasicFormField } from '../BasicFormField';
 import { ChecklistContext } from '../Checklist/Checklist';
 import { ChecklistItemInput } from '../ChecklistItemInput';
 
-export interface ChecklistItemProps {
+interface ChecklistItemProps {
     content?: ReactNode;
     htmlId?: string;
     isDisabled?: boolean;

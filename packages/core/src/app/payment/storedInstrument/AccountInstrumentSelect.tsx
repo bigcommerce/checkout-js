@@ -21,10 +21,6 @@ export interface AccountInstrumentSelectProps extends FieldProps<string> {
     onUseNewInstrument(): void;
 }
 
-export interface AccountInstrumentSelectValues {
-    instrumentId: string;
-}
-
 class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps> {
     componentDidMount() {
         const { selectedInstrumentId } = this.props;

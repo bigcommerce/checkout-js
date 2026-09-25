@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { type FunctionComponent, type HTMLAttributes } from 'react';
 
-export interface LegendProps extends HTMLAttributes<HTMLLegendElement> {
+interface LegendProps extends HTMLAttributes<HTMLLegendElement> {
     hidden?: boolean;
     testId?: string;
 }

@@ -9,7 +9,7 @@ import { type InputPropsType } from './Autocomplete';
 import type AutocompleteItem from './autocomplete-item';
 import { toPopoverItem } from './utils';
 
-export interface AutocompleteContentProps {
+interface AutocompleteContentProps {
     isOpen: boolean;
     getInputProps: (options?: GetInputPropsOptions) => React.InputHTMLAttributes<HTMLInputElement>;
     getMenuProps: (options?: GetMenuPropsOptions) => React.HTMLAttributes<HTMLElement>;

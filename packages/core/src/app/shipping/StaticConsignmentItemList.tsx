@@ -6,7 +6,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import findLineItems from './findLineItems';
 import getLineItemsCount from './getLineItemsCount';
 
-export interface StaticConsignmentItemListProps {
+interface StaticConsignmentItemListProps {
     consignment: Consignment;
     cart: Cart;
 }

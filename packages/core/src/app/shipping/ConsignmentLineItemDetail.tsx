@@ -7,7 +7,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { type MultiShippingTableItemWithType } from './MultishippingType';
 
-export interface ConsignmentLineItemDetailProps {
+interface ConsignmentLineItemDetailProps {
     lineItems: MultiShippingTableItemWithType[] | PhysicalItem[];
     isMultiShippingSummary?: boolean;
 }

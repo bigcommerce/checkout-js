@@ -5,7 +5,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import getOrderSummaryItemImage from '../order/getOrderSummaryItemImage';
 
-export interface CartStockPositionsChangedItemProps {
+interface CartStockPositionsChangedItemProps {
     item: PhysicalItem;
 }
 

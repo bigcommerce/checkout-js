@@ -29,7 +29,7 @@ export interface AddressFormModalProps extends AddressFormProps {
     onAfterOpen?(): void;
 }
 
-export interface AddressFormProps {
+interface AddressFormProps {
     isLoading: boolean;
     shouldShowSaveAddress?: boolean;
     defaultCountryCode?: string;
