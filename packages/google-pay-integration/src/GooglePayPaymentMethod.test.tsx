@@ -129,6 +129,23 @@ describe('when using Google Pay payment', () => {
                 jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
             });
 
+            it('renders the vaulting fields below the payment details', () => {
+                const { container } = render(
+                    <GooglePayPaymentMethodTest {...defaultProps} method={method} />,
+                );
+
+                // querySelectorAll returns nodes in document order
+                const sections = Array.from(
+                    container.querySelectorAll(
+                        '.paymentMethod--walletButton, .form-fieldset--storedInstrument',
+                    ),
+                );
+
+                expect(sections).toHaveLength(2);
+                expect(sections[0]).toHaveClass('paymentMethod--walletButton');
+                expect(sections[1]).toHaveClass('form-fieldset--storedInstrument');
+            });
+
             it('renders the checkbox for a Stripe provider', () => {
                 render(<GooglePayPaymentMethodTest {...defaultProps} method={method} />);
 
