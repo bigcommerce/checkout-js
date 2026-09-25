@@ -3,6 +3,7 @@ import {
     type CheckoutSelectors,
     type CheckoutService,
     createCheckoutService,
+    type HostedInstrument,
     type PaymentInitializeOptions,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
@@ -43,6 +44,7 @@ import {
     getAddress,
     getCheckout,
     getCheckoutPayment,
+    getCustomer,
     getPaymentFormServiceMock,
     getPaymentMethod,
     getStoreConfig,
@@ -116,6 +118,53 @@ describe('when using Google Pay payment', () => {
                 ...getCheckout(),
                 payments: [{ ...getCheckoutPayment(), providerId: method.id }],
             }));
+        });
+
+        describe('save payment method checkbox', () => {
+            const SAVE_LABEL = 'Save this card for future transactions';
+
+            beforeEach(() => {
+                method.id = PaymentMethodId.StripeOCSGooglePay;
+                method.config = { ...method.config, vaultingWalletEnabled: true };
+                jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+            });
+
+            it('renders the vaulting fields below the payment details', () => {
+                const { container } = render(
+                    <GooglePayPaymentMethodTest {...defaultProps} method={method} />,
+                );
+
+                // querySelectorAll returns nodes in document order
+                const sections = Array.from(
+                    container.querySelectorAll(
+                        '.paymentMethod--walletButton, .form-fieldset--storedInstrument',
+                    ),
+                );
+
+                expect(sections).toHaveLength(2);
+                expect(sections[0]).toHaveClass('paymentMethod--walletButton');
+                expect(sections[1]).toHaveClass('form-fieldset--storedInstrument');
+            });
+
+            it('renders the checkbox for a Stripe provider', () => {
+                render(<GooglePayPaymentMethodTest {...defaultProps} method={method} />);
+
+                expect(screen.getByLabelText(SAVE_LABEL)).toBeInTheDocument();
+            });
+
+            it('reports the shopper choice to the SDK when the shopper swaps cards', () => {
+                (paymentForm.getFieldValue as jest.Mock).mockReturnValue(true);
+
+                render(<GooglePayPaymentMethodTest {...defaultProps} method={method} />);
+
+                const initializeOptions = (checkoutService.initializePayment as jest.Mock).mock
+                    .calls[0][0] as Record<string, { getFieldsValues(): HostedInstrument }>;
+
+                expect(
+                    initializeOptions[PaymentMethodId.StripeOCSGooglePay].getFieldsValues(),
+                ).toEqual({ shouldSaveInstrument: true });
+                expect(paymentForm.getFieldValue).toHaveBeenCalledWith('shouldSaveInstrument');
+            });
         });
 
         it('initializes payment method when component mounts', () => {
