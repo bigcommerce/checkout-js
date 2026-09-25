@@ -328,6 +328,28 @@ describe('Payment step', () => {
         );
     });
 
+    it('overlays the payment form while the order is being placed (enhancedThemeV1)', async () => {
+        mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(true);
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+            config: enhancedThemeV1Config,
+        });
+
+        checkout.setRequestHandler(
+            rest.post('/internalapi/v1/checkout/order', () => new Promise<never>(() => undefined)),
+        );
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        expect(screen.queryByTestId('loading-overlay')).not.toBeInTheDocument();
+
+        await act(async () => userEvent.click(screen.getByText('Place order')));
+
+        expect(await screen.findByTestId('loading-overlay')).toBeInTheDocument();
+    });
+
     describe('billing country change (enhancedThemeV1)', () => {
         const scrollIntoViewMock = jest.fn();
 
