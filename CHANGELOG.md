@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.907.0](https://github.com/bigcommerce/checkout-js/compare/v1.906.1...v1.907.0) (2026-09-27)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10434 Enhanced theme UI polish and order placement loader ([#3365](https://github.com/bigcommerce/checkout-js/issues/3365)) ([ce168da](https://github.com/bigcommerce/checkout-js/commit/ce168da79d5ec97038626ee01a2b6f480abbaa30))
+
 ### [1.906.1](https://github.com/bigcommerce/checkout-js/compare/v1.906.0...v1.906.1) (2026-09-25)
 
 ## [1.906.0](https://github.com/bigcommerce/checkout-js/compare/v1.905.4...v1.906.0) (2026-09-24)
