@@ -59,16 +59,14 @@ describe('WalletVaultingFields', () => {
     });
 
     it('shows only the checkbox for a registered shopper when auto-vaulting is off', () => {
-        renderFields(methodWith({ vaultingWalletEnabled: true }));
+        renderFields(methodWith({ isVaultingEnabled: true }));
 
         expect(screen.getByLabelText(SAVE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(DISCLAIMER)).not.toBeInTheDocument();
     });
 
     it('shows the checkbox and the disclaimer for a registered shopper when auto-vaulting is on', () => {
-        renderFields(
-            methodWith({ vaultingWalletEnabled: true, vaultInstrumentForAllWalletPayments: true }),
-        );
+        renderFields(methodWith({ isVaultingEnabled: true, shouldVaultAllPayments: true }));
 
         expect(screen.getByLabelText(SAVE_LABEL)).toBeInTheDocument();
         expect(screen.getByText(DISCLAIMER)).toBeInTheDocument();
@@ -77,9 +75,7 @@ describe('WalletVaultingFields', () => {
     it('shows only the disclaimer for a guest shopper when auto-vaulting is on', () => {
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
 
-        renderFields(
-            methodWith({ vaultingWalletEnabled: true, vaultInstrumentForAllWalletPayments: true }),
-        );
+        renderFields(methodWith({ isVaultingEnabled: true, shouldVaultAllPayments: true }));
 
         expect(screen.queryByLabelText(SAVE_LABEL)).not.toBeInTheDocument();
         expect(screen.getByText(DISCLAIMER)).toBeInTheDocument();
@@ -88,14 +84,14 @@ describe('WalletVaultingFields', () => {
     it('shows nothing for a guest shopper when auto-vaulting is off', () => {
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
 
-        renderFields(methodWith({ vaultingWalletEnabled: true }));
+        renderFields(methodWith({ isVaultingEnabled: true }));
 
         expect(screen.queryByLabelText(SAVE_LABEL)).not.toBeInTheDocument();
         expect(screen.queryByText(DISCLAIMER)).not.toBeInTheDocument();
     });
 
     it('shows nothing when wallet vaulting is disabled', () => {
-        renderFields(methodWith({ vaultingWalletEnabled: false }));
+        renderFields(methodWith({ isVaultingEnabled: false }));
 
         expect(screen.queryByLabelText(SAVE_LABEL)).not.toBeInTheDocument();
         expect(screen.queryByText(DISCLAIMER)).not.toBeInTheDocument();

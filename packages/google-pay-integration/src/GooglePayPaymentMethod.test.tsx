@@ -125,7 +125,7 @@ describe('when using Google Pay payment', () => {
 
             beforeEach(() => {
                 method.id = PaymentMethodId.StripeOCSGooglePay;
-                method.config = { ...method.config, vaultingWalletEnabled: true };
+                method.config = { ...method.config, isVaultingEnabled: true };
                 jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
             });
 

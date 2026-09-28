@@ -5,13 +5,11 @@ import { useCheckout } from '@bigcommerce/checkout/contexts';
 import {
     AutoVaultingDisclaimer,
     InstrumentStorageField,
+    isPaymentMethodAutoVaultingInstruments,
 } from '@bigcommerce/checkout/instrument-utils';
 import { Fieldset } from '@bigcommerce/checkout/ui';
 
-import {
-    canVaultGooglePayInstrument,
-    isWalletAutoVaultingEnabled,
-} from './canVaultGooglePayInstrument';
+import { canVaultGooglePayInstrument } from './canVaultGooglePayInstrument';
 
 export interface WalletVaultingFieldsProps {
     method: PaymentMethod;
@@ -32,7 +30,7 @@ export const WalletVaultingFields: FunctionComponent<WalletVaultingFieldsProps> 
                 </Fieldset>
             )}
 
-            {isWalletAutoVaultingEnabled(method) && <AutoVaultingDisclaimer />}
+            {isPaymentMethodAutoVaultingInstruments(method) && <AutoVaultingDisclaimer />}
         </>
     );
 };

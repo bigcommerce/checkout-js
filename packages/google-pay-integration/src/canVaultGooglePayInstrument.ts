@@ -9,7 +9,4 @@ export const canVaultGooglePayInstrument = ({
     customer,
     method,
 }: CanVaultGooglePayInstrumentState): boolean =>
-    Boolean(method.config.vaultingWalletEnabled) && Boolean(customer && !customer.isGuest);
-
-export const isWalletAutoVaultingEnabled = (method: PaymentMethod): boolean =>
-    Boolean(method.config.vaultInstrumentForAllWalletPayments);
+    Boolean(method.config.isVaultingEnabled) && Boolean(customer && !customer.isGuest);

@@ -371,7 +371,7 @@ describe('GooglePayPaymentMethodComponent', () => {
             vaultingMethod = {
                 ...method,
                 id: 'googlepaystripeocs',
-                config: { ...method.config, vaultingWalletEnabled: true },
+                config: { ...method.config, isVaultingEnabled: true },
             };
 
             jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
@@ -394,7 +394,7 @@ describe('GooglePayPaymentMethodComponent', () => {
         it('does not render the checkbox when the merchant has wallet vaulting disabled', () => {
             renderWithForm({
                 ...vaultingMethod,
-                config: { ...method.config, vaultingWalletEnabled: false },
+                config: { ...method.config, isVaultingEnabled: false },
             });
 
             expect(screen.queryByLabelText(SAVE_LABEL)).not.toBeInTheDocument();

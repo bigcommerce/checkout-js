@@ -3,10 +3,7 @@ import { type Customer, type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import { getCustomer, getGuestCustomer, getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
 
-import {
-    canVaultGooglePayInstrument,
-    isWalletAutoVaultingEnabled,
-} from './canVaultGooglePayInstrument';
+import { canVaultGooglePayInstrument } from './canVaultGooglePayInstrument';
 
 describe('canVaultGooglePayInstrument', () => {
     let customer: Customer;
@@ -17,7 +14,7 @@ describe('canVaultGooglePayInstrument', () => {
         method = {
             ...getPaymentMethod(),
             id: PaymentMethodId.StripeOCSGooglePay,
-            config: { ...getPaymentMethod().config, vaultingWalletEnabled: true },
+            config: { ...getPaymentMethod().config, isVaultingEnabled: true },
         };
     });
 
@@ -29,7 +26,7 @@ describe('canVaultGooglePayInstrument', () => {
         expect(
             canVaultGooglePayInstrument({
                 customer,
-                method: { ...method, config: { ...method.config, vaultingWalletEnabled: false } },
+                method: { ...method, config: { ...method.config, isVaultingEnabled: false } },
             }),
         ).toBe(false);
     });
@@ -74,7 +71,7 @@ describe('canVaultGooglePayInstrument', () => {
                 customer: getGuestCustomer(),
                 method: {
                     ...method,
-                    config: { ...method.config, vaultInstrumentForAllWalletPayments: true },
+                    config: { ...method.config, shouldVaultAllPayments: true },
                 },
             }),
         ).toBe(false);
@@ -82,38 +79,5 @@ describe('canVaultGooglePayInstrument', () => {
 
     it('does not allow vaulting before the customer has loaded', () => {
         expect(canVaultGooglePayInstrument({ customer: undefined, method })).toBe(false);
-    });
-});
-
-describe('isWalletAutoVaultingEnabled', () => {
-    const method = {
-        ...getPaymentMethod(),
-        config: {
-            ...getPaymentMethod().config,
-            vaultingWalletEnabled: true,
-            vaultInstrumentForAllWalletPayments: true,
-        },
-    };
-
-    it('is enabled when the merchant vaults every wallet payment', () => {
-        expect(isWalletAutoVaultingEnabled(method)).toBe(true);
-    });
-
-    it('is disabled when the merchant does not vault every wallet payment', () => {
-        expect(
-            isWalletAutoVaultingEnabled({
-                ...method,
-                config: { ...method.config, vaultInstrumentForAllWalletPayments: false },
-            }),
-        ).toBe(false);
-    });
-
-    it('keys off the guest setting alone — the control panel clears it when wallet vaulting is off', () => {
-        expect(
-            isWalletAutoVaultingEnabled({
-                ...method,
-                config: { ...method.config, vaultingWalletEnabled: false },
-            }),
-        ).toBe(true);
     });
 });
