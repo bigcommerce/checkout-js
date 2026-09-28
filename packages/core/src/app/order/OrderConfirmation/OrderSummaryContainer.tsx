@@ -54,9 +54,9 @@ export const OrderSummaryContainer = ({
         <MobileView>
             {(matched) => {
                 if (matched) {
-                    if (enhancedThemeV1) {
-                        return (
-                            <LazyContainer loadingSkeleton={<></>}>
+                    return (
+                        <LazyContainer loadingSkeleton={<></>}>
+                            {enhancedThemeV1 ? (
                                 <aside aria-label="Cart Summary" className="layout-cart">
                                     <OrderSummaryDrawerV2
                                         {...mapToOrderSummarySubtotalsProps(order)}
@@ -68,22 +68,18 @@ export const OrderSummaryContainer = ({
                                         total={order.orderAmount}
                                     />
                                 </aside>
-                            </LazyContainer>
-                        );
-                    }
-
-                    return (
-                        <LazyContainer loadingSkeleton={<></>}>
-                            <OrderSummaryDrawer
-                                {...mapToOrderSummarySubtotalsProps(order)}
-                                headerLink={
-                                    <PrintLink className="modal-header-link cart-modal-link" />
-                                }
-                                lineItems={order.lineItems}
-                                shopperCurrency={shopperCurrency}
-                                storeCurrency={currency}
-                                total={order.orderAmount}
-                            />
+                            ) : (
+                                <OrderSummaryDrawer
+                                    {...mapToOrderSummarySubtotalsProps(order)}
+                                    headerLink={
+                                        <PrintLink className="modal-header-link cart-modal-link" />
+                                    }
+                                    lineItems={order.lineItems}
+                                    shopperCurrency={shopperCurrency}
+                                    storeCurrency={currency}
+                                    total={order.orderAmount}
+                                />
+                            )}
                         </LazyContainer>
                     );
                 }
