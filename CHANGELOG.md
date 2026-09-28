@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.909.0](https://github.com/bigcommerce/checkout-js/compare/v1.908.0...v1.909.0) (2026-09-28)
+
+
+### Features
+
+* **billing:** CHECKOUT-10431 Uncheck same shipping checkbox if multi shipping is used ([#3368](https://github.com/bigcommerce/checkout-js/issues/3368)) ([e675d84](https://github.com/bigcommerce/checkout-js/commit/e675d846ab0cce8c2824687195cc69476c0b1248))
+
 ## [1.908.0](https://github.com/bigcommerce/checkout-js/compare/v1.907.1...v1.908.0) (2026-09-28)
 
 
