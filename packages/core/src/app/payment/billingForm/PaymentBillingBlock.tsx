@@ -1,4 +1,4 @@
-import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import type { Address } from '@bigcommerce/checkout-sdk';
 import { omit } from 'lodash';
 import React, { type FunctionComponent, useRef } from 'react';
 
@@ -61,9 +61,27 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         }
     };
 
+    const saveOrderComment = async (orderComment: string): Promise<void> => {
+        if (customerMessage === orderComment) {
+            return;
+        }
+
+        await updateCheckout({ customerMessage: orderComment });
+    };
+
+    const handleSelectAddress = async (address: Partial<Address>, orderComment: string) => {
+        await saveOrderComment(orderComment);
+
+        return updateBillingAddress(address);
+    };
+
     const lastRequestedCountryCodeRef = useRef<string | undefined>();
 
-    const handleBillingCountryChange = (countryCode: string, addressValues: AddressFormValues) => {
+    const handleBillingCountryChange = (
+        countryCode: string,
+        addressValues: AddressFormValues,
+        orderComment: string,
+    ) => {
         const lastCountryCode =
             lastRequestedCountryCodeRef.current ?? getBillingAddress()?.countryCode;
 
@@ -73,12 +91,15 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
 
         lastRequestedCountryCodeRef.current = countryCode;
 
-        updateBillingAddress({
-            ...mapAddressFromFormValues(addressValues),
-            countryCode,
-            stateOrProvince: '',
-            stateOrProvinceCode: '',
-        })
+        saveOrderComment(orderComment)
+            .then(() =>
+                updateBillingAddress({
+                    ...mapAddressFromFormValues(addressValues),
+                    countryCode,
+                    stateOrProvince: '',
+                    stateOrProvinceCode: '',
+                }),
+            )
             .catch((error) => {
                 if (error instanceof Error) {
                     onUnhandledError(error);
@@ -98,15 +119,11 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         ...addressValues
     }: BillingFormValues): Promise<void> => {
         const currentBillingAddress = getBillingAddress();
-        const promises: Array<Promise<CheckoutSelectors>> = [];
+        const promises: Array<Promise<unknown>> = [saveOrderComment(orderComment)];
         const address = mapAddressFromFormValues(addressValues);
 
         if (address && !isEqualAddress(address, currentBillingAddress)) {
             promises.push(updateBillingAddress(address));
-        }
-
-        if (customerMessage !== orderComment) {
-            promises.push(updateCheckout({ customerMessage: orderComment }));
         }
 
         await Promise.all(promises);
@@ -138,8 +155,8 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     onBillingCountryChange={handleBillingCountryChange}
                     onBillingSameAsShippingChange={handleBillingSameAsShippingChange}
                     onPersist={handlePersist}
+                    onSelectAddress={handleSelectAddress}
                     onUnhandledError={onUnhandledError}
-                    updateBillingAddress={updateBillingAddress}
                 />
             </div>
         </AddressFormSkeleton>
