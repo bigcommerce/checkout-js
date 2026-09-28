@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.908.0](https://github.com/bigcommerce/checkout-js/compare/v1.907.1...v1.908.0) (2026-09-28)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10432 Add enhancedThemeV1 for order confirmation ([#3360](https://github.com/bigcommerce/checkout-js/issues/3360)) ([ba64a69](https://github.com/bigcommerce/checkout-js/commit/ba64a69c861d2ccbc184fcb9605aacb9d26a3daf))
+
 ### [1.907.1](https://github.com/bigcommerce/checkout-js/compare/v1.907.0...v1.907.1) (2026-09-28)
 
 ## [1.907.0](https://github.com/bigcommerce/checkout-js/compare/v1.906.1...v1.907.0) (2026-09-27)
