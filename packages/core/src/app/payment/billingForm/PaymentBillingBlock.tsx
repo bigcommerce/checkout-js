@@ -17,6 +17,7 @@ export interface PaymentBillingBlockProps {
     // + reduced schema). Must reflect the live selection, not checkout.payments.
     methodId?: string;
     isBillingSameAsShipping: boolean;
+    isUsingMultiShipping: boolean;
     onBillingSameAsShippingChange(isBillingSameAsShipping: boolean): void;
     onUnhandledError(error: Error): void;
 }
@@ -24,6 +25,7 @@ export interface PaymentBillingBlockProps {
 export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = ({
     methodId,
     isBillingSameAsShipping,
+    isUsingMultiShipping,
     onBillingSameAsShippingChange,
     onUnhandledError,
 }) => {
@@ -151,6 +153,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     getFields={getFields}
                     isBillingSameAsShipping={isBillingSameAsShipping}
                     isLoading={isInitializing}
+                    isUsingMultiShipping={isUsingMultiShipping}
                     methodId={methodId}
                     onBillingCountryChange={handleBillingCountryChange}
                     onBillingSameAsShippingChange={handleBillingSameAsShippingChange}

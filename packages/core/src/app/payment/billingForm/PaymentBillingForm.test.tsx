@@ -109,6 +109,7 @@ describe('PaymentBillingForm', () => {
             getFields: () => getFormFields(),
             isBillingSameAsShipping: false,
             isLoading: false,
+            isUsingMultiShipping: false,
             onBillingCountryChange: jest.fn(),
             onBillingSameAsShippingChange: jest.fn(),
             onPersist,
@@ -303,6 +304,17 @@ describe('PaymentBillingForm', () => {
             renderForm({ ...defaultProps, methodId: 'amazonpay' });
 
             expect(screen.queryByTestId('billingSameAsShipping')).not.toBeInTheDocument();
+        });
+
+        it('hides the toggle and shows the address fields when using multi-shipping', () => {
+            renderForm({
+                ...defaultProps,
+                isBillingSameAsShipping: true,
+                isUsingMultiShipping: true,
+            });
+
+            expect(screen.queryByTestId('billingSameAsShipping')).not.toBeInTheDocument();
+            expect(screen.getByText('First Name')).toBeInTheDocument();
         });
 
         it('hides the toggle and shows the address fields for a digital-only cart', () => {
