@@ -251,6 +251,7 @@ const PaymentForm: FunctionComponent<
             {enhancedThemeV1 && (
                 <PaymentBillingBlock
                     isBillingSameAsShipping={isBillingSameAsShipping ?? true}
+                    isUsingMultiShipping={isUsingMultiShipping ?? false}
                     methodId={selectedMethod?.id}
                     onBillingSameAsShippingChange={onBillingSameAsShippingChange ?? noop}
                     onUnhandledError={onUnhandledError ?? noop}

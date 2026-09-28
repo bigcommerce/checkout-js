@@ -34,6 +34,7 @@ export interface PaymentBillingFormProps {
     customerMessage: string;
     isLoading: boolean;
     isBillingSameAsShipping: boolean;
+    isUsingMultiShipping: boolean;
     getFields(countryCode?: string): FormField[];
     // Persists the billing address (updateBillingAddress). Must throw on failure
     // so the pre-submit ensureBillingAddressSaved can block the order.
@@ -53,6 +54,7 @@ const PaymentBillingFormComponent = ({
     getFields,
     billingAddress,
     isLoading,
+    isUsingMultiShipping,
     setFieldValue,
     setTouched,
     validateForm,
@@ -114,7 +116,10 @@ const PaymentBillingFormComponent = ({
     const shouldShowOrderComments = enableOrderComments && !hasShippableItems;
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !isGuest;
     const shouldShowBillingSameAsShipping =
-        !shouldRenderStaticAddress && !hideBillingSameAsShippingCheck && hasShippableItems;
+        !shouldRenderStaticAddress &&
+        !hideBillingSameAsShippingCheck &&
+        !isUsingMultiShipping &&
+        hasShippableItems;
     const isBillingAddressCollapsed =
         shouldShowBillingSameAsShipping && values.billingSameAsShipping;
 

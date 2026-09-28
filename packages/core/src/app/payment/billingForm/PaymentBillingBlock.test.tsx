@@ -54,7 +54,10 @@ describe('PaymentBillingBlock', () => {
     let checkoutState: CheckoutSelectors;
     let localeContext: LocaleContextType;
     let onUnhandledError: jest.Mock;
-    let PaymentBillingBlockTest: FunctionComponent<{ methodId?: string }>;
+    let PaymentBillingBlockTest: FunctionComponent<{
+        methodId?: string;
+        isUsingMultiShipping?: boolean;
+    }>;
 
     const formFields = getFormFields();
 
@@ -81,7 +84,7 @@ describe('PaymentBillingBlock', () => {
         jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(undefined);
         jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(getShippingAddress());
 
-        PaymentBillingBlockTest = ({ methodId }) => {
+        PaymentBillingBlockTest = ({ methodId, isUsingMultiShipping = false }) => {
             const [isBillingSameAsShipping, setIsBillingSameAsShipping] = React.useState(
                 getStoreConfig().checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true,
             );
@@ -93,6 +96,7 @@ describe('PaymentBillingBlock', () => {
                             <CapabilitiesContext.Provider value={defaultCapabilities}>
                                 <PaymentBillingBlock
                                     isBillingSameAsShipping={isBillingSameAsShipping}
+                                    isUsingMultiShipping={isUsingMultiShipping}
                                     methodId={methodId}
                                     onBillingSameAsShippingChange={setIsBillingSameAsShipping}
                                     onUnhandledError={onUnhandledError}
@@ -140,6 +144,14 @@ describe('PaymentBillingBlock', () => {
         await screen.findByTestId('trigger-persist');
 
         expect(mockCapturedProps.isBillingSameAsShipping).toBe(true);
+    });
+
+    it('forwards isUsingMultiShipping to PaymentBillingForm', async () => {
+        render(<PaymentBillingBlockTest isUsingMultiShipping={true} />);
+
+        await screen.findByTestId('trigger-persist');
+
+        expect(mockCapturedProps.isUsingMultiShipping).toBe(true);
     });
 
     it('copies the shipping address to billing without its empty email when the toggle is checked', async () => {
@@ -228,6 +240,7 @@ describe('PaymentBillingBlock', () => {
                     >
                         <PaymentBillingBlock
                             isBillingSameAsShipping={true}
+                            isUsingMultiShipping={false}
                             onBillingSameAsShippingChange={jest.fn()}
                             onUnhandledError={onUnhandledError}
                         />
