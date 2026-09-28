@@ -15,6 +15,18 @@ body:has(#checkout-page-container.enhancedThemeV1) {
     #checkout-page-container {
         flex: 1 0 auto;
     }
+
+    .checkoutHeader-heading {
+        font-size: $fontSize-large;
+
+        @include breakpoint("small") {
+            @include headingStyle("h1");
+        }
+    }
+}
+
+.modalOverlay--enhancedThemeV1 {
+    background: $overlay-fill-dark;
 }
 
 @include enhancedThemeV1 {

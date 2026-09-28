@@ -34,7 +34,7 @@ const MultiShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
 
             <div className="form-actions">
                 <Button
-                    className="optimizedCheckout-contentPrimary body-bold"
+                    className="body-bold"
                     disabled={shouldDisableSubmit}
                     id="checkout-shipping-continue"
                     isLoading={isLoading}

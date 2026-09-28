@@ -135,7 +135,7 @@ const NewConsignment = ({
                         unassignedItems={unassignedItems}
                     />
                     <div className="new-consignment-line-item-header">
-                        <h3 className="optimizedCheckout-contentPrimary body-bold">
+                        <h3 className="body-bold">
                             <TranslatedString id="shipping.multishipping_no_item_allocated_message" />
                         </h3>
                         <a

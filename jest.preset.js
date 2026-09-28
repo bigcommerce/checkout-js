@@ -12,6 +12,7 @@ module.exports = {
     '\\.css$': `${__dirname}/scripts/jest/file-transformer.js`,
     'intl-tel-input/styles': `${__dirname}/scripts/jest/file-transformer.js`,
     'intl-tel-input/data': `${__dirname}/scripts/jest/intl-tel-input-data.js`,
+    '^@playwright/test$': `${__dirname}/scripts/jest/playwright-test-stub.js`,
   },
   coverageThreshold: {
     global: {

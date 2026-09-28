@@ -1,3 +1,13 @@
+.customerView {
+    @include enhancedThemeV1-mobile-tablet-only {
+        align-items: center;
+
+        .customerView-actions {
+            margin-top: 0;
+        }
+    }
+}
+
 .checkout-step--customer {
     @include enhancedThemeV1-mobile {
         .customerEmail-body {

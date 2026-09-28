@@ -144,6 +144,7 @@ const AdyenV3PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         selectedInstrumentId && cardVerificationContainerId,
                     containerId,
                     hasVaultedInstruments: !!selectedInstrumentId,
+                    cardVerificationBrand: selectedInstrument?.brand,
                     options: adyenOptions[component],
                     additionalActionOptions: {
                         widgetSize: '05',

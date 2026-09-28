@@ -103,7 +103,7 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
         isFieldInvalid(key, fieldsValidation) && (
             <span
                 className="adyen-checkout-input__inline-validation adyen-checkout-input__inline-validation--invalid"
-                style={{ transform: 'none', right: '20px' }}
+                style={{ position: 'absolute', top: '50%', transform: 'none', right: '20px' }}
             >
                 <img
                     alt="adyen-checkout-icon"

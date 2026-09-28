@@ -182,7 +182,7 @@ const RedeemableForm: FunctionComponent<
                         />
 
                         <Button
-                            className="form-prefixPostfix-button--postfix optimizedCheckout-contentPrimary body-bold"
+                            className="form-prefixPostfix-button--postfix body-bold"
                             disabled={isSubmittingOrder()}
                             id="applyRedeemableButton"
                             isLoading={isApplyingRedeemable}

@@ -950,11 +950,14 @@ const Payment = (
             props.isUpdatingBillingAddress ||
             props.isUpdatingCheckout);
     const isReloadingPaymentMethods = enhancedThemeV1 && props.isLoadingPaymentMethods;
+    const isPlacingOrder = enhancedThemeV1 && props.isSubmittingOrder;
 
     return (
         <PaymentContext.Provider value={getContextValue()}>
             <ChecklistSkeleton isLoading={!state.isReady}>
-                <LoadingOverlay isLoading={isBillingFormBusy || isReloadingPaymentMethods}>
+                <LoadingOverlay
+                    isLoading={isBillingFormBusy || isReloadingPaymentMethods || isPlacingOrder}
+                >
                     <PaymentForm
                         additionalField={props.capabilities.payment.additionalField}
                         availableStoreCredit={props.availableStoreCredit}

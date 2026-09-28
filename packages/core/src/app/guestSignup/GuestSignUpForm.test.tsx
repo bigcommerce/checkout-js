@@ -53,7 +53,7 @@ describe('GuestSignUpForm', () => {
 
         await userEvent.type(screen.getByLabelText(/case sensitive/), 'password1');
         await userEvent.type(screen.getByLabelText('Confirm Password'), 'password1');
-        await userEvent.click(screen.getByRole('button', { name: 'Create Account' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Create account' }));
 
         expect(handleSignUp).toHaveBeenCalled();
     });
@@ -70,7 +70,7 @@ describe('GuestSignUpForm', () => {
         );
 
         await userEvent.type(screen.getByLabelText(/case sensitive/), '1');
-        await userEvent.click(screen.getByRole('button', { name: 'Create Account' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Create account' }));
 
         expect(await screen.findByText(passwordRequirements.description)).toBeInTheDocument();
     });
@@ -86,7 +86,7 @@ describe('GuestSignUpForm', () => {
             </LocaleContext.Provider>,
         );
 
-        await userEvent.click(screen.getByRole('button', { name: 'Create Account' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Create account' }));
 
         expect(await screen.findByText(passwordRequirements.description)).toBeInTheDocument();
         expect(
@@ -107,7 +107,7 @@ describe('GuestSignUpForm', () => {
 
         await userEvent.type(screen.getByLabelText(/case sensitive/), 'password1');
         await userEvent.type(screen.getByLabelText('Confirm Password'), 'password2');
-        await userEvent.click(screen.getByRole('button', { name: 'Create Account' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Create account' }));
 
         expect(
             await screen.findByText(translate('customer.password_confirmation_error')),

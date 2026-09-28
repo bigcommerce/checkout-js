@@ -53,6 +53,21 @@
         }
       ]
     },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "MEASURE_SPEED=false webpack serve --mode development"
+      },
+      "dependsOn": [
+        {
+          "target": "generate"
+        },
+        {
+          "target": "build",
+          "dependencies": true
+        }
+      ]
+    },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/packages/core"],

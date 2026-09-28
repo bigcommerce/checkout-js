@@ -7,8 +7,8 @@ Checkout JS is a browser-based application providing a seamless UI for BigCommer
 
 In order to build from the source code, you must have the following set up in your development environment.
 
-* Node >= v22.
-* NPM >= v10.
+* Node >= 24.
+* NPM >= v11.
 * Unix-based operating system. (WSL on Windows)
 
 One of the simplest ways to install Node is using [NVM](https://github.com/nvm-sh/nvm#installation-and-update). You can follow their instructions to set up your environment if it is not already set up.
@@ -67,6 +67,8 @@ npm run dev:server
 ```
 
 And enter the local URL for `auto-loader-dev.js` in Checkout Settings, e.g `http://127.0.0.1:8080/auto-loader-dev.js`
+
+To have the page reload itself on every change instead, run `npm run dev:hmr` in place of `npm run dev` and `npm run dev:server`. It serves the same URL. Stylesheet edits apply without a reload.
 
 ## Release
 

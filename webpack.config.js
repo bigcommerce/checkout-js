@@ -33,6 +33,8 @@ const AUTO_LOADER_ENTRY_NAME = 'auto-loader';
 const LOADER_ENTRY_NAME = 'loader';
 const LOADER_LIBRARY_NAME = 'checkoutLoader';
 const PRELOAD_ASSETS = ['billing', 'shipping', 'payment'];
+// Same as http-server's default, so storefronts pointed at `dev:server` keep working.
+const DEV_SERVER_PORT = 8080;
 
 const eventEmitter = new EventEmitter();
 
@@ -52,6 +54,12 @@ function appConfig(options, argv) {
             mode,
             cache: {
                 type: 'filesystem',
+                // `webpack serve` adds HMR at runtime, which buildDependencies can't see, so
+                // a cache shared with `webpack --watch` breaks CSS codegen in the latter.
+                name: options.WEBPACK_SERVE ? `${mode}-serve` : undefined,
+                buildDependencies: {
+                    config: [__filename],
+                },
             },
             snapshot: {
                 managedPaths: [
@@ -63,6 +71,32 @@ function appConfig(options, argv) {
             watchOptions: {
                 followSymlinks: true,
             },
+            // Only on appConfig: `webpack serve` starts one server per config with a
+            // `devServer` key and hands it the whole multi-compiler, so this serves
+            // the loader build too.
+            ...(!isProduction && {
+                devServer: {
+                    port: DEV_SERVER_PORT,
+                    hot: true,
+                    headers: { 'Access-Control-Allow-Origin': '*' },
+                    // The checkout page is on the storefront host, so the websocket
+                    // Origin is never localhost.
+                    allowedHosts: 'all',
+                    // `loader.js`/`auto-loader.js` (the unversioned copies BuildHookPlugin
+                    // writes via copyFileSync) aren't webpack assets, so devMiddleware alone
+                    // won't serve them — this covers anything sitting in build/, same as
+                    // http-server did.
+                    static: { directory: join(__dirname, 'build'), watch: false },
+                    // The loader build reads the app manifest from disk
+                    // (transformLoaderManifest, mergeManifests).
+                    devMiddleware: { writeToDisk: true },
+                    client: {
+                        // Left on auto, the client connects to the page's host instead.
+                        webSocketURL: `ws://localhost:${DEV_SERVER_PORT}/ws`,
+                        overlay: { errors: true, warnings: false },
+                    },
+                },
+            }),
             devtool: isProduction ? 'source-map' : 'eval-source-map',
             resolve: {
                 alias,
@@ -194,25 +228,6 @@ function appConfig(options, argv) {
                         include: tsLoaderIncludes,
                         use: [
                             {
-                                loader: 'ts-loader',
-                                options: {
-                                    onlyCompileBundledFiles: true,
-                                    // transpileOnly: true,
-                                },
-                            },
-                        ],
-                    },
-                    {
-                        test: /app\/polyfill\.ts$/,
-                        include: [
-                            join(__dirname, 'packages', 'core', 'src'),
-                            join(__dirname, 'packages', 'contexts', 'src'),
-                            join(__dirname, 'packages', 'payment-integration-api', 'src'),
-                            join(__dirname, 'packages', 'locale', 'src'),
-                            join(__dirname, 'packages', 'test-mocks', 'src'),
-                        ],
-                        use: [
-                            {
                                 loader: 'thread-loader',
                                 options: {
                                     workers: 2,
@@ -221,8 +236,11 @@ function appConfig(options, argv) {
                             {
                                 loader: 'esbuild-loader',
                                 options: {
+                                    // No explicit `loader` option: esbuild-loader infers
+                                    // ts/tsx per file extension. Forcing 'tsx' uniformly
+                                    // breaks plain .ts files with generic arrow functions
+                                    // (e.g. `<T>(x) => ...`) — esbuild parses `<T>` as JSX.
                                     target: 'es2015', // Matches the Babel preset-env targets.
-                                    loader: 'ts', // Handles TypeScript files.
                                     legalComments: 'none', // Removes comments for cleaner output.
                                 },
                             },
