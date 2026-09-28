@@ -5,7 +5,7 @@ module.exports = {
   ...nxPreset,
   testPathIgnorePatterns: ['<rootDir>/e2e/'],
   transformIgnorePatterns: [
-    '/node_modules/(?!(@intl-tel-input|@faker-js))',
+    '/node_modules/(?!(@intl-tel-input|@faker-js|rettime))',
     '\\.pnp\\.[^\\/]+$',
   ],
   moduleNameMapper: {

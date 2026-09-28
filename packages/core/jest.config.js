@@ -6,7 +6,7 @@ module.exports = {
             tsconfig: '<rootDir>/tsconfig.spec.json',
             diagnostics: false,
         }],
-        '^.+\\.js$': ['babel-jest', {
+        '^.+\\.m?js$': ['babel-jest', {
             presets: [['@babel/preset-env', { targets: { node: 'current' } }]],
         }],
         '\\.(gif|png|jpe?g|svg)$': '../../scripts/jest/file-transformer',
