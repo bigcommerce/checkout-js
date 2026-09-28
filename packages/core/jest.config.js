@@ -1,6 +1,7 @@
 module.exports = {
     displayName: 'core',
     preset: '../../jest.preset.js',
+    testEnvironment: 'jest-fixed-jsdom',
     transform: {
         '^.+\\.(ts|tsx)?$': ['ts-jest',{
             tsconfig: '<rootDir>/tsconfig.spec.json',
