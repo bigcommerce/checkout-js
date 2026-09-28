@@ -11,7 +11,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import React, { act, type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
@@ -263,8 +263,8 @@ describe('Customer Component', () => {
         await userEvent.type(await screen.findByLabelText('Password'), password);
 
         checkout.setRequestHandler(
-            rest.post('/internalapi/v1/checkout/customer', (_, res, ctx) =>
-                res(ctx.json({ data: { persistentCartRetrievalInformation: false } })),
+            http.post('/internalapi/v1/checkout/customer', () =>
+                HttpResponse.json({ data: { persistentCartRetrievalInformation: false } }),
             ),
         );
 
@@ -293,14 +293,14 @@ describe('Customer Component', () => {
         await checkout.waitForCustomerStep();
 
         checkout.setRequestHandler(
-            rest.post('/api/storefront/checkouts/*/billing-address', (_, res, ctx) =>
-                res(
-                    ctx.status(400),
-                    ctx.json({
+            http.post('/api/storefront/checkouts/*/billing-address', () =>
+                HttpResponse.json(
+                    {
                         type: 'empty_cart',
                         title: 'Empty cart',
                         detail: 'Cart is empty',
-                    }),
+                    },
+                    { status: 400 },
                 ),
             ),
         );
@@ -365,14 +365,14 @@ describe('Customer Component', () => {
         await checkout.waitForCustomerStep();
 
         checkout.setRequestHandler(
-            rest.post('/api/storefront/checkouts/*/billing-address', (_, res, ctx) =>
-                res(
-                    ctx.status(403),
-                    ctx.json({
+            http.post('/api/storefront/checkouts/*/billing-address', () =>
+                HttpResponse.json(
+                    {
                         type: 'existing_customer_require_login',
                         title: 'Sign in to Your Account',
                         detail: 'This email is already associated to an account. Please login to continue.',
-                    }),
+                    },
+                    { status: 403 },
                 ),
             ),
         );
