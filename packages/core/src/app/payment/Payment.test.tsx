@@ -9,7 +9,7 @@ import {
 import { createGooglePayCheckoutComPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/google-pay';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import React, { act, type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
@@ -215,12 +215,10 @@ describe('Payment step', () => {
 
     it('selects another payment method and places the order successfully', async () => {
         checkout.setRequestHandler(
-            rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
-                res(ctx.json(orderResponse)),
-            ),
+            http.post('/internalapi/v1/checkout/order', () => HttpResponse.json(orderResponse)),
         );
         checkout.setRequestHandler(
-            rest.get('/api/storefront/orders/*', (_, res, ctx) => res(ctx.json(orderResponse))),
+            http.get('/api/storefront/orders/*', () => HttpResponse.json(orderResponse)),
         );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
@@ -306,7 +304,7 @@ describe('Payment step', () => {
         // Keep the billing-address update in flight so isUpdatingBillingAddress
         // stays true while we assert the submit button is disabled.
         checkout.setRequestHandler(
-            rest.put(
+            http.put(
                 '/api/storefront/checkouts/*/billing-address/*',
                 () => new Promise<never>(() => undefined),
             ),
@@ -336,7 +334,7 @@ describe('Payment step', () => {
         });
 
         checkout.setRequestHandler(
-            rest.post('/internalapi/v1/checkout/order', () => new Promise<never>(() => undefined)),
+            http.post('/internalapi/v1/checkout/order', () => new Promise<never>(() => undefined)),
         );
 
         render(<CheckoutTest {...defaultProps} />);
@@ -438,10 +436,10 @@ describe('Payment step', () => {
             });
 
             checkout.setRequestHandler(
-                rest.get('/api/storefront/payments', async (_, res, ctx) => {
+                http.get('/api/storefront/payments', async () => {
                     await paymentsResponseBlocker;
 
-                    return res(ctx.json(payments));
+                    return HttpResponse.json(payments);
                 }),
             );
 
@@ -543,8 +541,8 @@ describe('Payment step', () => {
 
             mockBillingAddressPut('US', 'United States');
             checkout.setRequestHandler(
-                rest.get('/api/storefront/payments', (_, res, ctx) =>
-                    res(ctx.json(payments.filter(({ id }) => id !== 'instore'))),
+                http.get('/api/storefront/payments', () =>
+                    HttpResponse.json(payments.filter(({ id }) => id !== 'instore')),
                 ),
             );
 
@@ -588,8 +586,8 @@ describe('Payment step', () => {
 
             mockBillingAddressPut('US', 'United States');
             checkout.setRequestHandler(
-                rest.get('/api/storefront/payments', (_, res, ctx) =>
-                    res(ctx.json(payments.filter(({ id }) => id !== 'cod'))),
+                http.get('/api/storefront/payments', () =>
+                    HttpResponse.json(payments.filter(({ id }) => id !== 'cod')),
                 ),
             );
 
@@ -634,8 +632,8 @@ describe('Payment step', () => {
             );
 
             checkout.setRequestHandler(
-                rest.get('/api/storefront/payments', (_, res, ctx) =>
-                    res(ctx.json(payments.filter(({ id }) => id !== 'cod'))),
+                http.get('/api/storefront/payments', () =>
+                    HttpResponse.json(payments.filter(({ id }) => id !== 'cod')),
                 ),
             );
 
@@ -674,21 +672,21 @@ describe('Payment step', () => {
             checkout.setRequestHandler(
                 // Shaped as an internal error response so the SDK maps it to a
                 // PaymentMethodInvalidError (type: 'payment_method_invalid').
-                rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
-                    res(
-                        ctx.status(400),
-                        ctx.json({
+                http.post('/internalapi/v1/checkout/order', () =>
+                    HttpResponse.json(
+                        {
                             errors: {},
                             status: 400,
                             title: 'Payment method is invalid.',
                             type: 'invalid_payment_provider',
-                        }),
+                        },
+                        { status: 400 },
                     ),
                 ),
             );
             checkout.setRequestHandler(
-                rest.get('/api/storefront/payments', (_, res, ctx) =>
-                    res(ctx.json(payments.filter(({ id }) => id !== 'cod'))),
+                http.get('/api/storefront/payments', () =>
+                    HttpResponse.json(payments.filter(({ id }) => id !== 'cod')),
                 ),
             );
 
@@ -837,7 +835,7 @@ describe('Payment step', () => {
         };
 
         checkout.setRequestHandler(
-            rest.get('/api/storefront/payments', (_, res, ctx) => res(ctx.json([paypal, stripe]))),
+            http.get('/api/storefront/payments', () => HttpResponse.json([paypal, stripe])),
         );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
@@ -893,18 +891,16 @@ describe('Payment step', () => {
         });
 
         checkout.setRequestHandler(
-            rest.post('api/storefront/checkouts/*/store-credit', (_, res, ctx) =>
-                res(
-                    ctx.json({
-                        ...checkoutWithShippingAndBilling,
-                        isStoreCreditApplied: true,
-                        outstandingBalance: 0,
-                        customer: {
-                            ...customer,
-                            storeCredit: 1000,
-                        },
-                    }),
-                ),
+            http.post('api/storefront/checkouts/*/store-credit', () =>
+                HttpResponse.json({
+                    ...checkoutWithShippingAndBilling,
+                    isStoreCreditApplied: true,
+                    outstandingBalance: 0,
+                    customer: {
+                        ...customer,
+                        storeCredit: 1000,
+                    },
+                }),
             ),
         );
 
@@ -965,9 +961,7 @@ describe('Payment step', () => {
         };
 
         checkout.setRequestHandler(
-            rest.get('/api/storefront/payments', (_, res, ctx) =>
-                res(ctx.json([payments[0], amazonPay])),
-            ),
+            http.get('/api/storefront/payments', () => HttpResponse.json([payments[0], amazonPay])),
         );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingAndBilling);
@@ -992,9 +986,7 @@ describe('Payment step', () => {
         };
 
         checkout.setRequestHandler(
-            rest.get('/api/storefront/payments', (_, res, ctx) =>
-                res(ctx.json([payments[0], bolt])),
-            ),
+            http.get('/api/storefront/payments', () => HttpResponse.json([payments[0], bolt])),
         );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
@@ -1018,9 +1010,7 @@ describe('Payment step', () => {
         };
 
         checkout.setRequestHandler(
-            rest.get('/api/storefront/payments', (_, res, ctx) =>
-                res(ctx.json([payments[0], braintree])),
-            ),
+            http.get('/api/storefront/payments', () => HttpResponse.json([payments[0], braintree])),
         );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
@@ -1074,8 +1064,8 @@ describe('Payment step', () => {
         };
 
         checkout.setRequestHandler(
-            rest.get('/api/storefront/payments', (_, res, ctx) =>
-                res(ctx.json([card, facilypay6, facilypay3])),
+            http.get('/api/storefront/payments', () =>
+                HttpResponse.json([card, facilypay6, facilypay3]),
             ),
         );
 
@@ -1126,9 +1116,7 @@ describe('Payment step', () => {
         };
 
         checkout.setRequestHandler(
-            rest.get('/api/storefront/payments', (_, res, ctx) =>
-                res(ctx.json([facilypay6, facilypay3])),
-            ),
+            http.get('/api/storefront/payments', () => HttpResponse.json([facilypay6, facilypay3])),
         );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
@@ -1163,8 +1151,8 @@ describe('Payment step', () => {
         };
 
         checkout.setRequestHandler(
-            rest.get('/api/storefront/payments', (_, res, ctx) =>
-                res(ctx.json([installments3, installments6])),
+            http.get('/api/storefront/payments', () =>
+                HttpResponse.json([installments3, installments6]),
             ),
         );
 
@@ -1180,7 +1168,7 @@ describe('Payment step', () => {
 
     it('does not render payment form if there are no methods', async () => {
         checkout.setRequestHandler(
-            rest.get('/api/storefront/payments', (_, res, ctx) => res(ctx.json([]))),
+            http.get('/api/storefront/payments', () => HttpResponse.json([])),
         );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
@@ -1193,13 +1181,13 @@ describe('Payment step', () => {
 
     it('renders error modal if there is error when submitting order', async () => {
         checkout.setRequestHandler(
-            rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
-                res(
-                    ctx.status(500),
-                    ctx.json({
+            http.post('/internalapi/v1/checkout/order', () =>
+                HttpResponse.json(
+                    {
                         title: 'The tax provider is unavailable.',
                         type: 'order_error',
-                    }),
+                    },
+                    { status: 500 },
                 ),
             ),
         );
@@ -1298,12 +1286,10 @@ describe('Payment step', () => {
 
         it('refreshes B2B payment methods before submitting order when persistB2BMetadata capability is enabled', async () => {
             checkout.setRequestHandler(
-                rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
-                    res(ctx.json(orderResponse)),
-                ),
+                http.post('/internalapi/v1/checkout/order', () => HttpResponse.json(orderResponse)),
             );
             checkout.setRequestHandler(
-                rest.get('/api/storefront/orders/*', (_, res, ctx) => res(ctx.json(orderResponse))),
+                http.get('/api/storefront/orders/*', () => HttpResponse.json(orderResponse)),
             );
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
@@ -1338,12 +1324,10 @@ describe('Payment step', () => {
 
         it('does not refresh B2B payment methods before submitting order when persistB2BMetadata capability is disabled', async () => {
             checkout.setRequestHandler(
-                rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
-                    res(ctx.json(orderResponse)),
-                ),
+                http.post('/internalapi/v1/checkout/order', () => HttpResponse.json(orderResponse)),
             );
             checkout.setRequestHandler(
-                rest.get('/api/storefront/orders/*', (_, res, ctx) => res(ctx.json(orderResponse))),
+                http.get('/api/storefront/orders/*', () => HttpResponse.json(orderResponse)),
             );
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
@@ -1384,9 +1368,7 @@ describe('Payment step', () => {
 
         it('does not submit the order when B2B payment methods refresh fails before submit', async () => {
             checkout.setRequestHandler(
-                rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
-                    res(ctx.json(orderResponse)),
-                ),
+                http.post('/internalapi/v1/checkout/order', () => HttpResponse.json(orderResponse)),
             );
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
@@ -1504,26 +1486,24 @@ describe('Payment step', () => {
 
         it('stores the address IDs returned by the order endpoint, persists them and clears them afterwards', async () => {
             checkout.setRequestHandler(
-                rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
-                    res(
-                        ctx.json({
-                            ...orderResponse,
-                            data: {
-                                ...orderResponse.data,
-                                order: {
-                                    ...orderResponse.data.order,
-                                    b2bMetadata: {
-                                        billingAddressId: 111,
-                                        shippingAddressId: 222,
-                                    },
+                http.post('/internalapi/v1/checkout/order', () =>
+                    HttpResponse.json({
+                        ...orderResponse,
+                        data: {
+                            ...orderResponse.data,
+                            order: {
+                                ...orderResponse.data.order,
+                                b2bMetadata: {
+                                    billingAddressId: 111,
+                                    shippingAddressId: 222,
                                 },
                             },
-                        }),
-                    ),
+                        },
+                    }),
                 ),
             );
             checkout.setRequestHandler(
-                rest.get('/api/storefront/orders/*', (_, res, ctx) => res(ctx.json(orderResponse))),
+                http.get('/api/storefront/orders/*', () => HttpResponse.json(orderResponse)),
             );
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
