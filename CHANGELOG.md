@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.911.0](https://github.com/bigcommerce/checkout-js/compare/v1.910.0...v1.911.0) (2026-09-30)
+
+
+### Features
+
+* **payment:** show the save-card option for Stripe Google Pay ([#3366](https://github.com/bigcommerce/checkout-js/issues/3366)) ([e1983dd](https://github.com/bigcommerce/checkout-js/commit/e1983ddeeb6bb06acb986836ffd434d9354f15e9))
+
 ## [1.910.0](https://github.com/bigcommerce/checkout-js/compare/v1.909.1...v1.910.0) (2026-09-30)
 
 
