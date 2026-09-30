@@ -1,18 +1,18 @@
 $element-border-radius: remCalc(12px);
 
-// Modals also carry .enhancedThemeV1, hence the container id
-body:has(#checkout-page-container.enhancedThemeV1) {
+// Modals and the cart drawer also carry .enhancedThemeV1, hence the .layout child
+body:has(.enhancedThemeV1 > .layout) {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 
-    > :has(#checkout-page-container) {
+    > :has(.enhancedThemeV1 > .layout) {
         display: flex;
         flex-direction: column;
         flex: 1 0 auto;
     }
 
-    #checkout-page-container {
+    .enhancedThemeV1:has(> .layout) {
         flex: 1 0 auto;
     }
 
