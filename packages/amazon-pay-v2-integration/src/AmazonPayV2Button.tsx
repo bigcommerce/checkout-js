@@ -9,7 +9,7 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-const beautifyAmazonButton = (): void => {
+const beautifyAmazonButton = (retries = 0): void => {
     if (!document.querySelector('.checkout-button-container')) {
         return;
     }
@@ -26,7 +26,9 @@ const beautifyAmazonButton = (): void => {
         }
     }
 
-    setTimeout(beautifyAmazonButton, 10);
+    if (retries < 50) {
+        setTimeout(() => beautifyAmazonButton(retries + 1), 10);
+    }
 };
 
 const AmazonPayV2Button: FunctionComponent<CheckoutButtonProps> = (props) => {
