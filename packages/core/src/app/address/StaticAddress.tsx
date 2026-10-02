@@ -22,7 +22,7 @@ export interface StaticAddressProps {
     type?: AddressType;
 }
 
-export interface StaticAddressEditableProps extends StaticAddressProps {
+interface StaticAddressEditableProps extends StaticAddressProps {
     initialize?(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
 }
 
@@ -85,7 +85,7 @@ const StaticAddress: FunctionComponent<
     );
 };
 
-export function mapToStaticAddressProps(
+function mapToStaticAddressProps(
     context: CheckoutContextProps,
     { type }: StaticAddressProps,
 ): WithCheckoutStaticAddressProps | null {

@@ -48,7 +48,7 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
     );
 };
 
-export interface ShippingOptionListProps {
+interface ShippingOptionListProps {
     consignmentId: string;
     inputName: string;
     isLoading: boolean;

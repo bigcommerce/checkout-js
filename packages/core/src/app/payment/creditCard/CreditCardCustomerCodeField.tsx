@@ -4,7 +4,7 @@ import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { FormField, TextInput } from '@bigcommerce/checkout/ui';
 
-export interface CreditCardCustomerCodeFieldProps {
+interface CreditCardCustomerCodeFieldProps {
     name: string;
 }
 

@@ -37,7 +37,7 @@ const CartSummaryDrawerV2 = lazy(() =>
     ),
 );
 
-export interface CartSummaryProps {
+interface CartSummaryProps {
     isMultiShippingMode: boolean;
 }
 

@@ -1,1 +1,1 @@
-export { default as Checklist, ChecklistContext } from './Checklist';
+export { default as Checklist } from './Checklist';

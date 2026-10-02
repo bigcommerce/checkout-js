@@ -3,7 +3,7 @@ const DEFAULT_OPTIONS = {
     interval: 1000,
 };
 
-export interface RetryOptions {
+interface RetryOptions {
     count?: number;
     interval?: number;
 }

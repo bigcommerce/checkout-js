@@ -23,5 +23,3 @@ export const RateLimitedPermalinkView: FunctionComponent = () => (
         </div>
     </div>
 );
-
-export default RateLimitedPermalinkView;

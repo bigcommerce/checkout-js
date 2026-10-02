@@ -37,7 +37,7 @@ import StaticBillingAddress from './StaticBillingAddress';
 
 export type { BillingFormValues } from './billingFormConfig';
 
-export interface BillingFormProps {
+interface BillingFormProps {
     methodId?: string;
     billingAddress?: Address;
     customerMessage: string;

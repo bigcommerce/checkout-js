@@ -1,6 +1,6 @@
 import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
-export interface CustomChecklistItemProps {
+interface CustomChecklistItemProps {
     content?: ReactNode;
     htmlId?: string;
 }

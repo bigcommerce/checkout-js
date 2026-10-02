@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { type FunctionComponent, type LabelHTMLAttributes } from 'react';
 
-export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
     testId?: string;
     hidden?: boolean;
     isFloatingLabelEnabled?: boolean;

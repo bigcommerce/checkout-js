@@ -16,7 +16,7 @@ const PaymentMethodV1 = lazy(
     () => import(/* webpackChunkName: "payment-method-v1" */ './PaymentMethod'),
 );
 
-export interface PaymentMethodProps {
+interface PaymentMethodProps {
     method: PaymentMethod;
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;

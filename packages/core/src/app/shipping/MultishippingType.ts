@@ -7,11 +7,10 @@ import {
 export enum LineItemType {
     Physical,
     Digital,
-    GiftCertificate,
     Custom,
 }
 
-export interface MultiShippingTableItem {
+interface MultiShippingTableItem {
     name: string;
     options?: LineItemOption[];
     giftWrapping?: PhysicalItem['giftWrapping'];

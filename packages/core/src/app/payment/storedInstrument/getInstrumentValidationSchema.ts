@@ -7,7 +7,7 @@ import { object, type ObjectSchema, string, type StringSchema } from 'yup';
 import type CardInstrumentFieldsetValues from './CardInstrumentFieldsetValues';
 import mapFromInstrumentCardType from './mapFromInstrumentCardType';
 
-export interface InstrumentValidationSchemaOptions {
+interface InstrumentValidationSchemaOptions {
     instrumentBrand: string;
     instrumentLast4: string;
     isCardCodeRequired: boolean;

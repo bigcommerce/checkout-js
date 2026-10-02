@@ -9,7 +9,7 @@ import React, { type ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { LocaleContext } from './LocaleContext';
 
-export interface LocaleProviderProps {
+interface LocaleProviderProps {
     languageService: LanguageService;
     checkoutService: CheckoutService;
     children?: ReactNode;

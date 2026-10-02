@@ -33,7 +33,7 @@ import {
 
 import { getRedeemableLabelId } from '../coupon/utils';
 
-export interface RedeemableFormValues {
+interface RedeemableFormValues {
     redeemableCode: string;
 }
 

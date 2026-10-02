@@ -3,7 +3,7 @@ import React, { type FunctionComponent } from 'react';
 
 import CartStockPositionsChangedItem from './CartStockPositionsChangedItem';
 
-export interface CartStockPositionsChangedItemListProps {
+interface CartStockPositionsChangedItemListProps {
     items: PhysicalItem[];
 }
 
