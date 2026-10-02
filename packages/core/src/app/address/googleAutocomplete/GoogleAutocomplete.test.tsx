@@ -84,7 +84,6 @@ describe('GoogleAutocomplete', () => {
         defaultProps = {
             apiKey: 'test-api-key',
             isAutocompleteEnabled: true,
-            isNewPlacesApiEnabled: true,
             onSelect: jest.fn(),
             onChange: jest.fn(),
         };
@@ -219,42 +218,6 @@ describe('GoogleAutocomplete', () => {
             await waitFor(() => expect(mockGetNewApiPlaceDetails).toHaveBeenCalled());
             expect(mockGetLegacyApiPlaceDetails).not.toHaveBeenCalled();
             expect(defaultProps.onSelect).not.toHaveBeenCalled();
-        });
-    });
-
-    describe('new API disabled via experiment flag', () => {
-        beforeEach(() => {
-            mockGetLegacyApiSuggestions.mockImplementation((_req, cb) =>
-                cb(legacySuggestions, 'OK'),
-            );
-            mockGetLegacyApiPlaceDetails.mockImplementation((_req, cb) =>
-                cb(legacyPlaceResult, 'OK'),
-            );
-        });
-
-        it('goes straight to the legacy service for suggestions without calling the new API', async () => {
-            render(<GoogleAutocomplete {...defaultProps} isNewPlacesApiEnabled={false} />);
-
-            await userEvent.type(screen.getByRole('textbox'), '123');
-
-            await screen.findByText('123 Legacy St, New York');
-            expect(mockGetNewApiSuggestions).not.toHaveBeenCalled();
-        });
-
-        it('goes straight to the legacy service for place details without calling the new API', async () => {
-            render(<GoogleAutocomplete {...defaultProps} isNewPlacesApiEnabled={false} />);
-
-            await userEvent.type(screen.getByRole('textbox'), '1');
-            await screen.findByText('123 Legacy St, New York');
-            await userEvent.click(screen.getByText('123 Legacy St, New York'));
-
-            await waitFor(() =>
-                expect(defaultProps.onSelect).toHaveBeenCalledWith(
-                    legacyPlaceResult,
-                    expect.objectContaining({ id: 'legacy-place-1' }),
-                ),
-            );
-            expect(mockGetNewApiPlaceDetails).not.toHaveBeenCalled();
         });
     });
 });

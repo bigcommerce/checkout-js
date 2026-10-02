@@ -21,7 +21,6 @@ export interface GoogleAutocompleteFormFieldProps {
     nextElement?: HTMLElement;
     parentFieldName?: string;
     isFloatingLabelEnabled?: boolean;
-    isNewPlacesApiEnabled?: boolean;
     onSelect(place: google.maps.places.PlaceResult, item: AutocompleteItem): void;
     onToggleOpen?(state: { inputValue: string; isOpen: boolean }): void;
     onChange(value: string, isOpen: boolean): void;
@@ -38,7 +37,6 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     onChange,
     onToggleOpen,
     isFloatingLabelEnabled,
-    isNewPlacesApiEnabled,
 }) => {
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
 
@@ -70,7 +68,6 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
                 isAutocompleteEnabled={
                     countryCode ? supportedCountries.includes(countryCode) : false
                 }
-                isNewPlacesApiEnabled={isNewPlacesApiEnabled}
                 nextElement={nextElement}
                 onChange={onChange}
                 onSelect={onSelect}
@@ -81,7 +78,6 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
             apiKey,
             countryCode,
             inputProps,
-            isNewPlacesApiEnabled,
             nextElement,
             onChange,
             onSelect,
