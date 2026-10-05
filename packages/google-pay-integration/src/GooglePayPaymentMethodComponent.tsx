@@ -2,13 +2,13 @@ import { type HostedInstrument, type PaymentInitializeOptions } from '@bigcommer
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { WalletVaultingFields } from '@bigcommerce/checkout/instrument-utils';
 import {
     type PaymentFormService,
     type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 
 import googlePayIntegrations from './googlePayIntegrations';
-import { WalletVaultingFields } from './WalletVaultingFields';
 
 const GOOGLE_PAY_BUTTON_CONTAINER_ID = 'checkout-payment-continue';
 

@@ -3,6 +3,7 @@ import { some } from 'lodash';
 import React, { type FunctionComponent, useCallback, useRef } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { WalletVaultingFields } from '@bigcommerce/checkout/instrument-utils';
 import {
     type CheckoutButtonResolveId,
     PaymentMethodId,
@@ -13,7 +14,6 @@ import { WalletButtonPaymentMethodComponent } from '@bigcommerce/checkout/wallet
 
 import googlePayIntegrations from './googlePayIntegrations';
 import GooglePayPaymentMethodComponent from './GooglePayPaymentMethodComponent';
-import { WalletVaultingFields } from './WalletVaultingFields';
 
 const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     checkoutService,

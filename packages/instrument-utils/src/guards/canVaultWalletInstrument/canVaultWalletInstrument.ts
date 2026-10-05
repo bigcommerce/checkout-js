@@ -1,12 +1,12 @@
 import { type Customer, type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
-export interface CanVaultGooglePayInstrumentState {
+export interface CanVaultWalletInstrumentState {
     customer?: Customer;
     method: PaymentMethod;
 }
 
-export const canVaultGooglePayInstrument = ({
+export const canVaultWalletInstrument = ({
     customer,
     method,
-}: CanVaultGooglePayInstrumentState): boolean =>
+}: CanVaultWalletInstrumentState): boolean =>
     Boolean(method.config.isVaultingEnabled) && Boolean(customer && !customer.isGuest);
