@@ -28,7 +28,6 @@ describe('BraintreeFastlanePaymentMethod', () => {
         skipRedirectConfirmationAlert: false,
         supportedCards: ['VISA', 'MC'],
         type: 'PAYMENT_TYPE_API',
-        skipRedirectConfirmationAlert: false,
     };
 
     const props = {

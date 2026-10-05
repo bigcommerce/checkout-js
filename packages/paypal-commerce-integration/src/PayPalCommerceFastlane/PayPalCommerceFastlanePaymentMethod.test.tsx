@@ -2,7 +2,7 @@ import { createCheckoutService, createLanguageService } from '@bigcommerce/check
 import { createPayPalCommerceFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React from 'react';
 
-import { PaymentFormProvider } from '@bigcommerce/checkout/contexts';
+import { PaymentFormProvider, ThemeContext } from '@bigcommerce/checkout/contexts';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';
 
@@ -39,15 +39,17 @@ describe('PayPalCommerceFastlanePaymentMethod', () => {
         onUnhandledError: jest.fn(),
     };
 
-    it('initializes PayPalCommerceFastlanePaymentMethod with required props', () => {
+    it('initializes PayPalCommerceFastlanePaymentMethod without enhanced styles when enhancedThemeV1 is disabled', () => {
         const initializePayment = jest
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
 
         render(
-            <PaymentFormProvider paymentForm={paymentForm}>
-                <PayPalCommerceFastlanePaymentMethod {...props} />
-            </PaymentFormProvider>,
+            <ThemeContext.Provider value={{ enhancedThemeV1: false }}>
+                <PaymentFormProvider paymentForm={paymentForm}>
+                    <PayPalCommerceFastlanePaymentMethod {...props} />
+                </PaymentFormProvider>
+            </ThemeContext.Provider>,
         );
 
         expect(initializePayment).toHaveBeenCalledWith({
@@ -58,6 +60,39 @@ describe('PayPalCommerceFastlanePaymentMethod', () => {
                 onChange: expect.any(Function),
                 onError: expect.any(Function),
                 onErrorLog: expect.any(Function),
+            },
+        });
+    });
+
+    it('initializes PayPalCommerceFastlanePaymentMethod with enhanced styles when enhancedThemeV1 is enabled', () => {
+        const initializePayment = jest
+            .spyOn(checkoutService, 'initializePayment')
+            .mockResolvedValue(checkoutState);
+
+        render(
+            <ThemeContext.Provider value={{ enhancedThemeV1: true }}>
+                <PaymentFormProvider paymentForm={paymentForm}>
+                    <PayPalCommerceFastlanePaymentMethod {...props} />
+                </PaymentFormProvider>
+            </ThemeContext.Provider>,
+        );
+
+        expect(initializePayment).toHaveBeenCalledWith({
+            methodId: props.method.id,
+            integrations: [createPayPalCommerceFastlanePaymentStrategy],
+            paypalcommercefastlane: {
+                onInit: expect.any(Function),
+                onChange: expect.any(Function),
+                onError: expect.any(Function),
+                onErrorLog: expect.any(Function),
+                styles: {
+                    root: {
+                        backgroundColorPrimary: '#f4f6ff',
+                    },
+                    input: {
+                        borderRadius: '12px',
+                    },
+                },
             },
         });
     });
