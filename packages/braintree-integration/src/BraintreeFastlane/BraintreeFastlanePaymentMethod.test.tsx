@@ -2,7 +2,7 @@ import { createCheckoutService, createLanguageService } from '@bigcommerce/check
 import { createBraintreeFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React from 'react';
 
-import { PaymentFormProvider } from '@bigcommerce/checkout/contexts';
+import { PaymentFormProvider, ThemeContext } from '@bigcommerce/checkout/contexts';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';
 
@@ -27,6 +27,7 @@ describe('BraintreeFastlanePaymentMethod', () => {
         method: 'credit-card',
         supportedCards: ['VISA', 'MC'],
         type: 'PAYMENT_TYPE_API',
+        skipRedirectConfirmationAlert: false,
     };
 
     const props = {
@@ -38,15 +39,17 @@ describe('BraintreeFastlanePaymentMethod', () => {
         onUnhandledError: jest.fn(),
     };
 
-    it('initializes BraintreeFastlanePaymentMethod with required props', () => {
+    it('initializes BraintreeFastlanePaymentMethod without enhanced styles when enhancedThemeV1 is disabled', () => {
         const initializePayment = jest
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
 
         render(
-            <PaymentFormProvider paymentForm={paymentForm}>
-                <BraintreeFastlanePaymentMethod {...props} />
-            </PaymentFormProvider>,
+            <ThemeContext.Provider value={{ enhancedThemeV1: false }}>
+                <PaymentFormProvider paymentForm={paymentForm}>
+                    <BraintreeFastlanePaymentMethod {...props} />
+                </PaymentFormProvider>
+            </ThemeContext.Provider>,
         );
 
         expect(initializePayment).toHaveBeenCalledWith({
@@ -57,6 +60,39 @@ describe('BraintreeFastlanePaymentMethod', () => {
                 onChange: expect.any(Function),
                 onError: expect.any(Function),
                 onErrorLog: expect.any(Function),
+            },
+        });
+    });
+
+    it('initializes BraintreeFastlanePaymentMethod with enhanced styles when enhancedThemeV1 is enabled', () => {
+        const initializePayment = jest
+            .spyOn(checkoutService, 'initializePayment')
+            .mockResolvedValue(checkoutState);
+
+        render(
+            <ThemeContext.Provider value={{ enhancedThemeV1: true }}>
+                <PaymentFormProvider paymentForm={paymentForm}>
+                    <BraintreeFastlanePaymentMethod {...props} />
+                </PaymentFormProvider>
+            </ThemeContext.Provider>,
+        );
+
+        expect(initializePayment).toHaveBeenCalledWith({
+            methodId: props.method.id,
+            integrations: [createBraintreeFastlanePaymentStrategy],
+            braintreefastlane: {
+                onInit: expect.any(Function),
+                onChange: expect.any(Function),
+                onError: expect.any(Function),
+                onErrorLog: expect.any(Function),
+                styles: {
+                    root: {
+                        backgroundColorPrimary: '#f4f6ff',
+                    },
+                    input: {
+                        borderRadius: '12px',
+                    },
+                },
             },
         });
     });
