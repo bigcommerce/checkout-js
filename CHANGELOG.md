@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.912.0](https://github.com/bigcommerce/checkout-js/compare/v1.911.1...v1.912.0) (2026-10-05)
+
+
+### Features
+
+* **payments:** PAYPAL-7099 updated BraintreeFastlanePaymentMethod component by passing styling based on checkout enhanced theme flag ([#3380](https://github.com/bigcommerce/checkout-js/issues/3380)) ([2ea8ebb](https://github.com/bigcommerce/checkout-js/commit/2ea8ebb48e8ebf039b821397d2e06329512d3412))
+* **payments:** PAYPAL-7100 updated PayPalCommerce Fastlane credit cards fields with proper styling when enhanced checkout theme is enabled ([#3382](https://github.com/bigcommerce/checkout-js/issues/3382)) ([cc5a80e](https://github.com/bigcommerce/checkout-js/commit/cc5a80e77155c485a73623317a185e6515886e33))
+
 ### [1.911.1](https://github.com/bigcommerce/checkout-js/compare/v1.911.0...v1.911.1) (2026-10-01)
 
 ## [1.911.0](https://github.com/bigcommerce/checkout-js/compare/v1.910.0...v1.911.0) (2026-09-30)
