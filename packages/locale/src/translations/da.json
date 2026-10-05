@@ -542,7 +542,7 @@
             "continue_with_text": "Eller fortsæt med",
             "or_text": "eller",
             "payment_method_error": "Der opstod en fejl under hentning af din fjernbetalingsmetode. Prøv igen.",
-            "retry_same_card_action": "Try again or select a different card",
+            "retry_same_card_action": "Prøv igen, eller vælg et andet kort",
             "select_different_card_action": "Vælg et andet kort",
             "session_error": "Din fjernsession er udløbet. Log på igen.",
             "shipping_address_error": "Der opstod en fejl under hentning af din adresse til fjernforsendelse. Prøv igen.",
