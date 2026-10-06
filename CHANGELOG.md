@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.914.0](https://github.com/bigcommerce/checkout-js/compare/v1.913.1...v1.914.0) (2026-10-06)
+
+
+### Features
+
+* **payment:** show the save-card option for Apple Pay ([#3384](https://github.com/bigcommerce/checkout-js/issues/3384)) ([aa5752d](https://github.com/bigcommerce/checkout-js/commit/aa5752d87e5fef737b9c489452c45f4a7d87cf20))
+
 ### [1.913.1](https://github.com/bigcommerce/checkout-js/compare/v1.913.0...v1.913.1) (2026-10-06)
 
 ## [1.913.0](https://github.com/bigcommerce/checkout-js/compare/v1.912.0...v1.913.0) (2026-10-05)
