@@ -348,6 +348,52 @@ describe('Payment step', () => {
         expect(await screen.findByTestId('loading-overlay')).toBeInTheDocument();
     });
 
+    it('overlays the payment form and disables Place Order while methods reload for a cart total change', async () => {
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        let resolvePaymentsResponse!: () => void;
+        const paymentsResponseBlocker = new Promise<void>((resolve) => {
+            resolvePaymentsResponse = resolve;
+        });
+
+        checkout.setRequestHandler(
+            http.get('/api/storefront/payments', async () => {
+                await paymentsResponseBlocker;
+
+                return HttpResponse.json(payments);
+            }),
+        );
+        checkout.updateCheckout('put', '/checkout/*', {
+            ...checkoutWithShippingAndBilling,
+            grandTotal: checkoutWithShippingAndBilling.grandTotal + 1,
+        });
+
+        await act(async () => {
+            await checkoutService.updateCheckout({ customerMessage: 'gift wrap please' });
+        });
+
+        await screen.findByTestId('loading-overlay');
+
+        const placeOrderButton = screen.getByRole<HTMLButtonElement>('button', {
+            name: /place order/i,
+        });
+
+        expect(placeOrderButton.disabled).toBe(true);
+
+        await act(async () => {
+            resolvePaymentsResponse();
+        });
+
+        await waitFor(() =>
+            expect(screen.queryByTestId('loading-overlay')).not.toBeInTheDocument(),
+        );
+        expect(placeOrderButton.disabled).toBe(false);
+    });
+
     describe('billing country change (enhancedThemeV1)', () => {
         const scrollIntoViewMock = jest.fn();
 
@@ -615,9 +661,43 @@ describe('Payment step', () => {
             );
         });
 
-        // The cart total path unmounts the payment form behind the loading skeleton, so
-        // the fallback here comes from the remount re-seeding Formik rather than from
-        // the effect in PaymentForm.
+        it('keeps the selected method after a cart total reload', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: enhancedThemeV1Config,
+            });
+
+            const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await act(async () =>
+                userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })),
+            );
+
+            const callsBeforeTotalChange = loadPaymentMethodsSpy.mock.calls.length;
+
+            checkout.updateCheckout('put', '/checkout/*', {
+                ...checkoutWithShippingAndBilling,
+                grandTotal: checkoutWithShippingAndBilling.grandTotal + 1,
+            });
+
+            await act(async () => {
+                await checkoutService.updateCheckout({ customerMessage: 'gift wrap please' });
+            });
+
+            await waitFor(() =>
+                expect(loadPaymentMethodsSpy.mock.calls.length).toBeGreaterThan(
+                    callsBeforeTotalChange,
+                ),
+            );
+
+            expect(
+                screen.getByRole('radio', { name: 'Cash on Delivery', checked: true }),
+            ).toBeInTheDocument();
+        });
+
         it('falls back to the default method after a cart total reload', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: enhancedThemeV1Config,
