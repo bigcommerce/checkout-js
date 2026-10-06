@@ -1,4 +1,6 @@
 /* istanbul ignore file */
+export type { CanVaultWalletInstrumentState } from './canVaultWalletInstrument';
+export { canVaultWalletInstrument } from './canVaultWalletInstrument';
 export { isAccountInstrument } from './isAccountInstrument';
 export { isAchInstrument } from './isAchInstrument';
 export { isPaymentMethodAutoVaultingInstruments } from './isPaymentMethodAutoVaultingInstruments';

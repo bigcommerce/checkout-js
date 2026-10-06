@@ -3,9 +3,9 @@ import { type Customer, type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import { getCustomer, getGuestCustomer, getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
 
-import { canVaultGooglePayInstrument } from './canVaultGooglePayInstrument';
+import { canVaultWalletInstrument } from './canVaultWalletInstrument';
 
-describe('canVaultGooglePayInstrument', () => {
+describe('canVaultWalletInstrument', () => {
     let customer: Customer;
     let method: PaymentMethod;
 
@@ -19,12 +19,12 @@ describe('canVaultGooglePayInstrument', () => {
     });
 
     it('allows vaulting for a signed-in shopper when the merchant enabled wallet vaulting', () => {
-        expect(canVaultGooglePayInstrument({ customer, method })).toBe(true);
+        expect(canVaultWalletInstrument({ customer, method })).toBe(true);
     });
 
     it('does not allow vaulting when the merchant has wallet vaulting disabled', () => {
         expect(
-            canVaultGooglePayInstrument({
+            canVaultWalletInstrument({
                 customer,
                 method: { ...method, config: { ...method.config, isVaultingEnabled: false } },
             }),
@@ -33,7 +33,7 @@ describe('canVaultGooglePayInstrument', () => {
 
     it('does not allow vaulting when the flag is absent from the method config', () => {
         expect(
-            canVaultGooglePayInstrument({
+            canVaultWalletInstrument({
                 customer,
                 method: { ...method, config: getPaymentMethod().config },
             }),
@@ -44,7 +44,7 @@ describe('canVaultGooglePayInstrument', () => {
         'does not allow vaulting on %s — those methods carry no wallet vaulting setting',
         (id) => {
             expect(
-                canVaultGooglePayInstrument({
+                canVaultWalletInstrument({
                     customer,
                     method: { ...method, id, config: getPaymentMethod().config },
                 }),
@@ -54,7 +54,7 @@ describe('canVaultGooglePayInstrument', () => {
 
     it('allows vaulting on any provider whose config enables wallet vaulting', () => {
         expect(
-            canVaultGooglePayInstrument({
+            canVaultWalletInstrument({
                 customer,
                 method: { ...method, id: PaymentMethodId.BraintreeGooglePay },
             }),
@@ -62,12 +62,12 @@ describe('canVaultGooglePayInstrument', () => {
     });
 
     it('does not allow vaulting for a guest shopper by default', () => {
-        expect(canVaultGooglePayInstrument({ customer: getGuestCustomer(), method })).toBe(false);
+        expect(canVaultWalletInstrument({ customer: getGuestCustomer(), method })).toBe(false);
     });
 
     it('does not allow vaulting for a guest shopper even when auto-vaulting is on', () => {
         expect(
-            canVaultGooglePayInstrument({
+            canVaultWalletInstrument({
                 customer: getGuestCustomer(),
                 method: {
                     ...method,
@@ -78,6 +78,6 @@ describe('canVaultGooglePayInstrument', () => {
     });
 
     it('does not allow vaulting before the customer has loaded', () => {
-        expect(canVaultGooglePayInstrument({ customer: undefined, method })).toBe(false);
+        expect(canVaultWalletInstrument({ customer: undefined, method })).toBe(false);
     });
 });

@@ -2,14 +2,11 @@ import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
-import {
-    AutoVaultingDisclaimer,
-    InstrumentStorageField,
-    isPaymentMethodAutoVaultingInstruments,
-} from '@bigcommerce/checkout/instrument-utils';
 import { Fieldset } from '@bigcommerce/checkout/ui';
 
-import { canVaultGooglePayInstrument } from './canVaultGooglePayInstrument';
+import { canVaultWalletInstrument, isPaymentMethodAutoVaultingInstruments } from '../../guards';
+import { AutoVaultingDisclaimer } from '../AutoVaultingDisclaimer';
+import { InstrumentStorageField } from '../InstrumentStorageField';
 
 export interface WalletVaultingFieldsProps {
     method: PaymentMethod;
@@ -24,7 +21,7 @@ export const WalletVaultingFields: FunctionComponent<WalletVaultingFieldsProps> 
 
     return (
         <>
-            {canVaultGooglePayInstrument({ customer, method }) && (
+            {canVaultWalletInstrument({ customer, method }) && (
                 <Fieldset additionalClassName="form-fieldset--storedInstrument">
                     <InstrumentStorageField isAccountInstrument={false} />
                 </Fieldset>
