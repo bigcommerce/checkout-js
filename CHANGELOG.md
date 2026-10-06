@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.915.0](https://github.com/bigcommerce/checkout-js/compare/v1.914.1...v1.915.0) (2026-10-06)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10338 persist the payment details on applying coupon if only grand total changes ([#3385](https://github.com/bigcommerce/checkout-js/issues/3385)) ([3794cb9](https://github.com/bigcommerce/checkout-js/commit/3794cb96d7503da4967b2978ea22819d003108d6))
+
 ### [1.914.1](https://github.com/bigcommerce/checkout-js/compare/v1.914.0...v1.914.1) (2026-10-06)
 
 ## [1.914.0](https://github.com/bigcommerce/checkout-js/compare/v1.913.1...v1.914.0) (2026-10-06)
