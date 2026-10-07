@@ -7,7 +7,7 @@ import getCustomFormFieldsValidationSchema, {
 } from './getCustomFormFieldsValidationSchema';
 import { getAddressExtraFieldsValidationSchema } from './getExtraFieldsValidationSchema';
 
-export const WHITELIST_REGEXP = /^[^<>]*$/;
+const WHITELIST_REGEXP = /^[^<>]*$/;
 
 export interface FormFieldValues {
     [key: string]: string | { [id: string]: any };

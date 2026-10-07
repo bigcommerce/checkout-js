@@ -3,7 +3,7 @@ import React, { type FunctionComponent, memo, useMemo } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckboxFormField } from '@bigcommerce/checkout/ui';
 
-export interface BillingSameAsShippingFieldProps {
+interface BillingSameAsShippingFieldProps {
     disabled?: boolean;
     labelStringId?: string;
     onChange?(isChecked: boolean): void;

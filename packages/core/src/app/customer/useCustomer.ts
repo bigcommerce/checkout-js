@@ -17,7 +17,7 @@ import { isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
-export interface CustomerData {
+interface CustomerData {
     // Basic customer data
     email?: string;
     firstName?: string;
@@ -61,7 +61,7 @@ export interface CustomerData {
     shouldRenderStripeForm: boolean;
 }
 
-export interface CustomerActions {
+interface CustomerActions {
     clearError: (error: Error) => Promise<CheckoutSelectors>;
     createAccount: (values: CustomerAccountRequestBody) => Promise<CheckoutSelectors>;
     continueAsGuest: (credentials: GuestCredentials) => Promise<CheckoutSelectors>;

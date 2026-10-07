@@ -11,7 +11,7 @@ import { FormField, TextInput } from '@bigcommerce/checkout/ui';
 
 import formatCreditCardExpiryDate from './formatCreditCardExpiryDate';
 
-export interface CreditCardExpiryFieldProps {
+interface CreditCardExpiryFieldProps {
     name: string;
 }
 

@@ -10,7 +10,7 @@ import ConsignmentLineItem from './ConsignmentLineItem';
 import { type MultiShippingConsignmentData } from './MultishippingType';
 import { MultiShippingOptions } from './shippingOption/MultiShippingOptions';
 
-export interface ConsignmentListItemProps {
+interface ConsignmentListItemProps {
     consignment: MultiShippingConsignmentData;
     consignmentNumber: number;
     defaultCountryCode?: string;

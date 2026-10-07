@@ -16,7 +16,7 @@ import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput from './DynamicInput';
 import MultiCheckboxControl from './MultiCheckboxControl';
 
-export interface CheckboxGroupFormFieldProps {
+interface CheckboxGroupFormFieldProps {
     id: string;
     label: ReactNode;
     name: string;

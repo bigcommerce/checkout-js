@@ -13,7 +13,7 @@ export interface FormContextType {
     setSubmitted(isSubmitted: boolean): void;
 }
 
-export const FormContext = createContext<FormContextType>({
+const FormContext = createContext<FormContextType>({
     isSubmitted: false,
     setSubmitted: noop,
 });

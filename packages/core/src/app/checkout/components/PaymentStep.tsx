@@ -23,7 +23,7 @@ const Payment = lazy(() =>
     ),
 );
 
-export interface PaymentStepProps extends PaymentProps {
+interface PaymentStepProps extends PaymentProps {
     step: CheckoutStepStatus;
     cart?: Cart;
     consignments?: Consignment[];

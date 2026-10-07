@@ -8,7 +8,7 @@ export interface TranslatedHtmlProps {
     data?: any;
 }
 
-export const TranslatedHtml: FunctionComponent<TranslatedHtmlProps> = ({ data, id }) => {
+const TranslatedHtml: FunctionComponent<TranslatedHtmlProps> = ({ data, id }) => {
     const { language } = useLocale();
 
     return (

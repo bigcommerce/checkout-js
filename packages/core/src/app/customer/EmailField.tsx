@@ -4,7 +4,7 @@ import React, { type FunctionComponent, memo, useCallback, useContext, useMemo }
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { FormContext, FormField, TextInput } from '@bigcommerce/checkout/ui';
 
-export interface EmailFieldProps {
+interface EmailFieldProps {
     isFloatingLabelEnabled?: boolean;
     onChange?(value: string): void;
 }

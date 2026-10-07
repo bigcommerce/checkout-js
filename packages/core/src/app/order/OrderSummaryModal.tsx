@@ -27,7 +27,7 @@ import OrderSummarySection from './OrderSummarySection';
 import OrderSummaryTotal from './OrderSummaryTotal';
 import { removeBundledItems } from './removeBundledItems';
 
-export interface OrderSummaryDrawerProps {
+interface OrderSummaryDrawerProps {
     items: LineItemMap;
     total: number;
     storeCurrency: StoreCurrency;

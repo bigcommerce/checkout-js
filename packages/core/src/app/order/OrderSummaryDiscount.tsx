@@ -6,7 +6,7 @@ import { ShopperCurrency } from '../currency';
 
 import OrderSummaryPrice, { type OrderSummaryPriceProps } from './OrderSummaryPrice';
 
-export interface OrderSummaryDiscountProps extends OrderSummaryPriceProps {
+interface OrderSummaryDiscountProps extends OrderSummaryPriceProps {
     remaining?: number;
     code?: string;
     onRemoved?(code: string): void;

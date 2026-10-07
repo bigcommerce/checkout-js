@@ -5,7 +5,7 @@ import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconPrint } from '@bigcommerce/checkout/ui';
 
-export interface PrintLinkProps {
+interface PrintLinkProps {
     className?: string;
 }
 

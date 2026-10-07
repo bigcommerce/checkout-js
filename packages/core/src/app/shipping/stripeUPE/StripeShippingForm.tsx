@@ -24,7 +24,7 @@ import ShippingFormFooter from '../ShippingFormFooter';
 
 import StripeShippingAddress from './StripeShippingAddress';
 
-export interface SingleShippingFormProps {
+interface SingleShippingFormProps {
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     customerMessage: string;

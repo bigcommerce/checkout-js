@@ -6,7 +6,7 @@ import { Alert, AlertType, Button, ButtonVariant, Form } from '@bigcommerce/chec
 
 import { OrderComments } from '../orderComments';
 
-export interface ShippingFormFooterProps {
+interface ShippingFormFooterProps {
     shouldShowOrderComments: boolean;
     shouldDisableSubmit: boolean;
     isLoading: boolean;

@@ -5,7 +5,7 @@ import { object, type ObjectSchema, string } from 'yup';
 
 import { type CreditCardFieldsetValues } from '../paymentMethod';
 
-export interface CreditCardValidationSchemaOptions {
+interface CreditCardValidationSchemaOptions {
     isCardCodeRequired: boolean;
     language: LanguageService;
 }

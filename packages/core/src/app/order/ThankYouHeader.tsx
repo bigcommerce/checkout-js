@@ -4,7 +4,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { PrimaryHeader } from './PrimaryHeader';
 
-export interface HeaderProps {
+interface HeaderProps {
     name?: string;
 }
 

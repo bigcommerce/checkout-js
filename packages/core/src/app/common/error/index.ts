@@ -1,8 +1,6 @@
 export { default as CustomError } from './CustomError';
-export { default as ErrorCode } from './ErrorCode';
-export type { ErrorModalOnCloseProps, ErrorModalProps } from './ErrorModal';
 export { default as ErrorModal } from './ErrorModal';
-export { default as computeErrorCode } from './computeErrorCode';
+export type { ErrorModalOnCloseProps } from './ErrorModal';
 export { default as createErrorLogger } from './createErrorLogger';
 export { default as isCustomError } from './isCustomError';
 export { default as isCartChangedError } from './isCartChangedError';
