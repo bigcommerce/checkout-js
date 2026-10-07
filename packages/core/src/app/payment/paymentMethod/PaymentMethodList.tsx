@@ -175,7 +175,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
             />
         );
 
-        // Express methods render a wallet button, not a form — the skeleton would flash in and out.
+        // Express methods do not have a body — the skeleton would flash in and out.
         const shouldShowSkeleton =
             enhancedThemeV1 && !isCustomChecklistItem && !isExpressPaymentMethod;
 
