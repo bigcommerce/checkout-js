@@ -1,5 +1,6 @@
 .paymentProviderHeader-container {
     @include enhancedThemeV1 {
+        align-items: center;
         flex: 1;
     }
 }
