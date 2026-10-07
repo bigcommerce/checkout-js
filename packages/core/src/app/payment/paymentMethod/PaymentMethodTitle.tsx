@@ -10,7 +10,11 @@ import { compact } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
 import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcommerce-payments-utils';
-import { type CheckoutContextProps, useCapabilities } from '@bigcommerce/checkout/contexts';
+import {
+    type CheckoutContextProps,
+    useCapabilities,
+    useThemeContext,
+} from '@bigcommerce/checkout/contexts';
 import {
     TranslatedString,
     withLanguage,
@@ -21,7 +25,11 @@ import {
     BraintreePaypalCreditBanner,
     PaypalCommerceCreditBanner,
 } from '@bigcommerce/checkout/paypal-utils';
-import { CreditCardIconList, mapFromPaymentMethodCardType } from '@bigcommerce/checkout/ui';
+import {
+    CreditCardIconList,
+    isSmallScreen,
+    mapFromPaymentMethodCardType,
+} from '@bigcommerce/checkout/ui';
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { withCheckout } from '../../checkout';
@@ -34,6 +42,12 @@ import { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValu
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
 import { type PoDisabledReason } from './usePoMethodDisabledReason';
+
+const POPULAR_CARD_TYPES = ['visa', 'mastercard', 'american-express'];
+const POPULAR_CARD_TYPES_SMALL_SCREEN = POPULAR_CARD_TYPES.slice(0, 2);
+
+const getPopularCardTypes = () =>
+    isSmallScreen() ? POPULAR_CARD_TYPES_SMALL_SCREEN : POPULAR_CARD_TYPES;
 
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;
@@ -412,6 +426,9 @@ const PaymentMethodTitle: FunctionComponent<
     const {
         payment: { poConfig },
     } = useCapabilities();
+    const { enhancedThemeV1 } = useThemeContext();
+    const cardTypes = compact(method.supportedCards.map(mapFromPaymentMethodCardType));
+    const priorityCardTypes = enhancedThemeV1 ? getPopularCardTypes() : undefined;
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText, subtitle } = getPaymentMethodTitle(
         language,
@@ -459,6 +476,8 @@ const PaymentMethodTitle: FunctionComponent<
         <div
             className={classNames('paymentProviderHeader-container', {
                 'paymentProviderHeader-container-googlePay': method.id.includes('googlepay'),
+                'paymentProviderHeader-container--compactCards':
+                    priorityCardTypes && cardTypes.length > 0,
             })}
         >
             <div
@@ -513,7 +532,9 @@ const PaymentMethodTitle: FunctionComponent<
             </div>
             <div className="paymentProviderHeader-cc">
                 <CreditCardIconList
-                    cardTypes={compact(method.supportedCards.map(mapFromPaymentMethodCardType))}
+                    cardTypes={cardTypes}
+                    moreCardsLabel={language.translate('payment.credit_card_more_cards_action')}
+                    priorityCardTypes={priorityCardTypes}
                     selectedCardType={getSelectedCardType()}
                 />
             </div>

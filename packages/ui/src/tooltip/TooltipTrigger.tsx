@@ -1,4 +1,4 @@
-import { type Placement } from '@popperjs/core';
+import { type Placement, type PositioningStrategy } from '@popperjs/core';
 import React, {
     type KeyboardEvent,
     type MouseEvent,
@@ -15,6 +15,7 @@ import './TooltipTrigger.scss';
 interface TooltipTriggerProps {
     ariaLabel?: string;
     placement?: Placement;
+    strategy?: PositioningStrategy;
     tooltip: ReactNode;
     children?: ReactNode;
 }
@@ -23,6 +24,7 @@ const TooltipTrigger: React.FC<TooltipTriggerProps> = ({
     ariaLabel,
     children,
     placement = 'bottom',
+    strategy = 'absolute',
     tooltip,
 }) => {
     const [shouldShow, setShouldShow] = useState(false);
@@ -102,6 +104,7 @@ const TooltipTrigger: React.FC<TooltipTriggerProps> = ({
                     { name: 'preventOverflow', enabled: false },
                 ]}
                 placement={placement}
+                strategy={strategy}
             >
                 {({ ref, style }) =>
                     shouldShow && (

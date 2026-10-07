@@ -9,3 +9,55 @@
         margin-bottom: 0;
     }
 }
+
+.paymentProviderHeader-container--compactCards {
+    @include enhancedThemeV1 {
+        .creditCardTypes-list {
+            flex-wrap: nowrap;
+            margin-left: spacing("half");
+
+            @include breakpoint("small") {
+                margin-left: spacing("single");
+            }
+        }
+
+        .creditCardTypes-list-item--overflow {
+            align-items: center;
+            display: flex;
+            width: auto;
+
+            .tooltip-trigger {
+                cursor: pointer;
+            }
+        }
+
+        .creditCardTypes-overflowCount {
+            border: 1px solid $input-border-color;
+            border-radius: $element-border-radius;
+            color: $checklist-label-color;
+            font-size: $fontSize-tiny;
+            line-height: 1;
+            padding: spacing("quarter");
+            white-space: nowrap;
+        }
+
+        .tooltip {
+            border-radius: $element-border-radius;
+            box-shadow: 0 spacing("eighth") spacing("half") rgba(0, 0, 0, 0.2);
+            padding: spacing("half") spacing("single");
+        }
+
+        .creditCardTypes-overflowList {
+            display: flex;
+            flex-wrap: wrap;
+            gap: spacing("half");
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .creditCardTypes-overflowList-item {
+            width: $credit-card-items-width;
+        }
+    }
+}
