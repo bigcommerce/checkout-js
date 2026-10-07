@@ -43,11 +43,11 @@ import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
 import { type PoDisabledReason } from './usePoMethodDisabledReason';
 
-const POPULAR_CARD_TYPES = ['visa', 'mastercard', 'american-express'];
-const POPULAR_CARD_TYPES_SMALL_SCREEN = POPULAR_CARD_TYPES.slice(0, 2);
+const MAX_VISIBLE_CARD_TYPES = 3;
+const MAX_VISIBLE_CARD_TYPES_SMALL_SCREEN = 2;
 
-const getPopularCardTypes = () =>
-    isSmallScreen() ? POPULAR_CARD_TYPES_SMALL_SCREEN : POPULAR_CARD_TYPES;
+const getMaxVisibleCardTypes = () =>
+    isSmallScreen() ? MAX_VISIBLE_CARD_TYPES_SMALL_SCREEN : MAX_VISIBLE_CARD_TYPES;
 
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;
@@ -428,7 +428,6 @@ const PaymentMethodTitle: FunctionComponent<
     } = useCapabilities();
     const { enhancedThemeV1 } = useThemeContext();
     const cardTypes = compact(method.supportedCards.map(mapFromPaymentMethodCardType));
-    const priorityCardTypes = enhancedThemeV1 ? getPopularCardTypes() : undefined;
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText, subtitle } = getPaymentMethodTitle(
         language,
@@ -477,7 +476,7 @@ const PaymentMethodTitle: FunctionComponent<
             className={classNames('paymentProviderHeader-container', {
                 'paymentProviderHeader-container-googlePay': method.id.includes('googlepay'),
                 'paymentProviderHeader-container--compactCards':
-                    priorityCardTypes && cardTypes.length > 0,
+                    enhancedThemeV1 && cardTypes.length > 0,
             })}
         >
             <div
@@ -533,8 +532,8 @@ const PaymentMethodTitle: FunctionComponent<
             <div className="paymentProviderHeader-cc">
                 <CreditCardIconList
                     cardTypes={cardTypes}
+                    maxVisibleCardTypes={enhancedThemeV1 ? getMaxVisibleCardTypes() : undefined}
                     moreCardsLabel={language.translate('payment.credit_card_more_cards_action')}
-                    priorityCardTypes={priorityCardTypes}
                     selectedCardType={getSelectedCardType()}
                 />
             </div>

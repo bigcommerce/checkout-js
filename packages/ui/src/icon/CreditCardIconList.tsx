@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { difference, intersection, union } from 'lodash';
+import { difference, union } from 'lodash';
 import React, { type FunctionComponent, memo } from 'react';
 
 import { Tooltip, TooltipTrigger } from '../tooltip';
@@ -9,7 +9,7 @@ import { CreditCardIcon, filterInstrumentTypes } from './';
 export interface CreditCardIconListProps {
     selectedCardType?: string;
     cardTypes: string[];
-    priorityCardTypes?: string[];
+    maxVisibleCardTypes?: number;
     moreCardsLabel?: string;
 }
 
@@ -54,23 +54,20 @@ const CardTypesOverflow: FunctionComponent<{ cardTypes: string[]; label?: string
 
 const getVisibleCardTypes = (
     cardTypes: string[],
-    priorityCardTypes: string[],
+    maxVisibleCardTypes: number,
     selectedCardType?: string,
 ): string[] => {
-    const preferred = union(intersection(priorityCardTypes, cardTypes), cardTypes).slice(
-        0,
-        priorityCardTypes.length,
-    );
+    const visibleCardTypes = cardTypes.slice(0, maxVisibleCardTypes);
 
     return selectedCardType && cardTypes.includes(selectedCardType)
-        ? union(preferred, [selectedCardType])
-        : preferred;
+        ? union(visibleCardTypes, [selectedCardType])
+        : visibleCardTypes;
 };
 
 const CreditCardIconList: FunctionComponent<CreditCardIconListProps> = ({
     selectedCardType,
     cardTypes,
-    priorityCardTypes,
+    maxVisibleCardTypes,
     moreCardsLabel,
 }) => {
     const filteredCardTypes = filterInstrumentTypes(cardTypes);
@@ -79,9 +76,10 @@ const CreditCardIconList: FunctionComponent<CreditCardIconListProps> = ({
         return null;
     }
 
-    const visibleCardTypes = priorityCardTypes
-        ? getVisibleCardTypes(filteredCardTypes, priorityCardTypes, selectedCardType)
-        : filteredCardTypes;
+    const visibleCardTypes =
+        maxVisibleCardTypes === undefined
+            ? filteredCardTypes
+            : getVisibleCardTypes(filteredCardTypes, maxVisibleCardTypes, selectedCardType);
     const hiddenCardTypes = difference(filteredCardTypes, visibleCardTypes);
 
     return (
