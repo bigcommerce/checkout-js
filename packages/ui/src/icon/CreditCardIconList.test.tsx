@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen, within } from '@bigcommerce/checkout/test-utils';
 
 import CreditCardIconList from './CreditCardIconList';
 
@@ -28,15 +28,13 @@ describe('CreditCardIconList', () => {
         render(<CreditCardIconList cardTypes={['discover', 'electron', 'troy']} />);
 
         const icons = await screen.findAllByRole('img');
+        const titleIds = icons.map((icon) => icon.getAttribute('aria-labelledby'));
 
         expect(icons).toHaveLength(3);
+        expect(new Set(titleIds).size).toBe(3);
 
-        icons.forEach((icon) => {
-            const titleId = icon.getAttribute('aria-labelledby') ?? '';
-            const titles = document.querySelectorAll(`[id="${titleId}"]`);
-
-            expect(titles).toHaveLength(1);
-            expect(icon.contains(titles[0])).toBe(true);
+        ['Discover', 'Electron', 'Troy'].forEach((title, index) => {
+            expect(within(icons[index]).getByTitle(title)).toHaveAttribute('id', titleIds[index]);
         });
     });
 
@@ -93,7 +91,7 @@ describe('CreditCardIconList', () => {
         });
 
         it('keeps the detected card visible so it can be highlighted', () => {
-            const { container } = render(
+            render(
                 <CreditCardIconList
                     cardTypes={cardTypes}
                     maxVisibleCardTypes={2}
@@ -101,15 +99,15 @@ describe('CreditCardIconList', () => {
                 />,
             );
 
-            expect(screen.getByTestId('jcb-icon')).toBeInTheDocument();
-            // eslint-disable-next-line testing-library/no-container
-            expect(container.getElementsByClassName('is-active')).toHaveLength(1);
+            expect(screen.getByTestId('jcb-icon')).toHaveClass('is-active');
+            expect(screen.getByTestId('american-express-icon')).toHaveClass('not-active');
+            expect(screen.getByTestId('visa-icon')).toHaveClass('not-active');
             expect(screen.getByText('+2')).toBeInTheDocument();
         });
     });
 
     it('renders all class names correctly', () => {
-        const { container } = render(
+        render(
             <CreditCardIconList
                 cardTypes={['visa', 'mastercard', 'foo', 'diners-club']}
                 selectedCardType="mastercard"
@@ -117,9 +115,8 @@ describe('CreditCardIconList', () => {
         );
 
         expect(screen.getAllByRole('listitem')).toHaveLength(3);
-        // eslint-disable-next-line testing-library/no-container
-        expect(container.getElementsByClassName('is-active').length).toBe(1);
-        // eslint-disable-next-line testing-library/no-container
-        expect(container.getElementsByClassName('not-active').length).toBe(2);
+        expect(screen.getByTestId('mastercard-icon')).toHaveClass('is-active');
+        expect(screen.getByTestId('visa-icon')).toHaveClass('not-active');
+        expect(screen.getByTestId('diners-club-icon')).toHaveClass('not-active');
     });
 });
