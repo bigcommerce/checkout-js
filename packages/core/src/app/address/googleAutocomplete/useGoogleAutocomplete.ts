@@ -14,7 +14,6 @@ export interface UseGoogleAutocompleteProps {
     fields?: string[];
     nextElement?: HTMLElement;
     isAutocompleteEnabled?: boolean;
-    isNewPlacesApiEnabled: boolean;
     types?: GoogleAutocompleteOptionTypes[];
     componentRestrictions?: google.maps.places.ComponentRestrictions;
     onSelect(place: google.maps.places.PlaceResult | null, item: AutocompleteItem): void;
@@ -40,7 +39,6 @@ export function useGoogleAutocomplete({
     fields,
     nextElement,
     isAutocompleteEnabled,
-    isNewPlacesApiEnabled,
     types,
     componentRestrictions,
     onSelect,
@@ -57,15 +55,15 @@ export function useGoogleAutocomplete({
     }
 
     if (!googleAutocompleteServiceRef.current) {
-        // When the new Places API is enabled, the legacy service must share the same script-loader instance.
+        // The legacy service must share the same script-loader instance as the new Places API.
         // Otherwise Maps JS API that they depend on will be loaded twice and that breaks both services
         googleAutocompleteServiceRef.current = new GoogleAutocompleteService(
             apiKey,
-            isNewPlacesApiEnabled ? getNewGooglePlacesApiScriptLoader() : undefined,
+            getNewGooglePlacesApiScriptLoader(),
         );
     }
 
-    const isUsingLegacyApi = () => !isNewPlacesApiEnabled || newGooglePlacesApiState.isUnavailable;
+    const isUsingLegacyApi = () => newGooglePlacesApiState.isUnavailable;
 
     const finalizeSelection = (
         place: google.maps.places.PlaceResult | null,

@@ -19,14 +19,9 @@ interface BootstrapGlobalScope {
  * This is based on the official Google Maps JavaScript API loader example:
  * https://developers.google.com/maps/documentation/javascript/load-maps-js-api
  *
- * This loader is only ever reached when the CHECKOUT-10026.new_google_places_api flag is on for a
- * store. Stores with the flag off never construct or call this class, so they keep loading
- * the Maps JS API exactly as they do today, via GoogleAutocompleteScriptLoader.
- *
- * When the flag IS on, both the new Places API classes and the legacy
- * AutocompleteService/PlacesService classes must share this same loader instance/promise.
- * This is because both old and new API share the same Google's Maps JS API
- * and it breaks if loaded twice on the same page.
+ * Both the new Places API classes and the legacy AutocompleteService/PlacesService classes
+ * must share this same loader instance/promise. This is because both old and new API share
+ * the same Google's Maps JS API and it breaks if loaded twice on the same page.
  */
 function bootstrapGoogleMapsImportLibrary({ key, v, language }: MapsBootstrapConfig): void {
     const CALLBACK_KEY = '__ib__';
