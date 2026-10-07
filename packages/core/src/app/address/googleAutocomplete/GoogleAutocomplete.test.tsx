@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import React, { act } from 'react';
 
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
@@ -100,6 +100,113 @@ describe('GoogleAutocomplete', () => {
             expect(mockGetLegacyApiSuggestions).not.toHaveBeenCalled();
         });
 
+        it('debounces suggestion requests into a single call while typing', async () => {
+            render(<GoogleAutocomplete {...defaultProps} />);
+
+            await userEvent.type(screen.getByRole('textbox'), '123');
+
+            await screen.findByText('123 New API Ave');
+            expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
+            expect(mockGetNewApiSuggestions).toHaveBeenCalledWith('123', undefined, undefined);
+        });
+
+        it('does not request suggestions when the input is cleared before the debounce elapses', async () => {
+            render(<GoogleAutocomplete {...defaultProps} />);
+
+            const input = screen.getByRole('textbox');
+
+            await userEvent.type(input, '123');
+            await userEvent.clear(input);
+
+            await new Promise((resolve) => setTimeout(resolve, 400));
+
+            expect(mockGetNewApiSuggestions).not.toHaveBeenCalled();
+            expect(screen.queryByText('123 New API Ave')).not.toBeInTheDocument();
+        });
+
+        it('cancels a pending suggestions request when a suggestion is picked before the debounce elapses', async () => {
+            jest.useFakeTimers();
+
+            const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+
+            try {
+                render(<GoogleAutocomplete {...defaultProps} />);
+
+                const input = screen.getByRole('textbox');
+
+                await user.type(input, '123');
+                await screen.findByText('123 New API Ave');
+                expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
+
+                // Schedule one more API call after getting suggestions
+                await user.type(input, '4');
+                await user.click(screen.getByText('123 New API Ave'));
+
+                await waitFor(() => expect(defaultProps.onSelect).toHaveBeenCalled());
+
+                act(() => {
+                    jest.advanceTimersByTime(400);
+                });
+
+                // Make sure second suggestions call is cancelled
+                expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
+            } finally {
+                jest.useRealTimers();
+            }
+        });
+
+        it('drops an in-flight suggestions response that resolves after a suggestion is picked', async () => {
+            jest.useFakeTimers();
+
+            const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+            const staleSuggestions = [
+                { id: 'stale-place', label: '123 Stale St', value: '123 Stale St' },
+            ];
+
+            let resolveSecondFetch: ((value: unknown) => void) | undefined;
+
+            mockGetNewApiSuggestions
+                .mockImplementationOnce(() => Promise.resolve(newApiSuggestions))
+                .mockImplementationOnce(
+                    () =>
+                        new Promise((resolve) => {
+                            resolveSecondFetch = resolve;
+                        }),
+                );
+
+            try {
+                render(<GoogleAutocomplete {...defaultProps} />);
+
+                const input = screen.getByRole('textbox');
+
+                await user.type(input, '123');
+                await screen.findByText('123 New API Ave');
+
+                // The next keystroke starts a second fetch that stays in flight
+                await user.type(input, '4');
+
+                act(() => {
+                    jest.advanceTimersByTime(300);
+                });
+
+                expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(2);
+
+                await user.click(screen.getByText('123 New API Ave'));
+                await waitFor(() => expect(defaultProps.onSelect).toHaveBeenCalled());
+
+                // The in-flight response must not repopulate the dropdown after selection
+                await act(async () => {
+                    resolveSecondFetch?.(staleSuggestions);
+                });
+
+                // a new request should give a new suggestion list
+                await user.type(input, '5');
+                expect(screen.queryByText('123 Stale St')).not.toBeInTheDocument();
+            } finally {
+                jest.useRealTimers();
+            }
+        });
+
         it('calls onSelect with the new API place result when a suggestion is picked', async () => {
             render(<GoogleAutocomplete {...defaultProps} />);
 
@@ -167,6 +274,33 @@ describe('GoogleAutocomplete', () => {
             // legacy is called twice for both cases
             await waitFor(() => expect(mockGetLegacyApiSuggestions).toHaveBeenCalledTimes(2));
             // new api is called only once for previous input
+            expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
+        });
+
+        it('debounces suggestions into a single legacy call after falling back', async () => {
+            mockGetNewApiSuggestions.mockRejectedValue(gRpcPermissionDeniedErrorMock);
+
+            render(<GoogleAutocomplete {...defaultProps} />);
+
+            const input = screen.getByRole('textbox');
+
+            // First request is denied by the new API and falls back to legacy with the same input.
+            await userEvent.type(input, '1');
+            await screen.findByText('123 Legacy St, New York');
+            expect(mockGetLegacyApiSuggestions).toHaveBeenCalledTimes(1);
+            expect(mockGetLegacyApiSuggestions).toHaveBeenCalledWith(
+                expect.objectContaining({ input: '1' }),
+                expect.any(Function),
+            );
+
+            // Subsequent keystrokes collapse into one more legacy request with the final input.
+            await userEvent.type(input, '234');
+
+            await waitFor(() => expect(mockGetLegacyApiSuggestions).toHaveBeenCalledTimes(2));
+            expect(mockGetLegacyApiSuggestions).toHaveBeenLastCalledWith(
+                expect.objectContaining({ input: '1234' }),
+                expect.any(Function),
+            );
             expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
         });
 
