@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.915.1](https://github.com/bigcommerce/checkout-js/compare/v1.915.0...v1.915.1) (2026-10-07)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10467 fix the payment form field width in mobile screen ([#3391](https://github.com/bigcommerce/checkout-js/issues/3391)) ([0407dac](https://github.com/bigcommerce/checkout-js/commit/0407daccdfc2b3262df61ec7c6e82e32e7587a00))
+
 ## [1.915.0](https://github.com/bigcommerce/checkout-js/compare/v1.914.1...v1.915.0) (2026-10-06)
 
 
