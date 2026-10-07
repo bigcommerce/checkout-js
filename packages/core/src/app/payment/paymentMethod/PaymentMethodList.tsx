@@ -16,8 +16,19 @@ import CustomChecklistItem from './CustomChecklistItem';
 import getPaymentMethodName from './getPaymentMethodName';
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
 import PaymentMethodTitle, { getPaymentMethodTitle } from './PaymentMethodTitle';
+import PaymentMethodType from './PaymentMethodType';
 import PaymentMethodV2 from './PaymentMethodV2';
 import { type PoDisabledReason, usePoMethodDisabledReason } from './usePoMethodDisabledReason';
+
+const EXPRESS_PAYMENT_METHOD_TYPES = new Set<string>([
+    PaymentMethodType.ApplePay,
+    PaymentMethodType.GooglePay,
+    PaymentMethodType.PayWithGoogle,
+    PaymentMethodType.Paypal,
+    PaymentMethodType.PaypalCredit,
+    PaymentMethodType.PaypalVenmo,
+    PaymentMethodType.VisaCheckout,
+]);
 
 export interface PaymentMethodListProps {
     isEmbedded?: boolean;
@@ -152,6 +163,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
 }) => {
     const { enhancedThemeV1 } = useThemeContext();
     const isCustomChecklistItem = Boolean(method.initializationData?.isCustomChecklistItem);
+    const isExpressPaymentMethod = EXPRESS_PAYMENT_METHOD_TYPES.has(method.method);
 
     const renderPaymentMethod = useMemo(() => {
         const paymentMethod = (
@@ -163,8 +175,10 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
             />
         );
 
-        // Custom checklist items manage their own loading UI
-        return enhancedThemeV1 && !isCustomChecklistItem ? (
+        // Express methods render a wallet button, not a form — the skeleton would flash in and out.
+        const shouldShowSkeleton = enhancedThemeV1 && !isCustomChecklistItem && !isExpressPaymentMethod;
+
+        return shouldShowSkeleton ? (
             <LoadingOverlay
                 hideContentWhenLoading
                 isLoading={isSelected && Boolean(isInitializingPayment)}
@@ -178,6 +192,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     }, [
         enhancedThemeV1,
         isCustomChecklistItem,
+        isExpressPaymentMethod,
         isEmbedded,
         isInitializingPayment,
         isSelected,
