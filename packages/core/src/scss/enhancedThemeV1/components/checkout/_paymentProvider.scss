@@ -14,11 +14,29 @@
 .paymentProviderHeader-container--compactCards {
     @include enhancedThemeV1 {
         .creditCardTypes-list {
-            flex-wrap: nowrap;
             margin-left: spacing("half");
 
             @include breakpoint("small") {
                 margin-left: spacing("single");
+            }
+        }
+
+        .creditCardTypes-list-item:not(.creditCardTypes-list-item--overflow) {
+            min-width: 0;
+            width: $credit-card-items-width--compact;
+
+            .icon {
+                height: $credit-card-items-width--compact;
+                width: $credit-card-items-width--compact;
+            }
+
+            @include breakpoint("small") {
+                width: $credit-card-items-width;
+
+                .icon {
+                    height: remCalc($icon-size * 2);
+                    width: remCalc($icon-size * 2);
+                }
             }
         }
 
