@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.916.0](https://github.com/bigcommerce/checkout-js/compare/v1.915.3...v1.916.0) (2026-10-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10464 enhance card icons on payment method title ([#3394](https://github.com/bigcommerce/checkout-js/issues/3394)) ([a311b1d](https://github.com/bigcommerce/checkout-js/commit/a311b1d4232fbd8f4995661ec2ea5492a2baa78e))
+
 ### [1.915.3](https://github.com/bigcommerce/checkout-js/compare/v1.915.2...v1.915.3) (2026-10-08)
 
 
