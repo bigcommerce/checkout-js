@@ -27,6 +27,7 @@ import {
 } from '@bigcommerce/checkout/paypal-utils';
 import {
     CreditCardIconList,
+    CreditCardIconListV2,
     isSmallScreen,
     mapFromPaymentMethodCardType,
 } from '@bigcommerce/checkout/ui';
@@ -530,12 +531,19 @@ const PaymentMethodTitle: FunctionComponent<
                 {getSubtitle()}
             </div>
             <div className="paymentProviderHeader-cc">
-                <CreditCardIconList
-                    cardTypes={cardTypes}
-                    maxVisibleCardTypes={enhancedThemeV1 ? getMaxVisibleCardTypes() : undefined}
-                    moreCardsLabel={language.translate('payment.credit_card_more_cards_action')}
-                    selectedCardType={getSelectedCardType()}
-                />
+                {enhancedThemeV1 ? (
+                    <CreditCardIconListV2
+                        cardTypes={cardTypes}
+                        maxVisibleCardTypes={getMaxVisibleCardTypes()}
+                        moreCardsLabel={language.translate('payment.credit_card_more_cards_action')}
+                        selectedCardType={getSelectedCardType()}
+                    />
+                ) : (
+                    <CreditCardIconList
+                        cardTypes={cardTypes}
+                        selectedCardType={getSelectedCardType()}
+                    />
+                )}
             </div>
         </div>
     );
