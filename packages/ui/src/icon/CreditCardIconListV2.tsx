@@ -2,16 +2,22 @@ import classNames from 'classnames';
 import { difference, union } from 'lodash';
 import React, { type FunctionComponent, type MouseEvent } from 'react';
 
+import { isSmallScreen } from '../responsive';
 import { Tooltip, TooltipTrigger } from '../tooltip';
 
 import { CreditCardIcon, filterInstrumentTypes } from './';
 
-export interface CreditCardIconListV2Props {
+interface CreditCardIconListV2Props {
     cardTypes: string[];
-    maxVisibleCardTypes: number;
     moreCardsLabel: string;
     selectedCardType?: string;
 }
+
+const MAX_VISIBLE_CARD_TYPES = 3;
+const MAX_VISIBLE_CARD_TYPES_SMALL_SCREEN = 2;
+
+const getMaxVisibleCardTypes = () =>
+    isSmallScreen() ? MAX_VISIBLE_CARD_TYPES_SMALL_SCREEN : MAX_VISIBLE_CARD_TYPES;
 
 const CardIcon: FunctionComponent<{ type: string }> = ({ type }) => (
     <span className="cardIcon">
@@ -58,7 +64,6 @@ const CardTypesOverflow: FunctionComponent<{ cardTypes: string[]; label: string 
 
 export const CreditCardIconListV2: FunctionComponent<CreditCardIconListV2Props> = ({
     cardTypes,
-    maxVisibleCardTypes,
     moreCardsLabel,
     selectedCardType,
 }) => {
@@ -68,7 +73,7 @@ export const CreditCardIconListV2: FunctionComponent<CreditCardIconListV2Props> 
         return null;
     }
 
-    const firstCardTypes = supportedCardTypes.slice(0, maxVisibleCardTypes);
+    const firstCardTypes = supportedCardTypes.slice(0, getMaxVisibleCardTypes());
     const visibleCardTypes =
         selectedCardType && supportedCardTypes.includes(selectedCardType)
             ? union(firstCardTypes, [selectedCardType])

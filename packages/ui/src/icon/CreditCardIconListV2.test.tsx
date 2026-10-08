@@ -3,20 +3,20 @@ import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
+import { isSmallScreen } from '../responsive/isSmallScreen';
+
 import { CreditCardIconListV2 } from './CreditCardIconListV2';
+
+jest.mock('../responsive/isSmallScreen', () => ({
+    isSmallScreen: jest.fn(() => true),
+}));
 
 describe('CreditCardIconListV2', () => {
     const cardTypes = ['american-express', 'visa', 'discover', 'mastercard', 'jcb'];
     const moreCardsLabel = 'Show more accepted cards';
 
     it('shows the first cards inline and the rest behind a +N chip', () => {
-        render(
-            <CreditCardIconListV2
-                cardTypes={cardTypes}
-                maxVisibleCardTypes={2}
-                moreCardsLabel={moreCardsLabel}
-            />,
-        );
+        render(<CreditCardIconListV2 cardTypes={cardTypes} moreCardsLabel={moreCardsLabel} />);
 
         expect(screen.getByTestId('american-express-icon')).toBeInTheDocument();
         expect(screen.getByTestId('visa-icon')).toBeInTheDocument();
@@ -29,7 +29,6 @@ describe('CreditCardIconListV2', () => {
         render(
             <CreditCardIconListV2
                 cardTypes={['foo', 'visa', 'bar', 'mastercard']}
-                maxVisibleCardTypes={2}
                 moreCardsLabel={moreCardsLabel}
             />,
         );
@@ -40,25 +39,13 @@ describe('CreditCardIconListV2', () => {
     });
 
     it('renders nothing if no cards have an icon', () => {
-        render(
-            <CreditCardIconListV2
-                cardTypes={['foo', 'bar']}
-                maxVisibleCardTypes={2}
-                moreCardsLabel={moreCardsLabel}
-            />,
-        );
+        render(<CreditCardIconListV2 cardTypes={['foo', 'bar']} moreCardsLabel={moreCardsLabel} />);
 
         expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
     });
 
     it('lists the remaining cards in the tooltip on click', async () => {
-        render(
-            <CreditCardIconListV2
-                cardTypes={cardTypes}
-                maxVisibleCardTypes={2}
-                moreCardsLabel={moreCardsLabel}
-            />,
-        );
+        render(<CreditCardIconListV2 cardTypes={cardTypes} moreCardsLabel={moreCardsLabel} />);
 
         await userEvent.click(screen.getByRole('button', { name: moreCardsLabel }));
 
@@ -74,11 +61,7 @@ describe('CreditCardIconListV2', () => {
         render(
             <label>
                 <input onChange={handleChange} type="radio" />
-                <CreditCardIconListV2
-                    cardTypes={cardTypes}
-                    maxVisibleCardTypes={2}
-                    moreCardsLabel={moreCardsLabel}
-                />
+                <CreditCardIconListV2 cardTypes={cardTypes} moreCardsLabel={moreCardsLabel} />
             </label>,
         );
 
@@ -94,7 +77,6 @@ describe('CreditCardIconListV2', () => {
         render(
             <CreditCardIconListV2
                 cardTypes={['visa', 'mastercard']}
-                maxVisibleCardTypes={2}
                 moreCardsLabel={moreCardsLabel}
             />,
         );
@@ -107,7 +89,6 @@ describe('CreditCardIconListV2', () => {
         render(
             <CreditCardIconListV2
                 cardTypes={cardTypes}
-                maxVisibleCardTypes={2}
                 moreCardsLabel={moreCardsLabel}
                 selectedCardType="jcb"
             />,
@@ -117,5 +98,21 @@ describe('CreditCardIconListV2', () => {
         expect(screen.getByTestId('american-express-icon')).toHaveClass('not-active');
         expect(screen.getByTestId('visa-icon')).toHaveClass('not-active');
         expect(screen.getByText('+2')).toBeInTheDocument();
+    });
+
+    it('shows 3 cards inline on larger screens', () => {
+        jest.mocked(isSmallScreen).mockReturnValueOnce(false);
+
+        render(<CreditCardIconListV2 cardTypes={cardTypes} moreCardsLabel={moreCardsLabel} />);
+
+        expect(screen.getByTestId('discover-icon')).toBeInTheDocument();
+        expect(screen.getByText('+2')).toBeInTheDocument();
+    });
+
+    it('shows 2 cards inline on small screens', () => {
+        render(<CreditCardIconListV2 cardTypes={cardTypes} moreCardsLabel={moreCardsLabel} />);
+
+        expect(screen.queryByTestId('discover-icon')).not.toBeInTheDocument();
+        expect(screen.getByText('+3')).toBeInTheDocument();
     });
 });

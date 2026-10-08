@@ -28,7 +28,6 @@ import {
 import {
     CreditCardIconList,
     CreditCardIconListV2,
-    isSmallScreen,
     mapFromPaymentMethodCardType,
 } from '@bigcommerce/checkout/ui';
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
@@ -43,12 +42,6 @@ import { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValu
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
 import { type PoDisabledReason } from './usePoMethodDisabledReason';
-
-const MAX_VISIBLE_CARD_TYPES = 3;
-const MAX_VISIBLE_CARD_TYPES_SMALL_SCREEN = 2;
-
-const getMaxVisibleCardTypes = () =>
-    isSmallScreen() ? MAX_VISIBLE_CARD_TYPES_SMALL_SCREEN : MAX_VISIBLE_CARD_TYPES;
 
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;
@@ -534,7 +527,6 @@ const PaymentMethodTitle: FunctionComponent<
                 {enhancedThemeV1 ? (
                     <CreditCardIconListV2
                         cardTypes={cardTypes}
-                        maxVisibleCardTypes={getMaxVisibleCardTypes()}
                         moreCardsLabel={language.translate('payment.credit_card_more_cards_action')}
                         selectedCardType={getSelectedCardType()}
                     />
