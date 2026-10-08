@@ -57,6 +57,13 @@ const TooltipTrigger: React.FC<TooltipTriggerProps> = ({
     };
 
     const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            setShouldShow(true);
+
+            return;
+        }
+
         if (event.key === 'Escape' && shouldShow) {
             event.stopPropagation();
             isPointerOverTooltipRef.current = false;

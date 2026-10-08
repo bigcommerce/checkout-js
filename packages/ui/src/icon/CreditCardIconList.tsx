@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { difference, union } from 'lodash';
-import React, { type FunctionComponent, memo } from 'react';
+import React, { type FunctionComponent, memo, type MouseEvent } from 'react';
 
 import { Tooltip, TooltipTrigger } from '../tooltip';
 
@@ -19,6 +19,8 @@ const CardIcon: FunctionComponent<{ type: string }> = ({ type }) => (
     </span>
 );
 
+const preventLabelActivation = (event: MouseEvent<HTMLElement>) => event.preventDefault();
+
 const CardTypesOverflow: FunctionComponent<{ cardTypes: string[]; label?: string }> = ({
     cardTypes,
     label,
@@ -32,19 +34,21 @@ const CardTypesOverflow: FunctionComponent<{ cardTypes: string[]; label?: string
             placement="top-end"
             strategy="fixed"
             tooltip={
-                <Tooltip testId="credit-card-overflow-tooltip">
-                    <ul className="creditCardTypes-overflowList">
-                        {cardTypes.map((type) => (
-                            <li
-                                className="creditCardTypes-overflowList-item"
-                                data-test={`${type}-overflow-icon`}
-                                key={type}
-                            >
-                                <CardIcon type={type} />
-                            </li>
-                        ))}
-                    </ul>
-                </Tooltip>
+                <span onClick={preventLabelActivation} role="presentation">
+                    <Tooltip testId="credit-card-overflow-tooltip">
+                        <ul className="creditCardTypes-overflowList">
+                            {cardTypes.map((type) => (
+                                <li
+                                    className="creditCardTypes-overflowList-item"
+                                    data-test={`${type}-overflow-icon`}
+                                    key={type}
+                                >
+                                    <CardIcon type={type} />
+                                </li>
+                            ))}
+                        </ul>
+                    </Tooltip>
+                </span>
             }
         >
             <span className="creditCardTypes-overflowCount">+{cardTypes.length}</span>

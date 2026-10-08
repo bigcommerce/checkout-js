@@ -81,6 +81,28 @@ describe('CreditCardIconList', () => {
             expect(screen.getByTestId('jcb-overflow-icon')).toBeInTheDocument();
         });
 
+        it('does not select the enclosing radio when the tooltip is clicked', async () => {
+            const handleChange = jest.fn();
+
+            render(
+                <label>
+                    <input onChange={handleChange} type="radio" />
+                    <CreditCardIconList
+                        cardTypes={cardTypes}
+                        maxVisibleCardTypes={2}
+                        moreCardsLabel={moreCardsLabel}
+                    />
+                </label>,
+            );
+
+            await userEvent.click(screen.getByRole('button', { name: moreCardsLabel }));
+            await userEvent.click(screen.getByTestId('discover-overflow-icon'));
+            await userEvent.click(screen.getByTestId('credit-card-overflow-tooltip'));
+
+            expect(handleChange).not.toHaveBeenCalled();
+            expect(screen.getByRole('radio')).not.toBeChecked();
+        });
+
         it('does not render a chip when all cards fit', () => {
             render(
                 <CreditCardIconList cardTypes={['visa', 'mastercard']} maxVisibleCardTypes={2} />,
