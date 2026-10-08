@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.915.3](https://github.com/bigcommerce/checkout-js/compare/v1.915.2...v1.915.3) (2026-10-08)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10465 Do not show loading skeleton for express methods ([#3393](https://github.com/bigcommerce/checkout-js/issues/3393)) ([e6c87dc](https://github.com/bigcommerce/checkout-js/commit/e6c87dc1aa25ff23783b344dbae0f3ab1738c68e))
+
 ### [1.915.2](https://github.com/bigcommerce/checkout-js/compare/v1.915.1...v1.915.2) (2026-10-07)
 
 ### [1.915.1](https://github.com/bigcommerce/checkout-js/compare/v1.915.0...v1.915.1) (2026-10-07)
