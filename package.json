@@ -189,7 +189,7 @@
     "webpack": "^5.105.0",
     "webpack-assets-manifest": "^5.1.0",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.15.2",
+    "webpack-dev-server": "^6.0.0",
     "webpack-inject-plugin": "^1.5.3",
     "webpack-subresource-integrity": "^5.1.0",
     "yargs": "^14.0.0"
