@@ -219,7 +219,12 @@ const HostedWidgetPaymentComponent = ({
                 return;
             }
 
-            if (selectedInstrumentId === id) {
+            const currentSelectedId =
+                selectedInstrumentId ||
+                (instruments.find((instrument) => instrument.defaultInstrument) || instruments[0])
+                    ?.bigpayToken;
+
+            if (currentSelectedId === id) {
                 const nextInstrument =
                     remainingInstruments.find((instrument) => instrument.defaultInstrument) ||
                     remainingInstruments[0];
