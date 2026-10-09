@@ -9,8 +9,9 @@ import {
 import { createNoPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/no-payment';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
-import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, useCheckout } from '@bigcommerce/checkout/contexts';
 import { CaptureMessageComponent } from '@bigcommerce/checkout/payment-integration-api';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { withCheckout } from '../../checkout';
 
@@ -45,7 +46,6 @@ export interface WithCheckoutPaymentMethodProps {
 }
 
 const KNOWN_API_METHOD_IDS = new Set([
-    'authorizenet',
     'cybersourcev2',
     'ewayrapid',
     'nmi',
@@ -64,6 +64,9 @@ const KNOWN_API_METHOD_IDS = new Set([
     'vantivcore',
 ]);
 
+// Known only while the matching resolver experiment is disabled
+const KNOWN_API_METHOD_IDS_WITHOUT_RESOLVER = new Set(['authorizenet']);
+
 /**
  * If possible, try to avoid having components that are specific to a specific
  * payment provider or method. Instead, try to generalise the requirements and
@@ -77,6 +80,11 @@ const PaymentMethodComponent: FunctionComponent<
     PaymentMethodProps & WithCheckoutPaymentMethodProps
 > = (props) => {
     const { method } = props;
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+    const isAuthorizeNetResolverEnabled = isExperimentEnabled(
+        config?.checkoutSettings,
+        'PI-4745.authorizenet_resolver_configuration',
+    );
 
     if (method.id === PaymentMethodId.Humm || method.type === PaymentMethodProviderType.Hosted) {
         const sentryMessage = `DataHostedPaymentMethod Hosted/Humm gateway=${method.gateway} id=${method.id} type=${method.type}`;
@@ -101,7 +109,9 @@ const PaymentMethodComponent: FunctionComponent<
         const isKnownMethod =
             method.gateway === null &&
             method.type === PaymentMethodProviderType.Api &&
-            KNOWN_API_METHOD_IDS.has(method.id);
+            (KNOWN_API_METHOD_IDS.has(method.id) ||
+                (!isAuthorizeNetResolverEnabled &&
+                    KNOWN_API_METHOD_IDS_WITHOUT_RESOLVER.has(method.id)));
 
         const sentryMessage = isKnownMethod
             ? ''
