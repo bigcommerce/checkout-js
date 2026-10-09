@@ -219,6 +219,10 @@ const HostedWidgetPaymentComponent = ({
                 return;
             }
 
+            if (isAddingNewCard) {
+                return;
+            }
+
             const currentSelectedId =
                 selectedInstrumentId ||
                 (instruments.find((instrument) => instrument.defaultInstrument) || instruments[0])
@@ -233,7 +237,7 @@ const HostedWidgetPaymentComponent = ({
                 setFieldValue('instrumentId', nextInstrument.bigpayToken);
             }
         },
-        [instruments, selectedInstrumentId],
+        [instruments, isAddingNewCard, selectedInstrumentId],
     );
 
     const handleUseNewCard = useCallback(async () => {
