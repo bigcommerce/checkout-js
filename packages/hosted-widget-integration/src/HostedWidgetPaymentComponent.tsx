@@ -219,7 +219,16 @@ const HostedWidgetPaymentComponent = ({
                 return;
             }
 
-            if (selectedInstrumentId === id) {
+            if (isAddingNewCard) {
+                return;
+            }
+
+            const currentSelectedId =
+                selectedInstrumentId ||
+                (instruments.find((instrument) => instrument.defaultInstrument) || instruments[0])
+                    ?.bigpayToken;
+
+            if (currentSelectedId === id) {
                 const nextInstrument =
                     remainingInstruments.find((instrument) => instrument.defaultInstrument) ||
                     remainingInstruments[0];
@@ -228,7 +237,7 @@ const HostedWidgetPaymentComponent = ({
                 setFieldValue('instrumentId', nextInstrument.bigpayToken);
             }
         },
-        [instruments, selectedInstrumentId],
+        [instruments, isAddingNewCard, selectedInstrumentId],
     );
 
     const handleUseNewCard = useCallback(async () => {
