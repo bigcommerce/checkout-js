@@ -125,6 +125,58 @@ describe('HostedWidgetPaymentComponent', () => {
         await waitFor(() => expect(initializePayment).toHaveBeenCalledTimes(1));
     });
 
+    it('selects the remaining instrument when the default instrument is deleted without an explicit selection', async () => {
+        const defaultInstrument = getCardInstrument();
+        const other = {
+            ...getCardInstrument(),
+            bigpayToken: 'other-token',
+            defaultInstrument: false,
+        };
+
+        render(
+            <HostedWidgetPaymentComponent
+                {...defaultProps}
+                instruments={[defaultInstrument, other]}
+            />,
+        );
+
+        await waitFor(() => expect(initializePayment).toHaveBeenCalledTimes(1));
+
+        fireEvent.click(screen.getByTestId(`delete-${defaultInstrument.bigpayToken}`));
+
+        expect(defaultProps.setFieldValue).toHaveBeenCalledWith('instrumentId', other.bigpayToken);
+        expect(defaultProps.setFieldValue).not.toHaveBeenCalledWith(
+            'instrumentId',
+            defaultInstrument.bigpayToken,
+        );
+    });
+
+    it('stays on the new-card view when the default instrument is deleted while adding a new card', async () => {
+        const defaultInstrument = getCardInstrument();
+        const other = {
+            ...getCardInstrument(),
+            bigpayToken: 'other-token',
+            defaultInstrument: false,
+        };
+
+        render(
+            <HostedWidgetPaymentComponent
+                {...defaultProps}
+                instruments={[defaultInstrument, other]}
+            />,
+        );
+
+        await waitFor(() => expect(initializePayment).toHaveBeenCalledTimes(1));
+
+        fireEvent.click(screen.getByTestId('use-new-card'));
+
+        await waitFor(() => expect(initializePayment).toHaveBeenCalledTimes(2));
+
+        fireEvent.click(screen.getByTestId(`delete-${defaultInstrument.bigpayToken}`));
+
+        expect(defaultProps.setFieldValue).not.toHaveBeenCalled();
+    });
+
     it('does not trigger an overlapping reinitialization when switching to a new card', async () => {
         const instrumentA = getCardInstrument();
         const instrumentB = {
