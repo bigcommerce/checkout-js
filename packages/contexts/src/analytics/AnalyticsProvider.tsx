@@ -1,10 +1,8 @@
 import {
     type BodlEventsPayload,
     type BodlService,
-    type BraintreeAnalyticTrackerService,
     type CheckoutService,
     createBodlService,
-    createBraintreeAnalyticTracker,
     createPayPalCommerceAnalyticTracker,
     createStepTracker,
     type PayPalCommerceAnalyticTrackerService,
@@ -27,14 +25,6 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
     );
     const getBodlService = useMemo(
         () => createAnalyticsService<BodlService>(createBodlService, [checkoutService.subscribe]),
-        [checkoutService],
-    );
-    const getBraintreeAnalyticTracker = useMemo(
-        () =>
-            createAnalyticsService<BraintreeAnalyticTrackerService>(
-                createBraintreeAnalyticTracker,
-                [checkoutService],
-            ),
         [checkoutService],
     );
     const getPayPalCommerceAnalyticTracker = useMemo(
@@ -79,7 +69,6 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
 
     const customerPaymentMethodExecuted = (payload: BodlEventsPayload) => {
         getBodlService().customerPaymentMethodExecuted(payload);
-        getBraintreeAnalyticTracker().customerPaymentMethodExecuted();
         getPayPalCommerceAnalyticTracker().customerPaymentMethodExecuted();
     };
 
@@ -89,7 +78,6 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
 
     const selectedPaymentMethod = (methodName: string, methodId: string) => {
         getBodlService().selectedPaymentMethod(methodName);
-        getBraintreeAnalyticTracker().selectedPaymentMethod(methodId);
         getPayPalCommerceAnalyticTracker().selectedPaymentMethod(methodId);
     };
 
@@ -103,7 +91,6 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
 
     const paymentComplete = () => {
         getBodlService().paymentComplete();
-        getBraintreeAnalyticTracker().paymentComplete();
         getPayPalCommerceAnalyticTracker().paymentComplete();
     };
 
@@ -112,7 +99,6 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
     };
 
     const walletButtonClick = (methodId: string) => {
-        getBraintreeAnalyticTracker().walletButtonClick(methodId);
         getPayPalCommerceAnalyticTracker().walletButtonClick(methodId);
     };
 
