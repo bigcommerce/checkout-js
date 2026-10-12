@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.916.3](https://github.com/bigcommerce/checkout-js/compare/v1.916.2...v1.916.3) (2026-10-12)
+
+
+### Bug Fixes
+
+* **payment:** reselect remaining stored instrument when the default one is deleted ([#3399](https://github.com/bigcommerce/checkout-js/issues/3399)) ([ea3e74e](https://github.com/bigcommerce/checkout-js/commit/ea3e74e910593d7476a9fc14ae71889f418086e3))
+
 ### [1.916.2](https://github.com/bigcommerce/checkout-js/compare/v1.916.1...v1.916.2) (2026-10-12)
 
 ### [1.916.1](https://github.com/bigcommerce/checkout-js/compare/v1.916.0...v1.916.1) (2026-10-09)
