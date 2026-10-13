@@ -910,7 +910,7 @@ describe('Payment step', () => {
                 ...checkoutWithShipping.billingAddress,
                 country: 'Australia',
                 countryCode: 'AU',
-            } as BillingAddress,
+            },
         };
 
         let requestOrder: string[];
