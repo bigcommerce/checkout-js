@@ -9,8 +9,7 @@ import {
 import { createWorldpayAccessPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/worldpayaccess';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { type FunctionComponent } from 'react';
-import { act } from 'react-dom/test-utils';
+import React, { act, type FunctionComponent } from 'react';
 
 import {
     CheckoutProvider,
@@ -115,17 +114,17 @@ describe('WorldpayCreditCardPaymentMethod', () => {
 
         render(<PaymentMethodTest {...defaultProps} />);
 
-        await new Promise((resolve) => process.nextTick(resolve));
-
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
-            expect.objectContaining({
-                gatewayId: undefined,
-                methodId: 'worldpayaccess',
-                integrations: [createWorldpayAccessPaymentStrategy],
-                worldpay: {
-                    onLoad: expect.any(Function),
-                },
-            }),
+        await waitFor(() =>
+            expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    gatewayId: undefined,
+                    methodId: 'worldpayaccess',
+                    integrations: [createWorldpayAccessPaymentStrategy],
+                    worldpay: {
+                        onLoad: expect.any(Function),
+                    },
+                }),
+            ),
         );
     });
 
@@ -157,7 +156,7 @@ describe('WorldpayCreditCardPaymentMethod', () => {
     it('renders modal that hosts worldpay payment page', async () => {
         render(<PaymentMethodTest {...defaultProps} />);
 
-        await new Promise((resolve) => process.nextTick(resolve));
+        await waitFor(() => expect(checkoutService.initializePayment).toHaveBeenCalled());
 
         const initializeOptions = (checkoutService.initializePayment as jest.Mock).mock.calls[0][0];
 
@@ -165,16 +164,14 @@ describe('WorldpayCreditCardPaymentMethod', () => {
             initializeOptions.worldpay.onLoad(document.createElement('iframe'), jest.fn());
         });
 
-        await new Promise((resolve) => process.nextTick(resolve));
-
-        expect(screen.getByTestId('modal-body')).toBeInTheDocument();
+        await screen.findByTestId('modal-body');
         expect(screen.getByText('Name on Card')).toBeInTheDocument();
     });
 
     it('renders modal', async () => {
         render(<PaymentMethodTest {...defaultProps} />);
 
-        await new Promise((resolve) => process.nextTick(resolve));
+        await waitFor(() => expect(checkoutService.initializePayment).toHaveBeenCalled());
 
         const initializeOptions = (checkoutService.initializePayment as jest.Mock).mock.calls[0][0];
 
@@ -184,8 +181,7 @@ describe('WorldpayCreditCardPaymentMethod', () => {
             initializeOptions.worldpay.onLoad(iframe, jest.fn());
         });
 
-        await new Promise((resolve) => process.nextTick(resolve));
-        expect(screen.getByTestId('modal-body')).toBeInTheDocument();
+        await screen.findByTestId('modal-body');
     });
 
     it('renders field container with focus styles', () => {
@@ -201,7 +197,7 @@ describe('WorldpayCreditCardPaymentMethod', () => {
 
         render(<PaymentMethodTest {...defaultProps} />);
 
-        await new Promise((resolve) => process.nextTick(resolve));
+        await waitFor(() => expect(checkoutService.initializePayment).toHaveBeenCalled());
 
         const initializeOptions = (checkoutService.initializePayment as jest.Mock).mock.calls[0][0];
 
@@ -212,7 +208,7 @@ describe('WorldpayCreditCardPaymentMethod', () => {
             );
         });
 
-        await new Promise((resolve) => process.nextTick(resolve));
+        await screen.findByText('Close');
         fireEvent.click(screen.getByText('Close'));
 
         expect(cancelWorldpayPayment).toHaveBeenCalledTimes(1);
