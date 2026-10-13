@@ -658,15 +658,12 @@ const Payment = (
     );
 
     const persistGeoBillingCountryIfMissing = async (): Promise<void> => {
-        const { data } = checkoutService.getState();
-        const checkout = data.getCheckout();
-
-        if (!checkout || checkout.billingAddress?.countryCode) {
+        if (initialCheckoutState.data.getCheckout()?.billingAddress?.countryCode) {
             return;
         }
 
         // Unlike getCheckout().billingAddress, getBillingAddress() falls back to the geo country.
-        const countryCode = data.getBillingAddress()?.countryCode;
+        const countryCode = initialCheckoutState.data.getBillingAddress()?.countryCode;
 
         if (!countryCode) {
             return;
