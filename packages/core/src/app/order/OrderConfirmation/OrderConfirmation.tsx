@@ -6,7 +6,7 @@ import { createRequestSender } from '@bigcommerce/request-sender';
 import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 
 import { useAnalytics, useCheckout } from '@bigcommerce/checkout/contexts';
-import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
 import { CannotCreatePersonalAccountSessionStorage } from '@bigcommerce/checkout/utility';
 
@@ -21,6 +21,7 @@ import getPaymentInstructions from '../getPaymentInstructions';
 import { ExpiredPermalinkView } from './ExpiredPermalinkView';
 import { OrderConfirmationPage } from './OrderConfirmationPage';
 import { RateLimitedPermalinkView } from './RateLimitedPermalinkView';
+import { waitForOrderCompletion } from './waitForOrderCompletion';
 
 const requestSender = createRequestSender();
 
@@ -54,14 +55,14 @@ export const OrderConfirmation = ({
     const [isSigningUp, setIsSigningUp] = useState<boolean | undefined>();
 
     const embeddedMessengerRef = useRef<EmbeddedCheckoutMessenger | undefined>();
+    const hasTrackedPurchaseRef = useRef(false);
 
     const {
-        selectedState: { order, config, isLoadingOrder },
+        selectedState: { order, config },
         checkoutService: { loadOrder },
-    } = useCheckout(({ data, statuses }) => ({
+    } = useCheckout(({ data }) => ({
         order: data.getOrder(),
         config: data.getConfig(),
-        isLoadingOrder: statuses.isLoadingOrder(),
     }));
     const { analyticsTracker } = useAnalytics();
     const [cannotCreatePersonalAccount, setCannotCreatePersonalAccount] = useState(false);
@@ -133,17 +134,53 @@ export const OrderConfirmation = ({
             return;
         }
 
-        loadOrder(orderId)
-            .then(({ data }) => {
-                const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+        let cancelled = false;
+
+        const loadAndTrackOrder = async () => {
+            try {
+                const state = await loadOrder(orderId);
+                const { links: { siteLink = '' } = {} } = state.data.getConfig() || {};
                 const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
 
                 embeddedMessengerRef.current = messenger;
                 messenger.receiveStyles((styles) => embeddedStylesheet.append(styles));
                 messenger.postFrameLoaded({ contentId: containerId });
-                analyticsTracker.orderPurchased();
-            })
-            .catch(handleUnhandledError);
+
+                const isComplete = await waitForOrderCompletion({
+                    initialState: state,
+                    isCancelled: () => cancelled,
+                    loadOrder: () => loadOrder(orderId),
+                });
+
+                if (cancelled) {
+                    return;
+                }
+
+                if (!isComplete) {
+                    errorLogger.log(
+                        new Error('Order was not complete after retrying; skipping purchase event'),
+                        { errorCode: 'orderIncompleteAfterRetries' },
+                        ErrorLevelType.Warning,
+                        { orderId },
+                    );
+
+                    return;
+                }
+
+                if (!hasTrackedPurchaseRef.current) {
+                    hasTrackedPurchaseRef.current = true;
+                    analyticsTracker.orderPurchased();
+                }
+            } catch (e) {
+                handleUnhandledError(e instanceof Error ? e : new Error(String(e)));
+            }
+        };
+
+        void loadAndTrackOrder();
+
+        return () => {
+            cancelled = true;
+        };
     }, [permalinkStatus]);
 
     if (permalinkStatus === OrderPermalinkStatus.Expired) {
@@ -154,7 +191,7 @@ export const OrderConfirmation = ({
         return <RateLimitedPermalinkView />;
     }
 
-    if (!order || !config || isLoadingOrder) {
+    if (!order || !config) {
         return <OrderConfirmationPageSkeleton />;
     }
 

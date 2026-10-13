@@ -117,7 +117,7 @@ describe('when using BlueSnapV2 payment', () => {
         await user.click(screen.getByRole('dialog'));
         expect(screen.getByRole('dialog')).toBeInTheDocument();
         expect(screen.getByTestId('modal-body')).toBeInTheDocument();
-        expect(screen.getByTestId('my-iframe')).toBeInTheDocument();
+        expect(await screen.findByTestId('my-iframe')).toBeInTheDocument();
     });
 
     it('renders modal but does not append bluesnap payment page because is empty', async () => {

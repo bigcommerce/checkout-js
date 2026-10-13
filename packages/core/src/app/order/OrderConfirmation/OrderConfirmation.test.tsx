@@ -7,7 +7,9 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { createRequestSender } from '@bigcommerce/request-sender';
 import { faker } from '@faker-js/faker';
+import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
@@ -21,6 +23,7 @@ import {
     LocaleProvider,
     ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
+import { ErrorLevelType } from '@bigcommerce/checkout/error-handling-utils';
 import { createLocaleContext, getLanguageService } from '@bigcommerce/checkout/locale';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 import { CannotCreatePersonalAccountSessionStorage } from '@bigcommerce/checkout/utility';
@@ -80,8 +83,6 @@ describe('OrderConfirmation', () => {
 
         jest.spyOn(checkoutService, 'loadOrder').mockResolvedValue(checkoutState);
 
-        jest.spyOn(checkoutState.statuses, 'isLoadingOrder').mockReturnValue(false);
-
         jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue(getOrder());
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
@@ -122,7 +123,7 @@ describe('OrderConfirmation', () => {
     });
 
     it('loads passed order ID', () => {
-        jest.spyOn(checkoutState.statuses, 'isLoadingOrder').mockReturnValue(true);
+        jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue(undefined);
 
         render(<ComponentTest {...defaultProps} />);
 
@@ -131,7 +132,6 @@ describe('OrderConfirmation', () => {
     });
 
     it('posts message to parent of embedded checkout when order is loaded', async () => {
-        jest.spyOn(checkoutState.statuses, 'isLoadingOrder').mockReturnValue(true);
         jest.spyOn(embeddedMessengerMock, 'postFrameLoaded').mockImplementation();
 
         render(<ComponentTest {...defaultProps} />);
@@ -342,6 +342,139 @@ describe('OrderConfirmation', () => {
             'action',
             getStoreConfig().links.siteLink,
         );
+    });
+
+    describe('when the order is finalized asynchronously', () => {
+        const createState = (isComplete: boolean): CheckoutSelectors => ({
+            ...checkoutState,
+            data: {
+                ...checkoutState.data,
+                getOrder: () => ({ ...getOrder(), isComplete }),
+            },
+        });
+
+        const flush = (ms: number) => act(() => jest.advanceTimersByTimeAsync(ms));
+
+        beforeEach(() => {
+            jest.useFakeTimers();
+        });
+
+        afterEach(() => {
+            jest.useRealTimers();
+        });
+
+        it('calls orderPurchased once without retrying when the order is complete', async () => {
+            jest.spyOn(checkoutService, 'loadOrder').mockResolvedValue(createState(true));
+
+            render(<ComponentTest {...defaultProps} />);
+
+            await flush(20000);
+
+            expect(checkoutService.loadOrder).toHaveBeenCalledTimes(1);
+            expect(analyticsTracker.orderPurchased).toHaveBeenCalledTimes(1);
+        });
+
+        it('calls orderPurchased once the order completes on the 2nd retry', async () => {
+            jest.spyOn(checkoutService, 'loadOrder')
+                .mockResolvedValueOnce(createState(false))
+                .mockResolvedValueOnce(createState(false))
+                .mockResolvedValueOnce(createState(true));
+
+            render(<ComponentTest {...defaultProps} />);
+
+            await flush(0);
+            expect(analyticsTracker.orderPurchased).not.toHaveBeenCalled();
+
+            await flush(500 + 1000);
+
+            expect(checkoutService.loadOrder).toHaveBeenCalledTimes(3);
+            expect(analyticsTracker.orderPurchased).toHaveBeenCalledTimes(1);
+
+            await flush(20000);
+
+            expect(checkoutService.loadOrder).toHaveBeenCalledTimes(3);
+            expect(analyticsTracker.orderPurchased).toHaveBeenCalledTimes(1);
+        });
+
+        it('logs a warning and skips orderPurchased when the order never completes', async () => {
+            jest.spyOn(checkoutService, 'loadOrder').mockResolvedValue(createState(false));
+            jest.spyOn(defaultProps.errorLogger, 'log');
+
+            render(<ComponentTest {...defaultProps} />);
+
+            await flush(20000);
+
+            expect(checkoutService.loadOrder).toHaveBeenCalledTimes(1 + 5);
+            expect(analyticsTracker.orderPurchased).not.toHaveBeenCalled();
+            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(
+                expect.any(Error),
+                { errorCode: 'orderIncompleteAfterRetries' },
+                ErrorLevelType.Warning,
+                { orderId: 105 },
+            );
+        });
+
+        it('keeps the page rendered without an error modal when a retry fails', async () => {
+            jest.spyOn(checkoutService, 'loadOrder')
+                .mockResolvedValueOnce(createState(false))
+                .mockRejectedValue(new Error('retry failed'));
+            jest.spyOn(defaultProps.errorLogger, 'log');
+
+            render(<ComponentTest {...defaultProps} />);
+
+            await flush(20000);
+
+            expect(checkoutService.loadOrder).toHaveBeenCalledTimes(2);
+            expect(analyticsTracker.orderPurchased).not.toHaveBeenCalled();
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    localeContext.language.translate('order_confirmation.continue_shopping'),
+                ),
+            ).toBeInTheDocument();
+        });
+
+        it('shows the error modal when the initial load fails', async () => {
+            jest.spyOn(checkoutService, 'loadOrder').mockRejectedValue(new Error('load failed'));
+
+            render(<ComponentTest {...defaultProps} />);
+
+            await flush(0);
+
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
+            expect(analyticsTracker.orderPurchased).not.toHaveBeenCalled();
+        });
+
+        it('stops retrying after unmount', async () => {
+            jest.spyOn(checkoutService, 'loadOrder').mockResolvedValue(createState(false));
+
+            const { unmount } = render(<ComponentTest {...defaultProps} />);
+
+            await flush(500);
+            expect(checkoutService.loadOrder).toHaveBeenCalledTimes(2);
+
+            unmount();
+            await flush(20000);
+
+            expect(checkoutService.loadOrder).toHaveBeenCalledTimes(2);
+            expect(analyticsTracker.orderPurchased).not.toHaveBeenCalled();
+        });
+
+        it('does not show the skeleton while a retry reload is in flight', async () => {
+            jest.spyOn(checkoutService, 'loadOrder')
+                .mockResolvedValueOnce(createState(false))
+                .mockReturnValue(new Promise(noop));
+            jest.spyOn(checkoutState.statuses, 'isLoadingOrder').mockReturnValue(true);
+
+            render(<ComponentTest {...defaultProps} />);
+
+            await flush(500);
+
+            expect(checkoutService.loadOrder).toHaveBeenCalledTimes(2);
+            expect(
+                screen.queryByTestId('order-confirmation-page-skeleton'),
+            ).not.toBeInTheDocument();
+        });
     });
 
     describe('when permalinkStatus is expired', () => {
