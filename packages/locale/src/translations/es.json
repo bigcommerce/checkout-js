@@ -542,7 +542,7 @@
             "continue_with_text": "O continuar con",
             "or_text": "O",
             "payment_method_error": "Se ha producido un error al recuperar su método de pago a distancia. Vuelva a intentarlo.",
-            "retry_same_card_action": "Try again or select a different card",
+            "retry_same_card_action": "Inténtalo de nuevo o selecciona otra tarjeta",
             "select_different_card_action": "Seleccionar una tarjeta diferente",
             "session_error": "Su sesión a distancia ha expirado. Inicie sesión de nuevo.",
             "shipping_address_error": "Se ha producido un error al recuperar su dirección de envío a distancia. Vuelva a intentarlo.",
