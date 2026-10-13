@@ -9,8 +9,9 @@ import {
 import { createNoPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/no-payment';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
-import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, useCheckout } from '@bigcommerce/checkout/contexts';
 import { CaptureMessageComponent } from '@bigcommerce/checkout/payment-integration-api';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { withCheckout } from '../../checkout';
 
@@ -44,6 +45,8 @@ export interface WithCheckoutPaymentMethodProps {
     initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
 }
 
+const CLOVER_RESOLVER_EXPERIMENT = 'PI-4747.clover_resolver_configuration';
+
 const KNOWN_API_METHOD_IDS = new Set([
     'cybersourcev2',
     'ewayrapid',
@@ -62,6 +65,9 @@ const KNOWN_API_METHOD_IDS = new Set([
     'vantivcore',
 ]);
 
+// Known only while the matching resolver experiment is disabled
+const KNOWN_API_METHOD_IDS_WITHOUT_RESOLVER = new Set(['clover']);
+
 /**
  * If possible, try to avoid having components that are specific to a specific
  * payment provider or method. Instead, try to generalise the requirements and
@@ -75,6 +81,11 @@ const PaymentMethodComponent: FunctionComponent<
     PaymentMethodProps & WithCheckoutPaymentMethodProps
 > = (props) => {
     const { method } = props;
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+    const isCloverResolverEnabled = isExperimentEnabled(
+        config?.checkoutSettings,
+        CLOVER_RESOLVER_EXPERIMENT,
+    );
 
     if (method.id === PaymentMethodId.Humm || method.type === PaymentMethodProviderType.Hosted) {
         const sentryMessage = `DataHostedPaymentMethod Hosted/Humm gateway=${method.gateway} id=${method.id} type=${method.type}`;
@@ -99,7 +110,8 @@ const PaymentMethodComponent: FunctionComponent<
         const isKnownMethod =
             method.gateway === null &&
             method.type === PaymentMethodProviderType.Api &&
-            KNOWN_API_METHOD_IDS.has(method.id);
+            (KNOWN_API_METHOD_IDS.has(method.id) ||
+                (!isCloverResolverEnabled && KNOWN_API_METHOD_IDS_WITHOUT_RESOLVER.has(method.id)));
 
         const sentryMessage = isKnownMethod
             ? ''
