@@ -20,6 +20,11 @@ aliases:
           - master
           - /pull\/[0-9]+/
 
+  - &functional_test_defaults
+      docker:
+        - image: mcr.microsoft.com/playwright:v1.56.1-jammy
+      resource_class: small.gen2
+
 version: 2.1
 
 orbs:
@@ -27,13 +32,61 @@ orbs:
   node: bigcommerce/internal-node@volatile
   security: bigcommerce/internal-security@volatile
   microapp: bigcommerce/internal-microapp@volatile
+  jq: circleci/jq@2.2.0
 
 executors:
   playwright_executor:
     docker:
       - image: mcr.microsoft.com/playwright:v1.63.0-noble
 
+commands:
+  functional-test-suite-steps:
+    parameters:
+      ENVIRONMENT:
+        type: string
+        default: "staging"
+      TAG_NAME:
+        type: string
+        default: ""
+    steps:
+      - add_ssh_keys
+      - node/auth-private-npm-registry
+      - ci/clone-repo:
+          repo: bigcommerce/functional-tests
+      - run:
+          name: Install deps
+          command: npm ci
+      - jq/install
+      - run:
+          name: "Run tests with tag <<parameters.TAG_NAME>>"
+          environment:
+            ENVIRONMENT: "<<parameters.ENVIRONMENT>>"
+            TAG_NAME: "<<parameters.TAG_NAME>>"
+          command: |
+            SHARD="$((${CIRCLE_NODE_INDEX}+1))"
+            npx playwright test --grep "${TAG_NAME}" --shard=${SHARD}/${CIRCLE_NODE_TOTAL}
+      - store_artifacts:
+          path: ./blob-report
+      - store_test_results:
+          path: ./results.xml
+      - run:
+          name: Perform final steps of the test suite
+          command: ./src/scripts/test_suite_final_steps.sh
+          when: "always"
+      - store_artifacts:
+          path: ./playwright-report
+
 jobs:
+  staging_checkout_adyenv3_suite:
+    <<: *functional_test_defaults
+    environment:
+      TEST_SUITE_SCOPE: 'adyenv3'
+    steps:
+      - functional-test-suite-steps:
+          ENVIRONMENT: "staging"
+          TAG_NAME: "@adyenv3-permanent-stores"
+    parallelism: 4
+
   test-packages:
     <<: *node_executor
     resource_class: medium+
@@ -357,3 +410,13 @@ workflows:
           context: GCR + Artifact Bucket Access
           requires:
             - upload-artifact
+
+  regression:
+    triggers:
+      - schedule:
+          cron: "1 1 1 1 *"
+          filters:
+            branches:
+              ignore: /.*/
+    jobs:
+      - staging_checkout_adyenv3_suite
