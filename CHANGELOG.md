@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.916.5](https://github.com/bigcommerce/checkout-js/compare/v1.916.4...v1.916.5) (2026-10-14)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-104676 set geoCountryCode as billing countryCode ([#3401](https://github.com/bigcommerce/checkout-js/issues/3401)) ([beab82d](https://github.com/bigcommerce/checkout-js/commit/beab82d135f360fde7fcc84fd29946543c5a0946))
+
 ### [1.916.4](https://github.com/bigcommerce/checkout-js/compare/v1.916.3...v1.916.4) (2026-10-13)
 
 ### [1.916.3](https://github.com/bigcommerce/checkout-js/compare/v1.916.2...v1.916.3) (2026-10-12)
