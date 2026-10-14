@@ -31,6 +31,7 @@ import {
     CheckoutPreset,
     checkoutSettings,
     checkoutWithBillingEmail,
+    checkoutWithShipping,
     checkoutWithShippingAndBilling,
     customer,
     orderResponse,
@@ -899,6 +900,116 @@ describe('Payment step', () => {
             });
 
             expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(initialCalls);
+        });
+    });
+
+    describe('geo billing country fallback (enhancedThemeV1)', () => {
+        const checkoutWithGeoBillingCountry = {
+            ...checkoutWithShipping,
+            billingAddress: {
+                ...checkoutWithShipping.billingAddress,
+                country: 'Australia',
+                countryCode: 'AU',
+            },
+        };
+
+        let requestOrder: string[];
+        let billingAddressPutBody: Record<string, unknown> | undefined;
+
+        const trackPaymentMethodsRequest = () =>
+            checkout.setRequestHandler(
+                http.get('/api/storefront/payments', () => {
+                    requestOrder.push('payment-methods');
+
+                    return HttpResponse.json(payments);
+                }),
+            );
+
+        beforeEach(() => {
+            requestOrder = [];
+            billingAddressPutBody = undefined;
+            mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(true);
+        });
+
+        it('persists the geo country as billing country before loading payment methods', async () => {
+            checkout.setRequestHandler(
+                http.put('/api/storefront/checkouts/*/billing-address/*', async ({ request }) => {
+                    requestOrder.push('billing-address');
+                    billingAddressPutBody = (await request.json()) as Record<string, unknown>;
+
+                    return HttpResponse.json(checkoutWithGeoBillingCountry);
+                }),
+            );
+            trackPaymentMethodsRequest();
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping, {
+                config: enhancedThemeV1Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            expect(billingAddressPutBody).toEqual(
+                expect.objectContaining({
+                    countryCode: checkoutSettings.context.geoCountryCode,
+                    email: checkoutWithShipping.billingAddress?.email,
+                }),
+            );
+            expect(requestOrder.slice(0, 2)).toEqual(['billing-address', 'payment-methods']);
+            expect(checkoutService.getState().data.getCheckout()?.billingAddress?.countryCode).toBe(
+                'AU',
+            );
+        });
+
+        it('does not persist the billing country when one is already saved', async () => {
+            const updateBillingAddressSpy = jest.fn();
+
+            checkout.setRequestHandler(
+                http.put('/api/storefront/checkouts/*/billing-address/*', () => {
+                    updateBillingAddressSpy();
+
+                    return HttpResponse.json(checkoutWithShippingAndBilling);
+                }),
+            );
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: enhancedThemeV1Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            expect(updateBillingAddressSpy).not.toHaveBeenCalled();
+        });
+
+        it('still loads payment methods and logs a warning when persisting fails', async () => {
+            checkout.setRequestHandler(
+                http.put('/api/storefront/checkouts/*/billing-address/*', () => {
+                    requestOrder.push('billing-address');
+
+                    return HttpResponse.json({ type: 'unknown_error' }, { status: 500 });
+                }),
+            );
+            trackPaymentMethodsRequest();
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping, {
+                config: enhancedThemeV1Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            expect(requestOrder).toContain('payment-methods');
+            expect(screen.getByRole('radio', { name: 'Pay in Store' })).toBeInTheDocument();
+            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(
+                expect.anything(),
+                undefined,
+                'warning',
+                expect.objectContaining({ stage: 'persist-geo-billing-country' }),
+            );
         });
     });
 
