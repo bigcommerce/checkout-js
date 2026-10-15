@@ -47,11 +47,11 @@ export interface WithCheckoutPaymentMethodProps {
 
 const RESOLVER_EXPERIMENT_BY_METHOD_ID: Partial<Record<string, string>> = {
     clover: 'PI-4747.clover_resolver_configuration',
+    ewayrapid: 'PI-4750.eway_rapid_resolver_configuration',
 };
 
 const KNOWN_API_METHOD_IDS = new Set([
     'cybersourcev2',
-    'ewayrapid',
     'nmi',
     'bigpaypay',
     'usaepay',
