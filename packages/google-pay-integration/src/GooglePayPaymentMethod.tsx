@@ -1,8 +1,9 @@
-import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { type HostedInstrument, type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { some } from 'lodash';
 import React, { type FunctionComponent, useCallback, useRef } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { WalletVaultingFields } from '@bigcommerce/checkout/instrument-utils';
 import {
     type CheckoutButtonResolveId,
     PaymentMethodId,
@@ -22,13 +23,22 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     ...rest
 }) => {
     const {
-        checkoutState: {
-            data: { getCheckout },
-        },
-    } = useCheckout();
+        selectedState: { checkout },
+    } = useCheckout(({ data }) => ({
+        checkout: data.getCheckout(),
+    }));
 
-    const checkout = getCheckout();
     const isPaymentSelected = checkout ? some(checkout.payments, { providerId: method.id }) : false;
+
+    const paymentFormRef = useRef(paymentForm);
+
+    paymentFormRef.current = paymentForm;
+
+    const getFieldsValues = (): HostedInstrument => ({
+        shouldSaveInstrument: Boolean(
+            paymentFormRef.current.getFieldValue<boolean>('shouldSaveInstrument'),
+        ),
+    });
 
     // Capture whether Google Pay was already selected at mount time
     // (PDP/Cart/Customer step button)
@@ -148,6 +158,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
+                    getFieldsValues,
                 },
             };
 
@@ -169,16 +180,20 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     }
 
     return (
-        <WalletButtonPaymentMethodComponent
-            {...rest}
-            buttonId="walletButton"
-            deinitializePayment={checkoutService.deinitializePayment}
-            initializePayment={initializeGooglePayPayment}
-            method={method}
-            paymentForm={paymentForm}
-            shouldShowEditButton
-            signOutCustomer={checkoutService.signOutCustomer}
-        />
+        <>
+            <WalletButtonPaymentMethodComponent
+                {...rest}
+                buttonId="walletButton"
+                deinitializePayment={checkoutService.deinitializePayment}
+                initializePayment={initializeGooglePayPayment}
+                method={method}
+                paymentForm={paymentForm}
+                shouldShowEditButton
+                signOutCustomer={checkoutService.signOutCustomer}
+            />
+
+            <WalletVaultingFields method={method} />
+        </>
     );
 };
 

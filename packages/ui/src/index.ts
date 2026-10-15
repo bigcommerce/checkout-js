@@ -47,6 +47,7 @@ export type { IconProps } from './icon';
 export {
     CreditCardIcon,
     CreditCardIconList,
+    CreditCardIconListV2,
     mapFromPaymentMethodCardType,
     getPaymentMethodIconComponent,
     filterInstrumentTypes,

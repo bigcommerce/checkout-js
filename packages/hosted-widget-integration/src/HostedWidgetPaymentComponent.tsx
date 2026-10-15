@@ -147,6 +147,10 @@ const HostedWidgetPaymentComponent = ({
     const [isAddingNewCard, setIsAddingNewCard] = useState(false);
     const [selectedInstrumentId, setSelectedInstrumentId] = useState<string | undefined>(undefined);
     const instrumentsRef = useRef<PaymentInstrument[]>(instruments);
+    const instrumentsLength = useRef(instruments.length);
+    const isPaymentDataRequiredRef = useRef(isPaymentDataRequired);
+    const selectedInstrumentIdRef = useRef(selectedInstrumentId);
+    const isAddingNewCardRef = useRef(isAddingNewCard);
 
     useEffect(() => {
         instrumentsRef.current = instruments;
@@ -203,7 +207,11 @@ const HostedWidgetPaymentComponent = ({
 
     const handleDeleteInstrument = useCallback(
         (id: string): void => {
-            if (instruments.length === 0) {
+            const remainingInstruments = instruments.filter(
+                (instrument) => instrument.bigpayToken !== id,
+            );
+
+            if (remainingInstruments.length === 0) {
                 setIsAddingNewCard(true);
                 setSelectedInstrumentId(undefined);
                 setFieldValue('instrumentId', '');
@@ -211,19 +219,33 @@ const HostedWidgetPaymentComponent = ({
                 return;
             }
 
-            if (selectedInstrumentId === id) {
-                const nextId = getDefaultInstrumentId();
+            if (isAddingNewCard) {
+                return;
+            }
 
-                setSelectedInstrumentId(nextId);
-                setFieldValue('instrumentId', nextId);
+            const currentSelectedId =
+                selectedInstrumentId ||
+                (instruments.find((instrument) => instrument.defaultInstrument) || instruments[0])
+                    ?.bigpayToken;
+
+            if (currentSelectedId === id) {
+                const nextInstrument =
+                    remainingInstruments.find((instrument) => instrument.defaultInstrument) ||
+                    remainingInstruments[0];
+
+                setSelectedInstrumentId(nextInstrument.bigpayToken);
+                setFieldValue('instrumentId', nextInstrument.bigpayToken);
             }
         },
-        [instruments, selectedInstrumentId, getDefaultInstrumentId],
+        [instruments, isAddingNewCard, selectedInstrumentId],
     );
 
     const handleUseNewCard = useCallback(async () => {
         setIsAddingNewCard(true);
         setSelectedInstrumentId(undefined);
+
+        isAddingNewCardRef.current = true;
+        selectedInstrumentIdRef.current = undefined;
 
         if (deinitializePayment) {
             await deinitializePayment({
@@ -385,9 +407,6 @@ const HostedWidgetPaymentComponent = ({
     }, []);
 
     const isInitialRenderRef = useRef(true);
-    const instrumentsLength = useRef(instruments.length);
-    const isPaymentDataRequiredRef = useRef(isPaymentDataRequired);
-    const selectedInstrumentIdRef = useRef(selectedInstrumentId);
 
     useEffect(() => {
         if (isInitialRenderRef.current) {
@@ -417,16 +436,18 @@ const HostedWidgetPaymentComponent = ({
 
         if (
             selectedInstrumentIdRef.current !== selectedInstrumentId ||
-            (instrumentsLength.current > 0 && instruments.length === 0) ||
-            isPaymentDataRequiredRef.current !== isPaymentDataRequired
+            (!isAddingNewCard && instrumentsLength.current > 0 && instruments.length === 0) ||
+            isPaymentDataRequiredRef.current !== isPaymentDataRequired ||
+            isAddingNewCardRef.current !== isAddingNewCard
         ) {
             selectedInstrumentIdRef.current = selectedInstrumentId;
             instrumentsLength.current = instruments.length;
             isPaymentDataRequiredRef.current = isPaymentDataRequired;
+            isAddingNewCardRef.current = isAddingNewCard;
 
             void reInit();
         }
-    }, [selectedInstrumentId, instruments, isPaymentDataRequired]);
+    }, [selectedInstrumentId, instruments, isPaymentDataRequired, isAddingNewCard]);
 
     if (!shouldShow) {
         return <div style={{ display: 'none' }} />;

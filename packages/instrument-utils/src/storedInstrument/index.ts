@@ -16,3 +16,5 @@ export { mapFromInstrumentCardType } from './mapFromInstrumentCardType';
 export type { SignOutLinkProps } from './SignOutLink';
 export { SignOutLink } from './SignOutLink';
 export { StoreInstrumentFieldset } from './StoreInstrumentFieldset';
+export type { WalletVaultingFieldsProps } from './WalletVaultingFields';
+export { WalletVaultingFields } from './WalletVaultingFields';

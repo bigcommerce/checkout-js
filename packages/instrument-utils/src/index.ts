@@ -1,4 +1,4 @@
-export type { SignOutLinkProps } from './storedInstrument';
+export type { SignOutLinkProps, WalletVaultingFieldsProps } from './storedInstrument';
 export {
     AccountInstrumentFieldset,
     AccountInstrumentSelect,
@@ -14,6 +14,7 @@ export {
     ManageInstrumentsModal,
     SignOutLink,
     StoreInstrumentFieldset,
+    WalletVaultingFields,
 } from './storedInstrument';
 export type {
     CreditCardFieldsetValues,
@@ -38,9 +39,10 @@ export {
     getCreditCardValidationSchema,
     unformatCreditCardNumber,
 } from './creditCard';
-export type { IsInstrumentCardNumberRequiredState } from './guards';
+export type { CanVaultWalletInstrumentState, IsInstrumentCardNumberRequiredState } from './guards';
 export {
     assertIsBankInstrument,
+    canVaultWalletInstrument,
     assertIsCardInstrument,
     isAccountInstrument,
     isAchInstrument,

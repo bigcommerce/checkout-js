@@ -58,4 +58,15 @@
     .form-legend.sub-header {
         margin-bottom: 0;
     }
+
+    .form-ccFields {
+        .form-field--ccExpiry,
+        .form-ccFields-field--ccCvv {
+            min-width: 100%;
+
+            @include breakpoint("small") {
+                min-width: $ccFields-field-minWidth;
+            }
+        }
+    }
 }

@@ -202,7 +202,7 @@ const Payment = (
     const ensureBillingAddressSavedRef: MutableRefObject<EnsureBillingAddressSaved | null> =
         useRef(null);
 
-    const { checkoutState: initialCheckoutState } = useCheckout(() => undefined);
+    const { checkoutService, checkoutState: initialCheckoutState } = useCheckout(() => undefined);
 
     const {
         orderConfirmation: { persistB2BMetadata, invoiceRedirect },
@@ -657,6 +657,30 @@ const Payment = (
         [],
     );
 
+    const persistGeoBillingCountryIfMissing = async (): Promise<void> => {
+        if (initialCheckoutState.data.getCheckout()?.billingAddress?.countryCode) {
+            return;
+        }
+
+        // Unlike getCheckout().billingAddress, getBillingAddress() falls back to the geo country.
+        const countryCode = initialCheckoutState.data.getBillingAddress()?.countryCode;
+
+        if (!countryCode) {
+            return;
+        }
+
+        try {
+            await checkoutService.updateBillingAddress({ countryCode });
+        } catch (error) {
+            if (error instanceof Error) {
+                props.errorLogger.log(error, undefined, ErrorLevelType.Warning, {
+                    stage: 'persist-geo-billing-country',
+                    countryCode,
+                });
+            }
+        }
+    };
+
     const loadPaymentMethodsOrThrow = async (billingCountryChange?: {
         previousSelectedMethod?: PaymentMethod;
     }): Promise<void> => {
@@ -703,11 +727,7 @@ const Payment = (
 
         dismissMethodsRefreshAlert();
 
-        setState((prevState) => ({ ...prevState, isReady: false }));
-
         await loadPaymentMethodsOrThrow();
-
-        setState((prevState) => ({ ...prevState, isReady: true }));
     };
 
     const getContextValue = memoizeOne(() => {
@@ -811,6 +831,10 @@ const Payment = (
 
             if (!disableStoreCredit && usableStoreCredit) {
                 await handleStoreCreditChange(true);
+            }
+
+            if (enhancedThemeV1) {
+                await persistGeoBillingCountryIfMissing();
             }
 
             await loadPaymentMethodsOrThrow();
@@ -949,7 +973,7 @@ const Payment = (
         (props.isLoadingBillingCountries ||
             props.isUpdatingBillingAddress ||
             props.isUpdatingCheckout);
-    const isReloadingPaymentMethods = enhancedThemeV1 && props.isLoadingPaymentMethods;
+    const isReloadingPaymentMethods = props.isLoadingPaymentMethods;
     const isPlacingOrder = enhancedThemeV1 && props.isSubmittingOrder;
 
     return (
@@ -969,7 +993,7 @@ const Payment = (
                         isEmbedded={props.isEmbedded}
                         isInitializingPayment={props.isInitializingPayment}
                         isPaymentDataRequired={props.isPaymentDataRequired}
-                        isReloadingPaymentMethods={isReloadingPaymentMethods}
+                        isReloadingPaymentMethods={enhancedThemeV1 && isReloadingPaymentMethods}
                         isStoreCreditApplied={props.isStoreCreditApplied}
                         isTermsConditionsRequired={props.isTermsConditionsRequired}
                         isUsingMultiShipping={props.isUsingMultiShipping}

@@ -10,7 +10,11 @@ import { compact } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
 import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcommerce-payments-utils';
-import { type CheckoutContextProps, useCapabilities } from '@bigcommerce/checkout/contexts';
+import {
+    type CheckoutContextProps,
+    useCapabilities,
+    useThemeContext,
+} from '@bigcommerce/checkout/contexts';
 import {
     TranslatedString,
     withLanguage,
@@ -21,7 +25,11 @@ import {
     BraintreePaypalCreditBanner,
     PaypalCommerceCreditBanner,
 } from '@bigcommerce/checkout/paypal-utils';
-import { CreditCardIconList, mapFromPaymentMethodCardType } from '@bigcommerce/checkout/ui';
+import {
+    CreditCardIconList,
+    CreditCardIconListV2,
+    mapFromPaymentMethodCardType,
+} from '@bigcommerce/checkout/ui';
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { withCheckout } from '../../checkout';
@@ -412,6 +420,8 @@ const PaymentMethodTitle: FunctionComponent<
     const {
         payment: { poConfig },
     } = useCapabilities();
+    const { enhancedThemeV1 } = useThemeContext();
+    const cardTypes = compact(method.supportedCards.map(mapFromPaymentMethodCardType));
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText, subtitle } = getPaymentMethodTitle(
         language,
@@ -459,6 +469,8 @@ const PaymentMethodTitle: FunctionComponent<
         <div
             className={classNames('paymentProviderHeader-container', {
                 'paymentProviderHeader-container-googlePay': method.id.includes('googlepay'),
+                'paymentProviderHeader-container--compactCards':
+                    enhancedThemeV1 && cardTypes.length > 0,
             })}
         >
             <div
@@ -512,10 +524,18 @@ const PaymentMethodTitle: FunctionComponent<
                 {getSubtitle()}
             </div>
             <div className="paymentProviderHeader-cc">
-                <CreditCardIconList
-                    cardTypes={compact(method.supportedCards.map(mapFromPaymentMethodCardType))}
-                    selectedCardType={getSelectedCardType()}
-                />
+                {enhancedThemeV1 ? (
+                    <CreditCardIconListV2
+                        cardTypes={cardTypes}
+                        moreCardsLabel={language.translate('payment.credit_card_more_cards_action')}
+                        selectedCardType={getSelectedCardType()}
+                    />
+                ) : (
+                    <CreditCardIconList
+                        cardTypes={cardTypes}
+                        selectedCardType={getSelectedCardType()}
+                    />
+                )}
             </div>
         </div>
     );

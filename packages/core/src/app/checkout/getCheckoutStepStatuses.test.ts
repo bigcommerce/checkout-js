@@ -485,10 +485,6 @@ describe('getCheckoutStepStatuses()', () => {
             ...getStoreConfig(),
             checkoutSettings: {
                 ...getStoreConfig().checkoutSettings,
-                features: {
-                    ...getStoreConfig().checkoutSettings.features,
-                    'CHECKOUT-7962.update_font_style_on_checkout_page': true,
-                },
                 checkoutUserExperienceSettings: {
                     ...getStoreConfig().checkoutSettings.checkoutUserExperienceSettings,
                     enhancedCheckoutThemeV1: true,

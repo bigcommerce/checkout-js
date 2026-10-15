@@ -9,7 +9,7 @@ import {
 } from '@bigcommerce/checkout-sdk/essential';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { type RequestHandler, rest } from 'msw';
+import { http, HttpResponse, type RequestHandler } from 'msw';
 import { type SetupServer, setupServer } from 'msw/node';
 import { act } from 'react';
 
@@ -48,25 +48,23 @@ export class CheckoutPageNodeObject {
 
     constructor() {
         const defaultHandlers = [
-            rest.get('/api/storefront/checkout/*', (_, res, ctx) => res(ctx.json(checkout))),
-            rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
-                res(ctx.json(checkoutSettings)),
+            http.get('/api/storefront/checkout/*', () => HttpResponse.json(checkout)),
+            http.get('/api/storefront/checkout-settings', () =>
+                HttpResponse.json(checkoutSettings),
             ),
-            rest.get('/api/storefront/form-fields', (_, res, ctx) => res(ctx.json(formFields))),
-            rest.get('/api/storefront/payments', (_, res, ctx) => res(ctx.json(payments))),
-            rest.get(/\/internalapi\/v1\/(store|shipping)\/countries/, (_, res, ctx) =>
-                res(ctx.json(countries)),
+            http.get('/api/storefront/form-fields', () => HttpResponse.json(formFields)),
+            http.get('/api/storefront/payments', () => HttpResponse.json(payments)),
+            http.get(/\/internalapi\/v1\/(store|shipping)\/countries/, () =>
+                HttpResponse.json(countries),
             ),
-            rest.post('/api/storefront/checkouts/*/billing-address', (_, res, ctx) =>
-                res(ctx.json(checkoutWithBillingEmail)),
+            http.post('/api/storefront/checkouts/*/billing-address', () =>
+                HttpResponse.json(checkoutWithBillingEmail),
             ),
-            rest.post('/api/storefront/subscriptions', (_, res, ctx) => res(ctx.json({}))),
-            rest.get('/api/storefront/checkout-extensions', (_, res, ctx) => res(ctx.json([]))),
-            rest.post('/api/storefront/customer', (_, res, ctx) => res(ctx.json({}))),
-            rest.post('/internalapi/v1/checkout/customer', (_, res, ctx) => res(ctx.json({}))),
-            rest.get('/api/storefront/payments/applepay', (_, res, ctx) =>
-                res(ctx.json(applepayMethod)),
-            ),
+            http.post('/api/storefront/subscriptions', () => HttpResponse.json({})),
+            http.get('/api/storefront/checkout-extensions', () => HttpResponse.json([])),
+            http.post('/api/storefront/customer', () => HttpResponse.json({})),
+            http.post('/internalapi/v1/checkout/customer', () => HttpResponse.json({})),
+            http.get('/api/storefront/payments/applepay', () => HttpResponse.json(applepayMethod)),
         ];
 
         this.server = setupServer(...defaultHandlers);
@@ -101,19 +99,19 @@ export class CheckoutPageNodeObject {
 
         switch (method) {
             case 'delete':
-                handler = rest.delete(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkoutMock)));
+                handler = http.delete(storeFrontUrl, () => HttpResponse.json(checkoutMock));
                 break;
 
             case 'put':
-                handler = rest.put(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkoutMock)));
+                handler = http.put(storeFrontUrl, () => HttpResponse.json(checkoutMock));
                 break;
 
             case 'post':
-                handler = rest.post(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkoutMock)));
+                handler = http.post(storeFrontUrl, () => HttpResponse.json(checkoutMock));
                 break;
 
             default:
-                handler = rest.get(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkoutMock)));
+                handler = http.get(storeFrontUrl, () => HttpResponse.json(checkoutMock));
         }
 
         this.server.use(handler);
@@ -132,8 +130,8 @@ export class CheckoutPageNodeObject {
         switch (preset) {
             case CheckoutPreset.CheckoutWithBillingEmail:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithBillingEmail)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithBillingEmail),
                     ),
                 );
 
@@ -151,11 +149,11 @@ export class CheckoutPageNodeObject {
                 };
 
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithBillingEmail)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithBillingEmail),
                     ),
-                    rest.get('/api/storefront/form-fields', (_, res, ctx) =>
-                        res(ctx.json(formFieldsOverrides)),
+                    http.get('/api/storefront/form-fields', () =>
+                        HttpResponse.json(formFieldsOverrides),
                     ),
                 );
 
@@ -168,8 +166,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CheckoutWithLoggedInCustomer:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithLoggedInCustomer)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithLoggedInCustomer),
                     ),
                 );
 
@@ -184,8 +182,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CheckoutWithCustomerHavingInvalidAddress:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithCustomerHavingInvalidAddress)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithCustomerHavingInvalidAddress),
                     ),
                 );
 
@@ -200,8 +198,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CheckoutWithCustomShippingAndBilling:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithCustomShippingAndBilling)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithCustomShippingAndBilling),
                     ),
                 );
 
@@ -216,8 +214,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CheckoutWithDigitalCart:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithDigitalCart)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithDigitalCart),
                     ),
                 );
 
@@ -229,8 +227,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CheckoutWithMultiShippingCart:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithMultiShippingCart)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithMultiShippingCart),
                     ),
                 );
 
@@ -242,8 +240,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CheckoutWithGuestMultiShippingCart:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithGuestMultiShippingCart)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithGuestMultiShippingCart),
                     ),
                 );
 
@@ -255,8 +253,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CheckoutWithMultiShippingAndBilling:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithMultiShippingAndBilling)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithMultiShippingAndBilling),
                     ),
                 );
 
@@ -271,8 +269,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CheckoutWithPromotions:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithPromotions)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithPromotions),
                     ),
                 );
 
@@ -284,8 +282,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CheckoutWithShipping:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithShipping)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithShipping),
                     ),
                 );
 
@@ -297,8 +295,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CheckoutWithShippingAndAddressExtraFields:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithShipping)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithShipping),
                     ),
                 );
 
@@ -311,8 +309,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CheckoutWithShippingAndBilling:
                 this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutWithShippingAndBilling)),
+                    http.get('/api/storefront/checkout/*', () =>
+                        HttpResponse.json(checkoutWithShippingAndBilling),
                     ),
                 );
 
@@ -324,8 +322,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.CustomErrorFlashMessage:
                 this.server.use(
-                    rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
-                        res(ctx.json(checkoutSettingsWithCustomErrorFlashMessage)),
+                    http.get('/api/storefront/checkout-settings', () =>
+                        HttpResponse.json(checkoutSettingsWithCustomErrorFlashMessage),
                     ),
                 );
 
@@ -340,8 +338,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.ErrorFlashMessage:
                 this.server.use(
-                    rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
-                        res(ctx.json(checkoutSettingsWithErrorFlashMessage)),
+                    http.get('/api/storefront/checkout-settings', () =>
+                        HttpResponse.json(checkoutSettingsWithErrorFlashMessage),
                     ),
                 );
 
@@ -353,8 +351,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.UnsupportedProvider:
                 this.server.use(
-                    rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
-                        res(ctx.json(checkoutSettingsWithUnsupportedProvider)),
+                    http.get('/api/storefront/checkout-settings', () =>
+                        HttpResponse.json(checkoutSettingsWithUnsupportedProvider),
                     ),
                 );
 
@@ -369,8 +367,8 @@ export class CheckoutPageNodeObject {
 
             case CheckoutPreset.RemoteProviders:
                 this.server.use(
-                    rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
-                        res(ctx.json(checkoutSettingsWithRemoteProviders)),
+                    http.get('/api/storefront/checkout-settings', () =>
+                        HttpResponse.json(checkoutSettingsWithRemoteProviders),
                     ),
                 );
 

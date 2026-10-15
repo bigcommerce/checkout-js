@@ -70,7 +70,7 @@
 .form-ccFields-field--ccCvv,
 .form-field--ccExpiry {
     flex-basis: 1%;
-    min-width: remCalc(100px);
+    min-width: $ccFields-field-minWidth;
 }
 
 .form-ccFields-field--ccCvv {

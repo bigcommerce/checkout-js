@@ -1,6 +1,7 @@
 import { createApplePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/apple-pay';
 import React, { type FunctionComponent, useEffect } from 'react';
 
+import { WalletVaultingFields } from '@bigcommerce/checkout/instrument-utils';
 import {
     type PaymentMethodProps,
     type PaymentMethodResolveId,
@@ -52,8 +53,7 @@ const ApplePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         };
     }, [checkoutService, language, method, onUnhandledError]);
 
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    return <></>;
+    return <WalletVaultingFields method={method} />;
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(

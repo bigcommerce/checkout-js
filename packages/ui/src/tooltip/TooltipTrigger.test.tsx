@@ -115,6 +115,28 @@ describe('TooltipTrigger', () => {
             expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
         });
 
+        it.each(['{Enter}', ' '])('keeps the tooltip open when pressing %s', async (key) => {
+            renderTrigger();
+
+            await userEvent.tab();
+            await userEvent.keyboard(key);
+
+            expect(screen.getByRole('tooltip')).toBeInTheDocument();
+        });
+
+        it.each(['{Enter}', ' '])('reopens a dismissed tooltip with %s', async (key) => {
+            renderTrigger();
+
+            await userEvent.tab();
+            await userEvent.keyboard('{Escape}');
+
+            expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+
+            await userEvent.keyboard(key);
+
+            expect(screen.getByRole('tooltip')).toBeInTheDocument();
+        });
+
         it('dismisses the tooltip on Escape without moving focus', async () => {
             renderTrigger();
 

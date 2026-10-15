@@ -179,6 +179,27 @@ describe('PaymentForm', () => {
         expect(screen.getByTestId('payment-method-skeleton')).toBeInTheDocument();
     });
 
+    it('does not render the payment method skeleton for an initializing express payment method in enhancedThemeV1', () => {
+        enhancedThemeV1 = true;
+
+        const mockExpressMethod = {
+            ...getPaymentMethod(),
+            id: 'authorizenetexpress',
+            method: 'paypal',
+        };
+
+        render(
+            <PaymentFormTest
+                {...defaultProps}
+                defaultMethodId={mockExpressMethod.id}
+                isInitializingPayment={true}
+                methods={[mockExpressMethod, ...defaultProps.methods]}
+            />,
+        );
+
+        expect(screen.queryByTestId('payment-method-skeleton')).not.toBeInTheDocument();
+    });
+
     it('renders terms and conditions field if copy is provided', () => {
         const textAcceptTerms = 'Accept terms';
 

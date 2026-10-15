@@ -1,9 +1,17 @@
-import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
+import {
+    createCheckoutService,
+    createLanguageService,
+    type PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 import { createApplePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/apple-pay';
+import { Formik } from 'formik';
+import { noop } from 'lodash';
 import React from 'react';
 
+import { CheckoutProvider } from '@bigcommerce/checkout/contexts';
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
-import { render } from '@bigcommerce/checkout/test-utils';
+import { getCustomer, getGuestCustomer } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import ApplePayPaymentMethod from './ApplePayPaymentMethod';
 import { getMethod } from './paymentMethods.mock';
@@ -75,5 +83,62 @@ describe('ApplePayPaymentMethod', () => {
         unmount();
 
         await expect(checkoutService.deinitializePayment).rejects.toThrow('test error');
+    });
+    describe('save payment method checkbox', () => {
+        const SAVE_LABEL = 'Save this card for future transactions';
+        const DISCLAIMER = /your card may be charged for future payments/;
+
+        const renderWithConfig = (config: Partial<PaymentMethod['config']>) => {
+            const method = { ...getMethod(), config: { ...getMethod().config, ...config } };
+
+            return render(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <ApplePayPaymentMethod {...defaultProps} method={method} />
+                    </Formik>
+                </CheckoutProvider>,
+            );
+        };
+
+        beforeEach(() => {
+            jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(
+                checkoutService.getState(),
+            );
+            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(
+                getCustomer(),
+            );
+        });
+
+        it('renders the checkbox for a signed-in shopper when vaulting is enabled', () => {
+            renderWithConfig({ isVaultingEnabled: true });
+
+            expect(screen.getByLabelText(SAVE_LABEL)).toBeInTheDocument();
+            expect(screen.queryByText(DISCLAIMER)).not.toBeInTheDocument();
+        });
+
+        it('renders the checkbox and the disclaimer when every wallet payment is vaulted', () => {
+            renderWithConfig({ isVaultingEnabled: true, shouldVaultAllPayments: true });
+
+            expect(screen.getByLabelText(SAVE_LABEL)).toBeInTheDocument();
+            expect(screen.getByText(DISCLAIMER)).toBeInTheDocument();
+        });
+
+        it('renders only the disclaimer for a guest shopper when every wallet payment is vaulted', () => {
+            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(
+                getGuestCustomer(),
+            );
+
+            renderWithConfig({ isVaultingEnabled: true, shouldVaultAllPayments: true });
+
+            expect(screen.queryByLabelText(SAVE_LABEL)).not.toBeInTheDocument();
+            expect(screen.getByText(DISCLAIMER)).toBeInTheDocument();
+        });
+
+        it('renders nothing when vaulting is disabled', () => {
+            renderWithConfig({ isVaultingEnabled: false });
+
+            expect(screen.queryByLabelText(SAVE_LABEL)).not.toBeInTheDocument();
+            expect(screen.queryByText(DISCLAIMER)).not.toBeInTheDocument();
+        });
     });
 });
