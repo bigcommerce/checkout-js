@@ -101,7 +101,6 @@ const CheckoutButtonList: FunctionComponent<
                             isShowingWalletButtonsOnTop={false}
                             key={methodId}
                             methodId={methodId}
-                            onClick={onClick}
                             onError={onClick}
                         />
                     </LazyContainer>
@@ -117,7 +116,6 @@ const CheckoutButtonList: FunctionComponent<
                         language={language}
                         methodId={methodId}
                         onUnhandledError={onClick}
-                        onWalletButtonClick={onClick}
                     />
                 </LazyContainer>
             );

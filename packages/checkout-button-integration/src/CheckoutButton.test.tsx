@@ -20,7 +20,6 @@ describe('CheckoutButton', () => {
             language: createLanguageService(),
             methodId: 'foobar',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
     });
 

@@ -31,7 +31,6 @@ describe('StripeLinkV2Button', () => {
             language: createLanguageService(),
             methodId: 'stripeocs',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
     });
 

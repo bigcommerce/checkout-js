@@ -31,7 +31,6 @@ describe('BigCommercePaymentsButton', () => {
             language: createLanguageService(),
             methodId: 'bigcommerce_payments',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
     });
 

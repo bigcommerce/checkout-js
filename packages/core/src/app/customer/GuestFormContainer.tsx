@@ -25,7 +25,6 @@ interface GuestFormContainerProps {
     handleChangeEmail(email: string): void;
     handleContinueAsGuest(formValues: GuestFormValues): void;
     handleShowLogin(): void;
-    onWalletButtonClick?(methodName: string): void;
     onUnhandledError?(error: Error): void;
 }
 
@@ -46,7 +45,6 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
     handleChangeEmail,
     handleContinueAsGuest,
     handleShowLogin,
-    onWalletButtonClick,
     onUnhandledError,
 }) => {
     const { enhancedThemeV1 } = useThemeContext();
@@ -110,7 +108,6 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
                 initialize={initializeCustomer}
                 isInitializing={isInitializingCustomer()}
                 methodIds={checkoutButtonIds}
-                onClick={onWalletButtonClick}
                 onError={onUnhandledError}
             />
         );
