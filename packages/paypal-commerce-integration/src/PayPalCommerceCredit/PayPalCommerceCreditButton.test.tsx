@@ -31,7 +31,6 @@ describe('PayPalCommerceCreditButton', () => {
             language: createLanguageService(),
             methodId: 'paypalcommercecredit',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
     });
 

@@ -31,7 +31,6 @@ describe('BigcommercePaymentsPayLaterButton', () => {
             language: createLanguageService(),
             methodId: 'bigcommerce_payments_paylater',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
     });
 
