@@ -43,6 +43,7 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
         { id: 'sagepay' },
         { id: 'clover', experiment: 'PI-4747_clover_resolver_configuration' },
         { id: 'ewayrapid', experiment: 'PI-4750_eway_rapid_resolver_configuration' },
+        { id: 'hps', experiment: 'PI-4751_hps_resolver_configuration' },
         { id: 'cybersource' },
         { id: 'cybersourcev2' },
         { id: 'bnz' },
