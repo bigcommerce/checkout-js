@@ -45,7 +45,9 @@ export interface WithCheckoutPaymentMethodProps {
     initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
 }
 
-const CLOVER_RESOLVER_EXPERIMENT = 'PI-4747.clover_resolver_configuration';
+const RESOLVER_EXPERIMENT_BY_METHOD_ID: Partial<Record<string, string>> = {
+    clover: 'PI-4747.clover_resolver_configuration',
+};
 
 const KNOWN_API_METHOD_IDS = new Set([
     'cybersourcev2',
@@ -65,9 +67,6 @@ const KNOWN_API_METHOD_IDS = new Set([
     'vantivcore',
 ]);
 
-// Known only while the matching resolver experiment is disabled
-const KNOWN_API_METHOD_IDS_WITHOUT_RESOLVER = new Set(['clover']);
-
 /**
  * If possible, try to avoid having components that are specific to a specific
  * payment provider or method. Instead, try to generalise the requirements and
@@ -82,10 +81,9 @@ const PaymentMethodComponent: FunctionComponent<
 > = (props) => {
     const { method } = props;
     const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
-    const isCloverResolverEnabled = isExperimentEnabled(
-        config?.checkoutSettings,
-        CLOVER_RESOLVER_EXPERIMENT,
-    );
+    const resolverExperiment = RESOLVER_EXPERIMENT_BY_METHOD_ID[method.id];
+    const isKnownWithoutResolver =
+        !!resolverExperiment && !isExperimentEnabled(config?.checkoutSettings, resolverExperiment);
 
     if (method.id === PaymentMethodId.Humm || method.type === PaymentMethodProviderType.Hosted) {
         const sentryMessage = `DataHostedPaymentMethod Hosted/Humm gateway=${method.gateway} id=${method.id} type=${method.type}`;
@@ -110,8 +108,7 @@ const PaymentMethodComponent: FunctionComponent<
         const isKnownMethod =
             method.gateway === null &&
             method.type === PaymentMethodProviderType.Api &&
-            (KNOWN_API_METHOD_IDS.has(method.id) ||
-                (!isCloverResolverEnabled && KNOWN_API_METHOD_IDS_WITHOUT_RESOLVER.has(method.id)));
+            (KNOWN_API_METHOD_IDS.has(method.id) || isKnownWithoutResolver);
 
         const sentryMessage = isKnownMethod
             ? ''
