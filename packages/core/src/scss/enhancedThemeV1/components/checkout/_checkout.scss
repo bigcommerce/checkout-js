@@ -124,6 +124,12 @@
 
             .checkoutRemote {
                 place-items: center;
+
+                > div:has(> apple-pay-button[hidden]) {
+                    @media (max-width: #{$screen-small - 1px}) {
+                        display: none;
+                    }
+                }
             }
         }
     }
