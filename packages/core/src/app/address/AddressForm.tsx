@@ -17,7 +17,6 @@ import {
     DynamicFormFieldType,
     Fieldset,
 } from '@bigcommerce/checkout/ui';
-import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
@@ -74,11 +73,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
     const isPhoneNumberValidationEnabled =
         !isPayPalFastlaneEnabled &&
         (config?.checkoutSettings.isPhoneNumberValidationEnabled ?? false);
-    const isNewGooglePlacesApiEnabled = isExperimentEnabled(
-        config?.checkoutSettings,
-        'CHECKOUT-10026.new_google_places_api',
-        false,
-    );
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
     const sortedFormFields = enhancedThemeV1 ? moveCountryFieldToTop(formFields) : formFields;
 
@@ -197,7 +191,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
                                     countryCode={countryCode}
                                     field={field}
                                     isFloatingLabelEnabled={isFloatingLabelEnabledValue}
-                                    isNewPlacesApiEnabled={isNewGooglePlacesApiEnabled}
                                     key={field.id}
                                     nextElement={nextElementRef.current || undefined}
                                     onChange={handleAutocompleteChange}

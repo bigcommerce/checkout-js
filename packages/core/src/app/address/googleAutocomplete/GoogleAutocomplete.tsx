@@ -17,7 +17,6 @@ export interface GoogleAutocompleteProps {
     nextElement?: HTMLElement;
     inputProps?: any;
     isAutocompleteEnabled?: boolean;
-    isNewPlacesApiEnabled?: boolean;
     types?: GoogleAutocompleteOptionTypes[];
     onSelect?(place: google.maps.places.PlaceResult, item: AutocompleteItem): void;
     onToggleOpen?(state: { inputValue: string; isOpen: boolean }): void;
@@ -32,7 +31,6 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     onSelect = noop,
     nextElement,
     isAutocompleteEnabled,
-    isNewPlacesApiEnabled = false,
     onChange = noop,
     componentRestrictions,
     types,
@@ -43,7 +41,6 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         fields,
         nextElement,
         isAutocompleteEnabled,
-        isNewPlacesApiEnabled,
         types,
         componentRestrictions,
         onSelect,
