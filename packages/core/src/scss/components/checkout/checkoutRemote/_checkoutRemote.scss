@@ -15,10 +15,6 @@
         z-index: zIndex("low");
     }
 
-    > div:has(> apple-pay-button[hidden]) {
-        display: none;
-    }
-
     > .AmazonPayContainer {
         width: remCalc(200px);
         height: 51px !important;
