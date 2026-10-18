@@ -542,7 +542,7 @@
             "continue_with_text": "Oppure continua con",
             "or_text": "O",
             "payment_method_error": "Si è verificato un errore nel recupero del metodo di pagamento remoto. Riprova.",
-            "retry_same_card_action": "Try again or select a different card",
+            "retry_same_card_action": "Riprovare o selezionare un'altra carta",
             "select_different_card_action": "Seleziona un'altra carta",
             "session_error": "La sessione remota è scaduta. Esegui nuovamente l'accesso.",
             "shipping_address_error": "Si è verificato un errore nel recuperare l'indirizzo di spedizione da remoto. Riprova.",
