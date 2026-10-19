@@ -32,6 +32,7 @@ import getEmailValidationSchema from './getEmailValidationSchema';
 import mapErrorMessage from './mapErrorMessage';
 import PasswordField from './PasswordField';
 import { RedirectToStorefrontLogin } from './RedirectToStorefrontLogin';
+import { useCreateAccount } from './useCreateAccount';
 
 export interface LoginFormProps {
     continueAsGuestButtonLabelId: string;
@@ -70,6 +71,7 @@ const LoginForm: FunctionComponent<
     viewType = CustomerViewType.Login,
 }) => {
     const { enhancedThemeV1 } = useThemeContext();
+    const handleCreateAccount = useCreateAccount(onCreateAccount);
     const setHeaderAction = useSetCheckoutStepHeaderAction();
     const { checkoutState } = useCheckout(
         ({
@@ -183,7 +185,7 @@ const LoginForm: FunctionComponent<
                     <Alert type={AlertType.Error}>
                         <TranslatedLink
                             id="customer.guest_temporary_disabled"
-                            onClick={onCreateAccount}
+                            onClick={handleCreateAccount}
                         />
                     </Alert>
                 )}
@@ -228,7 +230,7 @@ const LoginForm: FunctionComponent<
                             <span>
                                 <TranslatedLink
                                     id="customer.create_account_to_continue_text"
-                                    onClick={onCreateAccount}
+                                    onClick={handleCreateAccount}
                                 />
                             </span>
                         )}
@@ -280,7 +282,7 @@ const LoginForm: FunctionComponent<
                                 data-test="customer-create-account-button"
                                 href="#"
                                 id="checkout-customer-create-account"
-                                onClick={preventDefault(onCreateAccount)}
+                                onClick={preventDefault(handleCreateAccount)}
                             >
                                 <TranslatedString id="customer.create_account_instead_action" />
                             </a>

@@ -18,6 +18,7 @@ export const defaultCapabilities: Capabilities = {
     customer: {
         reloadPageAfterSignIn: false,
         superAdminCompanySelector: false,
+        createAccountViaBuyerPortal: false,
     },
     shipping: {
         restrictManualAddressEntry: false,
