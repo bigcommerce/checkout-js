@@ -45,7 +45,6 @@ export interface WithCheckoutPaymentMethodProps {
 }
 
 const KNOWN_API_METHOD_IDS = new Set([
-    'authorizenet',
     'cybersourcev2',
     'ewayrapid',
     'nmi',
