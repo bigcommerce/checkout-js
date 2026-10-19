@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.918.0](https://github.com/bigcommerce/checkout-js/compare/v1.917.0...v1.918.0) (2026-10-19)
+
+
+### Features
+
+* **payment:** Add Clover to the new resolver ([#3403](https://github.com/bigcommerce/checkout-js/issues/3403)) ([bba8f6f](https://github.com/bigcommerce/checkout-js/commit/bba8f6fd713369e83c8b9408fb7d8a9b62d69e04))
+
 ## [1.917.0](https://github.com/bigcommerce/checkout-js/compare/v1.916.7...v1.917.0) (2026-10-19)
 
 
