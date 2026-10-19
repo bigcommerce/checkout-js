@@ -57,7 +57,6 @@ const KNOWN_API_METHOD_IDS = new Set([
     'firstdatae4v14',
     'cybersource',
     'hps',
-    'clover',
     'elavon',
     'bnz',
     'vantivcore',
