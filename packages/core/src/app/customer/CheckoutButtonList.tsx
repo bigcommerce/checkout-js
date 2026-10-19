@@ -12,12 +12,14 @@ import {
     useCapabilities,
     useLocale,
 } from '@bigcommerce/checkout/contexts';
+import { AutoVaultingDisclaimer } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 import { retry } from '../common/utility';
 
+import { getAutoVaultingMethodNames } from './getAutoVaultingMethodNames';
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 
@@ -88,6 +90,12 @@ const CheckoutButtonList: FunctionComponent<
         }
     }
 
+    const autoVaultingMethodNames = getAutoVaultingMethodNames(
+        language,
+        supportedMethodIds,
+        paymentMethods,
+    );
+
     const renderButtons = () => {
         return supportedMethodIds.map((methodId) => {
             const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
@@ -133,6 +141,13 @@ const CheckoutButtonList: FunctionComponent<
             )}
 
             <div className="checkoutRemote">{renderButtons()}</div>
+
+            {autoVaultingMethodNames.length > 0 && (
+                <AutoVaultingDisclaimer
+                    translationData={{ methodNames: autoVaultingMethodNames }}
+                    translationId="remote.auto_vaulting_disclaimer_text"
+                />
+            )}
         </>
     );
 };

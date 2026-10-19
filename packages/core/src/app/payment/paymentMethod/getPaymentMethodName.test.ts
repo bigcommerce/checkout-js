@@ -117,4 +117,17 @@ describe('getPaymentMethodName()', () => {
             language.translate('payment.google_pay_name_text'),
         );
     });
+
+    it('returns specific translated name for Apple Pay', () => {
+        const method = {
+            ...getPaymentMethod(),
+            id: 'applepay',
+            method: 'credit-card',
+            config: { displayName: '' },
+        };
+
+        expect(getPaymentMethodName(language)(method)).toEqual(
+            language.translate('payment.apple_pay_name_text'),
+        );
+    });
 });
