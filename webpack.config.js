@@ -3,19 +3,9 @@ const EventEmitter = require('events');
 const { copyFileSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { join } = require('path');
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
-const StyleLintPlugin = require('stylelint-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const { SubresourceIntegrityPlugin } = require('webpack-subresource-integrity');
-
-const smp = new SpeedMeasurePlugin({
-    // Options go here
-    disable: false, // Set to true to disable the plugin (useful for CI or production)
-    outputFormat: 'human', // 'json', 'human', 'humanVerbose', or a function
-    outputTarget: console.log, // Where to output data (console.log, filepath string, or function)
-    // ... other less common options (see plugin docs for details)
-});
 
 const {
     AsyncHookPlugin,
@@ -178,13 +168,6 @@ function appConfig(options, argv) {
                     hashFuncNames: ['sha256'],
                     enabled: isProduction,
                 }),
-                new StyleLintPlugin({
-                    files: 'packages/**/*.{scss,sass,css}',
-                    fix: !isProduction,
-                    cache: true,
-                    cacheLocation: join(process.cwd(), 'node_modules/.cache/'),
-                    emitErrors: isProduction,
-                }),
                 isProduction &&
                     new MiniCssExtractPlugin({
                         filename: `${outputFilename}.css`,
@@ -297,14 +280,6 @@ function appConfig(options, argv) {
                         generator: {
                             filename: `static/${outputFilename}[ext]`,
                         },
-                        use: [
-                            {
-                                loader: 'image-webpack-loader',
-                                options: {
-                                    disable: true,
-                                },
-                            },
-                        ],
                     },
                 ],
             },
@@ -479,6 +454,14 @@ module.exports = async function (options, argv) {
     const configArr = await Promise.all([app, loader]);
 
     if (isMeasureSpeed) {
+        // eslint-disable-next-line global-require
+        const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+        const smp = new SpeedMeasurePlugin({
+            outputFormat: 'human', // 'json', 'human', 'humanVerbose', or a function
+            outputTarget: console.log, // Where to output data (console.log, filepath string, or function)
+            // ... other less common options (see plugin docs for details)
+        });
+
         return smp.wrap(configArr);
     }
 
