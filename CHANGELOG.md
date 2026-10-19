@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.916.7](https://github.com/bigcommerce/checkout-js/compare/v1.916.6...v1.916.7) (2026-10-19)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10475 Make ApplePay container hidden when unavailable ([#3406](https://github.com/bigcommerce/checkout-js/issues/3406)) ([f4c2032](https://github.com/bigcommerce/checkout-js/commit/f4c2032dec420372b3fab5b8f5518cb569d5be0a))
+
 ### [1.916.6](https://github.com/bigcommerce/checkout-js/compare/v1.916.5...v1.916.6) (2026-10-15)
 
 ### [1.916.5](https://github.com/bigcommerce/checkout-js/compare/v1.916.4...v1.916.5) (2026-10-14)
