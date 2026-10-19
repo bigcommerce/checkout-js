@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.919.0](https://github.com/bigcommerce/checkout-js/compare/v1.918.0...v1.919.0) (2026-10-19)
+
+
+### Features
+
+* **payment:** Add HPS to the new resolver ([#3408](https://github.com/bigcommerce/checkout-js/issues/3408)) ([27f9e7a](https://github.com/bigcommerce/checkout-js/commit/27f9e7acda795581190ecae8291d641581858f1d))
+
 ## [1.918.0](https://github.com/bigcommerce/checkout-js/compare/v1.917.0...v1.918.0) (2026-10-19)
 
 
