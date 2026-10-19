@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.917.0](https://github.com/bigcommerce/checkout-js/compare/v1.916.7...v1.917.0) (2026-10-19)
+
+
+### Features
+
+* **paymnet:** Migrate AuthorizeNet to Resolver Configuration ([#3395](https://github.com/bigcommerce/checkout-js/issues/3395)) ([1900934](https://github.com/bigcommerce/checkout-js/commit/19009347a622369a001690999443ea50054730fe))
+
 ### [1.916.7](https://github.com/bigcommerce/checkout-js/compare/v1.916.6...v1.916.7) (2026-10-19)
 
 
