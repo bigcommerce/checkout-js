@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.920.0](https://github.com/bigcommerce/checkout-js/compare/v1.919.0...v1.920.0) (2026-10-20)
+
+
+### Features
+
+* **customer:** CHECKOUT-10472 Redirect shopper to buyer portal for b2b stores ([#3414](https://github.com/bigcommerce/checkout-js/issues/3414)) ([596fc2b](https://github.com/bigcommerce/checkout-js/commit/596fc2b75706c934afbeee8042b74b4e72e6a553))
+
 ## [1.919.0](https://github.com/bigcommerce/checkout-js/compare/v1.918.0...v1.919.0) (2026-10-19)
 
 
