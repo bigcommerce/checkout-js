@@ -435,6 +435,33 @@ describe('Payment step', () => {
             expect(screen.queryByTestId('payment-methods-refresh-alert')).not.toBeInTheDocument();
         });
 
+        it('reloads payment methods without the refresh note when the billing form requests it', async () => {
+            let reloadPaymentMethods: (() => Promise<void>) | undefined;
+
+            mockPaymentContextEffect = (context) => {
+                reloadPaymentMethods = context.reloadPaymentMethods;
+            };
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: enhancedThemeV1Config,
+            });
+
+            const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            const initialCalls = loadPaymentMethodsSpy.mock.calls.length;
+
+            await act(async () => {
+                await reloadPaymentMethods?.();
+            });
+
+            expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(initialCalls + 1);
+            expect(screen.queryByTestId('payment-methods-refresh-alert')).not.toBeInTheDocument();
+        });
+
         it('reloads payment methods in place when the billing country changes', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: enhancedThemeV1Config,

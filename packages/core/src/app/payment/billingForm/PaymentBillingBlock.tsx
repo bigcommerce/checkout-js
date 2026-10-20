@@ -1,6 +1,6 @@
 import type { Address } from '@bigcommerce/checkout-sdk';
 import { omit } from 'lodash';
-import React, { type FunctionComponent, useRef } from 'react';
+import React, { type FunctionComponent, useContext, useRef } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
@@ -8,6 +8,7 @@ import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
 import { type AddressFormValues, isEqualAddress, mapAddressFromFormValues } from '../../address';
 import { type BillingFormValues } from '../../billing/billingFormConfig';
 import { useBilling } from '../../billing/hooks/useBilling';
+import PaymentContext from '../PaymentContext';
 
 import { PaymentBillingForm } from './PaymentBillingForm';
 
@@ -40,6 +41,11 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         updateBillingAddress,
         updateCheckout,
     } = useBilling({ onUnhandledError });
+    const paymentContext = useContext(PaymentContext);
+
+    const reloadPaymentMethods = () => {
+        void paymentContext?.reloadPaymentMethods?.();
+    };
 
     const handleBillingSameAsShippingChange = (checked: boolean) => {
         onBillingSameAsShippingChange(checked);
@@ -53,13 +59,16 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         if (shippingAddress && !isEqualAddress(shippingAddress, getBillingAddress())) {
             // The consignment address carries email: '' — sent as-is it overwrites
             // the guest email; omitted, the SDK falls back to the stored one.
-            updateBillingAddress(omit(shippingAddress, 'email')).catch((error) => {
-                onBillingSameAsShippingChange(false);
+            updateBillingAddress(omit(shippingAddress, 'email')).then(
+                reloadPaymentMethods,
+                (error) => {
+                    onBillingSameAsShippingChange(false);
 
-                if (error instanceof Error) {
-                    onUnhandledError(error);
-                }
-            });
+                    if (error instanceof Error) {
+                        onUnhandledError(error);
+                    }
+                },
+            );
         }
     };
 
@@ -74,7 +83,11 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     const handleSelectAddress = async (address: Partial<Address>, orderComment: string) => {
         await saveOrderComment(orderComment);
 
-        return updateBillingAddress(address);
+        const state = await updateBillingAddress(address);
+
+        reloadPaymentMethods();
+
+        return state;
     };
 
     const lastRequestedCountryCodeRef = useRef<string | undefined>();

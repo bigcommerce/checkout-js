@@ -25,6 +25,7 @@ import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { getShippingAddress } from '../../shipping/shipping-addresses.mock';
+import PaymentContext, { type PaymentContextProps } from '../PaymentContext';
 
 import { PaymentBillingBlock } from './PaymentBillingBlock';
 import { type PaymentBillingFormProps } from './PaymentBillingForm';
@@ -54,6 +55,7 @@ describe('PaymentBillingBlock', () => {
     let checkoutState: CheckoutSelectors;
     let localeContext: LocaleContextType;
     let onUnhandledError: jest.Mock;
+    let reloadPaymentMethods: jest.Mock<Promise<void>>;
     let PaymentBillingBlockTest: FunctionComponent<{
         methodId?: string;
         isUsingMultiShipping?: boolean;
@@ -75,6 +77,15 @@ describe('PaymentBillingBlock', () => {
         jest.spyOn(checkoutService, 'loadBillingAddressFields').mockResolvedValue(checkoutState);
         jest.spyOn(checkoutService, 'updateBillingAddress').mockResolvedValue(checkoutState);
         jest.spyOn(checkoutService, 'updateCheckout').mockResolvedValue(checkoutState);
+        reloadPaymentMethods = jest.fn<Promise<void>, []>().mockResolvedValue(undefined);
+
+        const paymentContextValue: PaymentContextProps = {
+            reloadPaymentMethods,
+            disableSubmit: jest.fn(),
+            setSubmit: jest.fn(),
+            setValidationSchema: jest.fn(),
+            hidePaymentSubmitButton: jest.fn(),
+        };
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
@@ -94,13 +105,15 @@ describe('PaymentBillingBlock', () => {
                     <ThemeProvider>
                         <LocaleContext.Provider value={localeContext}>
                             <CapabilitiesContext.Provider value={defaultCapabilities}>
-                                <PaymentBillingBlock
-                                    isBillingSameAsShipping={isBillingSameAsShipping}
-                                    isUsingMultiShipping={isUsingMultiShipping}
-                                    methodId={methodId}
-                                    onBillingSameAsShippingChange={setIsBillingSameAsShipping}
-                                    onUnhandledError={onUnhandledError}
-                                />
+                                <PaymentContext.Provider value={paymentContextValue}>
+                                    <PaymentBillingBlock
+                                        isBillingSameAsShipping={isBillingSameAsShipping}
+                                        isUsingMultiShipping={isUsingMultiShipping}
+                                        methodId={methodId}
+                                        onBillingSameAsShippingChange={setIsBillingSameAsShipping}
+                                        onUnhandledError={onUnhandledError}
+                                    />
+                                </PaymentContext.Provider>
                             </CapabilitiesContext.Provider>
                         </LocaleContext.Provider>
                     </ThemeProvider>
@@ -192,6 +205,49 @@ describe('PaymentBillingBlock', () => {
         expect(onUnhandledError).toHaveBeenCalledWith(error);
     });
 
+    it('reloads the payment methods after copying shipping to billing', async () => {
+        const calls: string[] = [];
+
+        jest.spyOn(checkoutService, 'updateBillingAddress').mockImplementation(async () => {
+            calls.push('updateBillingAddress');
+
+            return checkoutState;
+        });
+        reloadPaymentMethods.mockImplementation(async () => {
+            calls.push('reloadPaymentMethods');
+        });
+
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        act(() => {
+            mockCapturedProps.onBillingSameAsShippingChange(true);
+        });
+
+        await waitFor(() => expect(reloadPaymentMethods).toHaveBeenCalledTimes(1));
+
+        expect(calls).toEqual(['updateBillingAddress', 'reloadPaymentMethods']);
+    });
+
+    it('does not reload the payment methods when copying shipping to billing fails', async () => {
+        jest.spyOn(checkoutService, 'updateBillingAddress').mockRejectedValue(
+            new Error('update failed'),
+        );
+
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        act(() => {
+            mockCapturedProps.onBillingSameAsShippingChange(true);
+        });
+
+        await waitFor(() => expect(mockCapturedProps.isBillingSameAsShipping).toBe(false));
+
+        expect(reloadPaymentMethods).not.toHaveBeenCalled();
+    });
+
     it('does not copy shipping to billing when the toggle is unchecked', async () => {
         render(<PaymentBillingBlockTest />);
 
@@ -204,6 +260,7 @@ describe('PaymentBillingBlock', () => {
         await new Promise((resolve) => process.nextTick(resolve));
 
         expect(checkoutService.updateBillingAddress).not.toHaveBeenCalled();
+        expect(reloadPaymentMethods).not.toHaveBeenCalled();
     });
 
     it('remembers the shopper unchecking the toggle across re-renders', async () => {
@@ -379,6 +436,34 @@ describe('PaymentBillingBlock', () => {
             await expect(
                 mockCapturedProps.onSelectAddress({}, getCheckout().customerMessage),
             ).rejects.toThrow(error);
+
+            expect(reloadPaymentMethods).not.toHaveBeenCalled();
+        });
+
+        it('reloads the payment methods after applying the selected address', async () => {
+            const calls: string[] = [];
+
+            jest.spyOn(checkoutService, 'updateBillingAddress').mockImplementation(async () => {
+                calls.push('updateBillingAddress');
+
+                return checkoutState;
+            });
+            reloadPaymentMethods.mockImplementation(async () => {
+                calls.push('reloadPaymentMethods');
+            });
+
+            render(<PaymentBillingBlockTest />);
+
+            await screen.findByTestId('trigger-persist');
+
+            await act(async () => {
+                await mockCapturedProps.onSelectAddress(
+                    getBillingAddress(),
+                    getCheckout().customerMessage,
+                );
+            });
+
+            expect(calls).toEqual(['updateBillingAddress', 'reloadPaymentMethods']);
         });
     });
 

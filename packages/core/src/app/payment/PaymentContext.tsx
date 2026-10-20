@@ -13,6 +13,8 @@ export interface PaymentContextProps {
     setEnsureBillingAddressSaved?(
         ensureBillingAddressSaved: EnsureBillingAddressSaved | null,
     ): void;
+    // Reloads the payment methods after the billing form saves the address.
+    reloadPaymentMethods?(): Promise<void>;
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
     // NOTE: This prop allows certain payment methods to override the default
     // form submission behaviour. It is not recommended to use it because
