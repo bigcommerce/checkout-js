@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.922.0](https://github.com/bigcommerce/checkout-js/compare/v1.921.0...v1.922.0) (2026-10-20)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10507 reload payment methods on checking `same as shipping` checkbox ([#3416](https://github.com/bigcommerce/checkout-js/issues/3416)) ([387912e](https://github.com/bigcommerce/checkout-js/commit/387912e98c631a17ed461aeb4954459f3d4f054c))
+
 ## [1.921.0](https://github.com/bigcommerce/checkout-js/compare/v1.920.1...v1.921.0) (2026-10-20)
 
 
