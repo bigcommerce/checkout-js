@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.921.0](https://github.com/bigcommerce/checkout-js/compare/v1.920.1...v1.921.0) (2026-10-20)
+
+
+### Features
+
+* **payment:** Add Eway Rapid to the new resolver ([#3409](https://github.com/bigcommerce/checkout-js/issues/3409)) ([77ef727](https://github.com/bigcommerce/checkout-js/commit/77ef72716b007f2ea4977a3a80d0e744cbbf7479))
+
 ### [1.920.1](https://github.com/bigcommerce/checkout-js/compare/v1.920.0...v1.920.1) (2026-10-20)
 
 
