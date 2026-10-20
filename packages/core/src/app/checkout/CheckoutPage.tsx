@@ -52,6 +52,7 @@ import { CustomError, ErrorModal, isCustomError, isErrorWithType } from '../comm
 import { type CustomerSignOutEvent, CustomerViewType } from '../customer';
 import { getSupportedMethodIds } from '../customer/getSupportedMethods';
 import { SubscribeSessionStorage } from '../customer/SubscribeSessionStorage';
+import { useCreateAccount } from '../customer/useCreateAccount';
 import { type EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { hasSelectedShippingOptions, isUsingMultiShipping } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
@@ -494,9 +495,11 @@ const Checkout = ({
         setCustomerViewType(CustomerViewType.Login);
     }, [setCustomerViewType]);
 
-    const handleShippingCreateAccount = useCallback((): void => {
+    const showCreateAccountForm = useCallback((): void => {
         setCustomerViewType(CustomerViewType.CreateAccount);
     }, [setCustomerViewType]);
+
+    const handleShippingCreateAccount = useCreateAccount(showCreateAccountForm);
 
     const handleBeforeExit = useCallback((): void => {
         analyticsTracker.exitCheckout();
