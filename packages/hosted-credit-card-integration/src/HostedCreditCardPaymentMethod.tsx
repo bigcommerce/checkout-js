@@ -46,6 +46,8 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
         { id: 'cybersource' },
         { id: 'cybersourcev2' },
         { id: 'bnz' },
+        { id: 'ewayrapid', experiment: 'PI-4750_ewayrapid_resolver_configuration' },
+
         {
             id: 'authorizenet',
             experiment: 'PI-4745_authorizenet_resolver_configuration',
