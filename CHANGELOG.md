@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.920.1](https://github.com/bigcommerce/checkout-js/compare/v1.920.0...v1.920.1) (2026-10-20)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-10463 Check for checkout and config before rendering shipping step ([#3415](https://github.com/bigcommerce/checkout-js/issues/3415)) ([b21b57f](https://github.com/bigcommerce/checkout-js/commit/b21b57ff09ab6f69e025da8952ba9ca9b1c4d99c))
+
 ## [1.920.0](https://github.com/bigcommerce/checkout-js/compare/v1.919.0...v1.920.0) (2026-10-20)
 
 
