@@ -53,7 +53,7 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
         config: data.getConfig(),
     }));
 
-    if (!cart) {
+    if (!cart || !checkout || !config) {
         return null;
     }
 
