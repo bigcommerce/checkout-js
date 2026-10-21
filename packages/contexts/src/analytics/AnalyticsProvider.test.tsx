@@ -52,7 +52,6 @@ const TestComponent = ({
 describe('AnalyticsProvider', () => {
     let stepTrackerMock: CheckoutSdk.StepTracker;
     let bodlServiceMock: CheckoutSdk.BodlService;
-    let paypalCommerceAnalyticTracker: CheckoutSdk.PayPalCommerceAnalyticTrackerService;
 
     beforeEach(() => {
         jest.spyOn(createAnalyticsService, 'default').mockImplementation((createFn) => createFn);
@@ -81,16 +80,6 @@ describe('AnalyticsProvider', () => {
             exitCheckout: jest.fn(),
         };
         jest.spyOn(CheckoutSdk, 'createBodlService').mockImplementation(() => bodlServiceMock);
-
-        paypalCommerceAnalyticTracker = {
-            customerPaymentMethodExecuted: jest.fn(),
-            selectedPaymentMethod: jest.fn(),
-            paymentComplete: jest.fn(),
-            walletButtonClick: jest.fn(),
-        };
-        jest.spyOn(CheckoutSdk, 'createPayPalCommerceAnalyticTracker').mockImplementation(
-            () => paypalCommerceAnalyticTracker,
-        );
     });
 
     it('throws an error when useAnalytics hook used without AnalyticsContext', () => {
@@ -178,10 +167,6 @@ describe('AnalyticsProvider', () => {
         expect(bodlServiceMock.customerPaymentMethodExecuted).toHaveBeenCalledWith({
             data: 'test data',
         });
-        expect(paypalCommerceAnalyticTracker.customerPaymentMethodExecuted).toHaveBeenCalledTimes(
-            1,
-        );
-        expect(paypalCommerceAnalyticTracker.customerPaymentMethodExecuted).toHaveBeenCalled();
     });
 
     it('track show shipping methods', () => {
@@ -191,28 +176,10 @@ describe('AnalyticsProvider', () => {
     });
 
     it('track selected payment method', () => {
-        render(
-            <TestComponent
-                eventName="selectedPaymentMethod"
-                eventProps={['Credit card', 'paypalcreditcard']}
-            />,
-        );
+        render(<TestComponent eventName="selectedPaymentMethod" eventProps={['Credit card']} />);
 
         expect(bodlServiceMock.selectedPaymentMethod).toHaveBeenCalledTimes(1);
         expect(bodlServiceMock.selectedPaymentMethod).toHaveBeenCalledWith('Credit card');
-        expect(paypalCommerceAnalyticTracker.selectedPaymentMethod).toHaveBeenCalledTimes(1);
-        expect(paypalCommerceAnalyticTracker.selectedPaymentMethod).toHaveBeenCalledWith(
-            'paypalcreditcard',
-        );
-    });
-
-    it('track wallet button click', () => {
-        render(<TestComponent eventName="walletButtonClick" eventProps={['paypalwalletbutton']} />);
-
-        expect(paypalCommerceAnalyticTracker.walletButtonClick).toHaveBeenCalledTimes(1);
-        expect(paypalCommerceAnalyticTracker.walletButtonClick).toHaveBeenCalledWith(
-            'paypalwalletbutton',
-        );
     });
 
     it('track click Pay button', () => {
