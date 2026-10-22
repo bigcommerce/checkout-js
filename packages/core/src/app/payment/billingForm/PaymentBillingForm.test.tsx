@@ -265,7 +265,7 @@ describe('PaymentBillingForm', () => {
             renderForm({
                 ...defaultProps,
                 getFields: (): FormField[] => [
-                    ...getFormFields(),
+                    ...getFieldsWithCountry(),
                     {
                         custom: false,
                         default: '',
@@ -295,7 +295,7 @@ describe('PaymentBillingForm', () => {
 
     describe('billing postal code change', () => {
         const getFieldsWithPostalCode = (): FormField[] => [
-            ...getFormFields(),
+            ...getFieldsWithCountry(),
             {
                 custom: false,
                 default: '',
@@ -316,6 +316,19 @@ describe('PaymentBillingForm', () => {
 
             return postalCodeInput;
         };
+
+        it('does not persist when the address has no country', async () => {
+            renderForm({
+                ...defaultProps,
+                billingAddress: { ...getBillingAddress(), countryCode: '' },
+                getFields: getFieldsWithPostalCode,
+            });
+
+            await userEvent.type(screen.getByTestId('postCodeInput-text'), '1');
+            await userEvent.click(screen.getByTestId('firstNameInput-text'));
+
+            expect(onPersist).not.toHaveBeenCalled();
+        });
 
         it('persists when moving to another field, not while typing', async () => {
             await typePostalCodeInForm();

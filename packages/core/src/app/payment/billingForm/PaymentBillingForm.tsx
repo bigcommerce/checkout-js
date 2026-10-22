@@ -203,6 +203,10 @@ const PaymentBillingFormComponent = ({
     const persistInBackground = (overrides?: Partial<BillingFormValues>) => {
         const { billingSameAsShipping: _billingSameAsShipping, ...billingValues } = values;
 
+        if (!billingValues.countryCode) {
+            return;
+        }
+
         onPersist({ ...billingValues, ...overrides }).catch((error) => {
             if (error instanceof Error) {
                 onUnhandledError(error);
