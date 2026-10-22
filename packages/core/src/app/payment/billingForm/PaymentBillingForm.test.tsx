@@ -6,7 +6,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
-import React, { type FunctionComponent } from 'react';
+import React, { act, type FunctionComponent } from 'react';
 
 import {
     CapabilitiesContext,
@@ -257,6 +257,88 @@ describe('PaymentBillingForm', () => {
             await userEvent.type(screen.getByTestId('firstNameInput-text'), 'Jane');
 
             expect(defaultProps.onBillingCountryChange).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('billing postal code change', () => {
+        const getFieldsWithPostalCode = (): FormField[] => [
+            ...getFormFields(),
+            {
+                custom: false,
+                default: '',
+                id: 'field_postal',
+                label: 'Postal Code',
+                name: 'postalCode',
+                required: false,
+            },
+        ];
+
+        const typePostalCodeInForm = async (onBillingAddressFieldChange: jest.Mock) => {
+            renderForm({
+                ...defaultProps,
+                getFields: getFieldsWithPostalCode,
+                onBillingAddressFieldChange,
+            });
+
+            const postalCodeInput = screen.getByTestId('postCodeInput-text');
+
+            await userEvent.clear(postalCodeInput);
+            await userEvent.type(postalCodeInput, '90210');
+
+            return postalCodeInput;
+        };
+
+        it('notifies onBillingAddressFieldChange when moving to another field, not while typing', async () => {
+            const onBillingAddressFieldChange = jest.fn();
+
+            await typePostalCodeInForm(onBillingAddressFieldChange);
+
+            expect(onBillingAddressFieldChange).not.toHaveBeenCalled();
+
+            await userEvent.click(screen.getByTestId('firstNameInput-text'));
+
+            expect(onBillingAddressFieldChange).toHaveBeenCalledTimes(1);
+            expect(onBillingAddressFieldChange).toHaveBeenCalledWith(
+                expect.objectContaining({ postalCode: '90210' }),
+                '',
+            );
+        });
+
+        it('does not notify onBillingAddressFieldChange when focus moves to a submit button', async () => {
+            const onBillingAddressFieldChange = jest.fn();
+            const submitButton = document.createElement('button');
+
+            submitButton.type = 'submit';
+            document.body.appendChild(submitButton);
+
+            await typePostalCodeInForm(onBillingAddressFieldChange);
+
+            act(() => submitButton.focus());
+
+            expect(onBillingAddressFieldChange).not.toHaveBeenCalled();
+
+            submitButton.remove();
+        });
+
+        it('does not notify onBillingAddressFieldChange when focus moves nowhere', async () => {
+            const onBillingAddressFieldChange = jest.fn();
+
+            const postalCodeInput = await typePostalCodeInForm(onBillingAddressFieldChange);
+
+            act(() => postalCodeInput.blur());
+
+            expect(onBillingAddressFieldChange).not.toHaveBeenCalled();
+        });
+
+        it('does not notify onBillingAddressFieldChange when a non-tax field is blurred', async () => {
+            const onBillingAddressFieldChange = jest.fn();
+
+            renderForm({ ...defaultProps, onBillingAddressFieldChange });
+
+            await userEvent.type(screen.getByTestId('firstNameInput-text'), 'Jane');
+            await userEvent.tab();
+
+            expect(onBillingAddressFieldChange).not.toHaveBeenCalled();
         });
     });
 

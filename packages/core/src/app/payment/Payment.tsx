@@ -190,6 +190,9 @@ const Payment = (
     const [methodsRefreshAlert, setMethodsRefreshAlert] = useState<
         PaymentMethodsRefreshAlertData | undefined
     >();
+    const [isPriceChangedAlertVisible, setIsPriceChangedAlertVisible] = useState(false);
+    // A ref, not state: the SDK loading status re-renders synchronously.
+    const skipMethodsScrollRef = useRef(false);
 
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
@@ -528,8 +531,23 @@ const Payment = (
             // surfaced inline by the billing form.
             const ensureBillingAddressSaved = ensureBillingAddressSavedRef.current;
 
-            if (ensureBillingAddressSaved && !(await ensureBillingAddressSaved())) {
-                return;
+            if (ensureBillingAddressSaved) {
+                const getGrandTotal = () =>
+                    checkoutService.getState().data.getCheckout()?.grandTotal;
+                const grandTotalBeforeSave = getGrandTotal();
+
+                setIsPriceChangedAlertVisible(false);
+
+                if (!(await ensureBillingAddressSaved())) {
+                    return;
+                }
+
+                // Saving the billing address can change tax: let the shopper review it.
+                if (getGrandTotal() !== grandTotalBeforeSave) {
+                    setIsPriceChangedAlertVisible(true);
+
+                    return;
+                }
             }
 
             try {
@@ -593,6 +611,7 @@ const Payment = (
     };
 
     const dismissMethodsRefreshAlert = useCallback(() => setMethodsRefreshAlert(undefined), []);
+    const dismissPriceChangedAlert = useCallback(() => setIsPriceChangedAlertVisible(false), []);
 
     const setSelectedMethod = useCallback((method?: PaymentMethod): void => {
         setState((prevState) =>
@@ -718,7 +737,7 @@ const Payment = (
         }
     };
 
-    const handleCartTotalChange = async (): Promise<void> => {
+    const handleCartTotalChange = async (shouldSkipMethodsScroll: boolean): Promise<void> => {
         const isReady = isReadyRef.current;
 
         if (!isReady) {
@@ -727,7 +746,13 @@ const Payment = (
 
         dismissMethodsRefreshAlert();
 
-        await loadPaymentMethodsOrThrow();
+        skipMethodsScrollRef.current = shouldSkipMethodsScroll;
+
+        try {
+            await loadPaymentMethodsOrThrow();
+        } finally {
+            skipMethodsScrollRef.current = false;
+        }
     };
 
     const getContextValue = memoizeOne(() => {
@@ -902,10 +927,33 @@ const Payment = (
                 }
             }
 
+            const initialData = checkoutService.getState().data;
+            let lastCheckout = initialData.getCheckout();
+            let lastBillingAddress = initialData.getBillingAddress();
+
+            // Billing address is selected too: a billing save updates it and the total
+            // together, so a non-country billing edit can skip scrolling to the methods.
             grandTotalChangeUnsubscribe.current = checkoutServiceSubscribe(
-                () => handleCartTotalChange(),
+                ({ data }) => {
+                    const checkout = data.getCheckout();
+                    const billingAddress = data.getBillingAddress();
+                    const isTotalChange =
+                        checkout?.grandTotal !== lastCheckout?.grandTotal ||
+                        checkout?.outstandingBalance !== lastCheckout?.outstandingBalance;
+                    const isNonCountryBillingChange =
+                        billingAddress !== lastBillingAddress &&
+                        billingAddress?.countryCode === lastBillingAddress?.countryCode;
+
+                    lastCheckout = checkout;
+                    lastBillingAddress = billingAddress;
+
+                    if (isTotalChange) {
+                        void handleCartTotalChange(isNonCountryBillingChange);
+                    }
+                },
                 ({ data }) => data.getCheckout()?.grandTotal,
                 ({ data }) => data.getCheckout()?.outstandingBalance,
+                ({ data }) => data.getBillingAddress(),
             );
 
             if (enhancedThemeV1) {
@@ -994,7 +1042,12 @@ const Payment = (
                         isEmbedded={props.isEmbedded}
                         isInitializingPayment={props.isInitializingPayment}
                         isPaymentDataRequired={props.isPaymentDataRequired}
-                        isReloadingPaymentMethods={enhancedThemeV1 && isReloadingPaymentMethods}
+                        isPriceChangedAlertVisible={isPriceChangedAlertVisible}
+                        isReloadingPaymentMethods={
+                            enhancedThemeV1 &&
+                            isReloadingPaymentMethods &&
+                            !skipMethodsScrollRef.current
+                        }
                         isStoreCreditApplied={props.isStoreCreditApplied}
                         isTermsConditionsRequired={props.isTermsConditionsRequired}
                         isUsingMultiShipping={props.isUsingMultiShipping}
@@ -1003,6 +1056,7 @@ const Payment = (
                         onBillingSameAsShippingChange={props.onBillingSameAsShippingChange}
                         onMethodSelect={handleMethodSelect}
                         onMethodsRefreshAlertDismiss={dismissMethodsRefreshAlert}
+                        onPriceChangedAlertDismiss={dismissPriceChangedAlert}
                         onStoreCreditChange={handleStoreCreditChange}
                         onSubmit={handleSubmit}
                         onUnhandledError={handleError}

@@ -53,6 +53,7 @@ import {
 } from './PaymentMethodsRefreshAlert';
 import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
+import { PriceChangedAlert } from './PriceChangedAlert';
 import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPaymentsList';
 import SpamProtectionField from './SpamProtectionField';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
@@ -69,6 +70,7 @@ export interface PaymentFormProps {
     isBillingSameAsShipping?: boolean;
     isEmbedded?: boolean;
     isInitializingPayment?: boolean;
+    isPriceChangedAlertVisible?: boolean;
     isReloadingPaymentMethods?: boolean;
     isTermsConditionsRequired?: boolean;
     isUsingMultiShipping?: boolean;
@@ -89,6 +91,7 @@ export interface PaymentFormProps {
     onBillingSameAsShippingChange?(isBillingSameAsShipping: boolean): void;
     onMethodSelect?(method: PaymentMethod): void;
     onMethodsRefreshAlertDismiss?(): void;
+    onPriceChangedAlertDismiss?(): void;
     onStoreCreditChange?(useStoreCredit?: boolean): void;
     onSubmit?(values: PaymentFormValues): void;
     onUnhandledError?(error: Error): void;
@@ -105,6 +108,7 @@ const PaymentForm: FunctionComponent<
     isEmbedded,
     isInitializingPayment,
     isPaymentDataRequired,
+    isPriceChangedAlertVisible,
     isReloadingPaymentMethods,
     isTermsConditionsRequired,
     isStoreCreditApplied,
@@ -115,6 +119,7 @@ const PaymentForm: FunctionComponent<
     onBillingSameAsShippingChange,
     onMethodSelect,
     onMethodsRefreshAlertDismiss,
+    onPriceChangedAlertDismiss,
     onStoreCreditChange,
     onUnhandledError,
     orderExtraFields,
@@ -284,6 +289,10 @@ const PaymentForm: FunctionComponent<
 
             {invoicePaymentComment && (
                 <InvoicePaymentCommentField isFloatingLabelEnabled={isFloatingLabelEnabledValue} />
+            )}
+
+            {isPriceChangedAlertVisible && (
+                <PriceChangedAlert onDismiss={onPriceChangedAlertDismiss ?? noop} />
             )}
 
             <div className="form-actions">

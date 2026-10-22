@@ -1,6 +1,6 @@
 import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, setNestedObjectValues, withFormik } from 'formik';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { type FocusEvent, useCallback, useContext, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -26,6 +26,9 @@ import { getShippableItemsCount } from '../../shipping';
 import BillingSameAsShippingField from '../../shipping/BillingSameAsShippingField';
 import PaymentContext from '../PaymentContext';
 
+// Text inputs that can change tax (the state dropdown is stateOrProvinceCode).
+const TYPED_TAX_FIELDS = ['stateOrProvince', 'postalCode'];
+
 type PaymentBillingFormValues = BillingFormValues & { billingSameAsShipping: boolean };
 
 export interface PaymentBillingFormProps {
@@ -45,6 +48,7 @@ export interface PaymentBillingFormProps {
         addressValues: AddressFormValues,
         orderComment: string,
     ): void;
+    onBillingAddressFieldChange?(addressValues: AddressFormValues, orderComment: string): void;
     onSelectAddress(address: Partial<Address>, orderComment: string): Promise<unknown>;
     onUnhandledError(error: Error): void;
 }
@@ -62,6 +66,7 @@ const PaymentBillingFormComponent = ({
     onPersist,
     onBillingSameAsShippingChange,
     onBillingCountryChange,
+    onBillingAddressFieldChange,
     onSelectAddress,
     onUnhandledError,
 }: PaymentBillingFormProps & WithLanguageProps & FormikProps<PaymentBillingFormValues>) => {
@@ -197,20 +202,54 @@ const PaymentBillingFormComponent = ({
         void handleSelectAddress({});
     };
 
-    const handleAddressFieldChange = useCallback(
-        (fieldName: string, value: string | string[]) => {
-            if (fieldName === 'countryCode' && typeof value === 'string' && value) {
-                const {
-                    billingSameAsShipping: _billingSameAsShipping,
-                    orderComment,
-                    ...addressValues
-                } = values;
+    const getAddressValues = (overrides: Partial<AddressFormValues> = {}) => {
+        const {
+            billingSameAsShipping: _billingSameAsShipping,
+            orderComment,
+            ...addressValues
+        } = values;
 
-                onBillingCountryChange(value, addressValues, orderComment);
-            }
-        },
-        [onBillingCountryChange, values],
-    );
+        return { addressValues: { ...addressValues, ...overrides }, orderComment };
+    };
+
+    // Dropdowns save on change. `values` doesn't include the new value yet.
+    const handleAddressFieldChange = (fieldName: string, value: string | string[]) => {
+        if (typeof value !== 'string') {
+            return;
+        }
+
+        if (fieldName === 'countryCode' && value) {
+            const { addressValues, orderComment } = getAddressValues();
+
+            onBillingCountryChange(value, addressValues, orderComment);
+        }
+
+        if (fieldName === 'stateOrProvinceCode') {
+            const { addressValues, orderComment } = getAddressValues({ [fieldName]: value });
+
+            onBillingAddressFieldChange?.(addressValues, orderComment);
+        }
+    };
+
+    // Text fields save when focus moves to another element. Not when it moves to
+    // Place Order or nowhere (Safari doesn't focus clicked buttons): the save would
+    // disable the button mid-click and swallow it. The pre-submit save covers that.
+    const handleAddressFieldBlur = (event: FocusEvent<HTMLDivElement>) => {
+        const { name } = event.target as HTMLInputElement;
+        const nextFocused = event.relatedTarget as HTMLElement | null;
+
+        if (
+            !TYPED_TAX_FIELDS.includes(name) ||
+            !nextFocused ||
+            nextFocused.closest('[type="submit"]')
+        ) {
+            return;
+        }
+
+        const { addressValues, orderComment } = getAddressValues();
+
+        onBillingAddressFieldChange?.(addressValues, orderComment);
+    };
 
     return (
         <div className="checkout-billing-form" data-test="checkout-billing-form">
@@ -249,14 +288,16 @@ const PaymentBillingFormComponent = ({
 
                         {!restrictManualAddressEntry && !hasValidCustomerAddress && (
                             <AddressFormSkeleton isLoading={isResettingAddress}>
-                                <AddressForm
-                                    countryCode={values.countryCode}
-                                    formFields={editableFormFields}
-                                    onChange={handleAddressFieldChange}
-                                    setFieldValue={setFieldValue}
-                                    shouldShowSaveAddress={shouldShowSaveAddress}
-                                    type={AddressType.Billing}
-                                />
+                                <div onBlur={handleAddressFieldBlur}>
+                                    <AddressForm
+                                        countryCode={values.countryCode}
+                                        formFields={editableFormFields}
+                                        onChange={handleAddressFieldChange}
+                                        setFieldValue={setFieldValue}
+                                        shouldShowSaveAddress={shouldShowSaveAddress}
+                                        type={AddressType.Billing}
+                                    />
+                                </div>
                             </AddressFormSkeleton>
                         )}
                     </Fieldset>

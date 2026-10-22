@@ -127,6 +127,25 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
             });
     };
 
+    const handleBillingAddressFieldChange = (
+        addressValues: AddressFormValues,
+        orderComment: string,
+    ) => {
+        const address = mapAddressFromFormValues(addressValues);
+
+        if (!address.countryCode || isEqualAddress(address, getBillingAddress())) {
+            return;
+        }
+
+        saveOrderComment(orderComment)
+            .then(() => updateBillingAddress(address))
+            .catch((error) => {
+                if (error instanceof Error) {
+                    onUnhandledError(error);
+                }
+            });
+    };
+
     // Persist without navigating — the payment step's "Place Order" is the only
     // submit. Called by PaymentBillingForm's pre-submit save;
     const handlePersist = async ({
@@ -168,6 +187,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     isLoading={isInitializing}
                     isUsingMultiShipping={isUsingMultiShipping}
                     methodId={methodId}
+                    onBillingAddressFieldChange={handleBillingAddressFieldChange}
                     onBillingCountryChange={handleBillingCountryChange}
                     onBillingSameAsShippingChange={handleBillingSameAsShippingChange}
                     onPersist={handlePersist}
