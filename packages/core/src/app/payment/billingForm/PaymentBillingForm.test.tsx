@@ -384,7 +384,11 @@ describe('PaymentBillingForm', () => {
         it('does not report editing for the country select', async () => {
             const onAddressEditingChange = jest.fn();
 
-            renderForm({ ...defaultProps, onAddressEditingChange });
+            renderForm({
+                ...defaultProps,
+                getFields: getFieldsWithCountry,
+                onAddressEditingChange,
+            });
 
             await userEvent.click(screen.getByTestId('countryCodeInput-select'));
 
