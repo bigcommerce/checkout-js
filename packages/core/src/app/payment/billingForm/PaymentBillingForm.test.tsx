@@ -367,6 +367,30 @@ describe('PaymentBillingForm', () => {
             expect(onPersist).not.toHaveBeenCalled();
         });
 
+        it('reports editing while a text field is focused and not after it blurs', async () => {
+            const onAddressEditingChange = jest.fn();
+
+            renderForm({ ...defaultProps, onAddressEditingChange });
+
+            await userEvent.click(screen.getByTestId('firstNameInput-text'));
+
+            expect(onAddressEditingChange).toHaveBeenLastCalledWith(true);
+
+            act(() => screen.getByTestId('firstNameInput-text').blur());
+
+            expect(onAddressEditingChange).toHaveBeenLastCalledWith(false);
+        });
+
+        it('does not report editing for the country select', async () => {
+            const onAddressEditingChange = jest.fn();
+
+            renderForm({ ...defaultProps, onAddressEditingChange });
+
+            await userEvent.click(screen.getByTestId('countryCodeInput-select'));
+
+            expect(onAddressEditingChange).toHaveBeenLastCalledWith(false);
+        });
+
         it('does not persist when a non-tax field is blurred', async () => {
             renderForm(defaultProps);
 

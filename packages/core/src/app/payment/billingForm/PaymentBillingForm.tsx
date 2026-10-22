@@ -48,6 +48,7 @@ export interface PaymentBillingFormProps {
         addressValues: AddressFormValues,
         orderComment: string,
     ): void;
+    onAddressEditingChange?(isEditing: boolean): void;
     onSelectAddress(address: Partial<Address>, orderComment: string): Promise<unknown>;
     onUnhandledError(error: Error): void;
 }
@@ -63,6 +64,7 @@ const PaymentBillingFormComponent = ({
     validateForm,
     values,
     onPersist,
+    onAddressEditingChange,
     onBillingSameAsShippingChange,
     onBillingCountryChange,
     onSelectAddress,
@@ -249,6 +251,8 @@ const PaymentBillingFormComponent = ({
     // Skipped when focus moves to Place Order or nowhere (Safari doesn't focus
     // clicked buttons): saving would disable the button mid-click and swallow it.
     const handleAddressFieldBlur = ({ target, relatedTarget }: FocusEvent<HTMLDivElement>) => {
+        onAddressEditingChange?.(false);
+
         if (
             TAX_TEXT_FIELDS.includes((target as HTMLInputElement).name) &&
             relatedTarget instanceof HTMLElement &&
@@ -256,6 +260,11 @@ const PaymentBillingFormComponent = ({
         ) {
             persistInBackground();
         }
+    };
+
+    // Country changes reload methods themselves, so they don't count as editing.
+    const handleAddressFieldFocus = ({ target }: FocusEvent<HTMLDivElement>) => {
+        onAddressEditingChange?.((target as HTMLInputElement).name !== 'countryCode');
     };
 
     return (
@@ -295,7 +304,10 @@ const PaymentBillingFormComponent = ({
 
                         {!restrictManualAddressEntry && !hasValidCustomerAddress && (
                             <AddressFormSkeleton isLoading={isResettingAddress}>
-                                <div onBlur={handleAddressFieldBlur}>
+                                <div
+                                    onBlur={handleAddressFieldBlur}
+                                    onFocus={handleAddressFieldFocus}
+                                >
                                     <AddressForm
                                         countryCode={values.countryCode}
                                         formFields={editableFormFields}

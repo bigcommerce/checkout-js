@@ -70,7 +70,11 @@ jest.mock('./billingForm', () => {
     const { default: PaymentContextActual } = require('./PaymentContext');
 
     return {
-        PaymentBillingBlock: () => {
+        PaymentBillingBlock: ({
+            onAddressEditingChange,
+        }: {
+            onAddressEditingChange?: (isEditing: boolean) => void;
+        }) => {
             const context = ReactActual.useContext(PaymentContextActual);
 
             ReactActual.useEffect(() => {
@@ -80,7 +84,11 @@ jest.mock('./billingForm', () => {
             return ReactActual.createElement(
                 'div',
                 { 'data-test': 'payment-billing-block' },
-                ReactActual.createElement('input', { 'data-test': 'billing-block-probe' }),
+                ReactActual.createElement('input', {
+                    'data-test': 'billing-block-probe',
+                    onFocus: () => onAddressEditingChange?.(true),
+                    onBlur: () => onAddressEditingChange?.(false),
+                }),
             );
         },
     };
@@ -382,15 +390,7 @@ describe('Payment step', () => {
 
             await checkout.waitForPaymentStep();
 
-            // The billing block is mocked here, so stand in for the field the
-            // shopper moved to after the postal code blur.
-            const billingForm = document.createElement('div');
-            const nextField = document.createElement('input');
-
-            billingForm.className = 'checkout-billing-form';
-            billingForm.appendChild(nextField);
-            document.body.appendChild(billingForm);
-            nextField.focus();
+            act(() => screen.getByTestId('billing-block-probe').focus());
 
             await act(async () => {
                 await checkoutService.updateBillingAddress({ postalCode: '90210' });
@@ -399,8 +399,6 @@ describe('Payment step', () => {
             await waitFor(() => expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(2));
             expect(screen.queryByTestId('price-changed-alert')).not.toBeInTheDocument();
             expect(scrollIntoViewMock).not.toHaveBeenCalled();
-
-            billingForm.remove();
         });
 
         it('scrolls to the payment methods without the price changed alert when the total changes for another reason', async () => {

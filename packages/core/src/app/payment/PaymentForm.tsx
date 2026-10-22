@@ -60,13 +60,6 @@ import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
 
 import './PaymentForm.scss';
 
-// A postal code or state save can reload methods while the shopper is still filling
-// in the billing address; don't scroll them away from it.
-const isEditingBillingAddress = () =>
-    !!document.activeElement?.matches(
-        '.checkout-billing-form input:not([type="checkbox"]), .checkout-billing-form select:not([name="countryCode"])',
-    );
-
 export interface PaymentFormProps {
     additionalField?: Capabilities['payment']['additionalField'];
     availableStoreCredit?: number;
@@ -185,9 +178,15 @@ const PaymentForm: FunctionComponent<
         shouldHidePaymentSubmitButton || (isPaymentDataRequired() && isEmpty(methods));
 
     const methodListRef = useRef<HTMLDivElement>(null);
+    // A postal code or state save can reload methods while the shopper is still filling
+    // in the billing address; don't scroll them away from it.
+    const isEditingBillingAddressRef = useRef(false);
+    const handleAddressEditingChange = useCallback((isEditing: boolean) => {
+        isEditingBillingAddressRef.current = isEditing;
+    }, []);
 
     useEffect(() => {
-        if (!isReloadingPaymentMethods || isEditingBillingAddress()) {
+        if (!isReloadingPaymentMethods || isEditingBillingAddressRef.current) {
             return;
         }
 
@@ -265,6 +264,7 @@ const PaymentForm: FunctionComponent<
                     isBillingSameAsShipping={isBillingSameAsShipping ?? true}
                     isUsingMultiShipping={isUsingMultiShipping ?? false}
                     methodId={selectedMethod?.id}
+                    onAddressEditingChange={handleAddressEditingChange}
                     onBillingSameAsShippingChange={onBillingSameAsShippingChange ?? noop}
                     onUnhandledError={onUnhandledError ?? noop}
                 />
