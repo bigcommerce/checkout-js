@@ -260,6 +260,39 @@ describe('PaymentBillingForm', () => {
         });
     });
 
+    describe('billing state dropdown change', () => {
+        it('persists the new state code and clears the state name', async () => {
+            renderForm({
+                ...defaultProps,
+                getFields: (): FormField[] => [
+                    ...getFormFields(),
+                    {
+                        custom: false,
+                        default: '',
+                        fieldType: 'dropdown',
+                        id: 'field_state',
+                        label: 'State',
+                        name: 'stateOrProvinceCode',
+                        options: {
+                            items: [
+                                { label: 'California', value: 'CA' },
+                                { label: 'Texas', value: 'TX' },
+                            ],
+                        },
+                        required: false,
+                        type: 'array',
+                    },
+                ],
+            });
+
+            await userEvent.selectOptions(screen.getByTestId('provinceCodeInput-select'), 'TX');
+
+            expect(onPersist).toHaveBeenCalledWith(
+                expect.objectContaining({ stateOrProvince: '', stateOrProvinceCode: 'TX' }),
+            );
+        });
+    });
+
     describe('billing postal code change', () => {
         const getFieldsWithPostalCode = (): FormField[] => [
             ...getFormFields(),

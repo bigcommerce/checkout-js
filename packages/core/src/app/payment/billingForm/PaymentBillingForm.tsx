@@ -225,9 +225,9 @@ const PaymentBillingFormComponent = ({
             onBillingCountryChange(value, addressValues, orderComment);
         }
 
-        // `values` doesn't include the new value yet.
+        // Clear the name so a stale one can't mask the new code.
         if (fieldName === 'stateOrProvinceCode') {
-            persistInBackground({ stateOrProvinceCode: value });
+            persistInBackground({ stateOrProvince: '', stateOrProvinceCode: value });
         }
     };
 
