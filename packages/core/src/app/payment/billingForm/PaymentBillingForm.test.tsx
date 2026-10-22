@@ -273,12 +273,8 @@ describe('PaymentBillingForm', () => {
             },
         ];
 
-        const typePostalCodeInForm = async (onBillingAddressFieldChange: jest.Mock) => {
-            renderForm({
-                ...defaultProps,
-                getFields: getFieldsWithPostalCode,
-                onBillingAddressFieldChange,
-            });
+        const typePostalCodeInForm = async () => {
+            renderForm({ ...defaultProps, getFields: getFieldsWithPostalCode });
 
             const postalCodeInput = screen.getByTestId('postCodeInput-text');
 
@@ -288,57 +284,50 @@ describe('PaymentBillingForm', () => {
             return postalCodeInput;
         };
 
-        it('notifies onBillingAddressFieldChange when moving to another field, not while typing', async () => {
-            const onBillingAddressFieldChange = jest.fn();
+        it('persists when moving to another field, not while typing', async () => {
+            await typePostalCodeInForm();
 
-            await typePostalCodeInForm(onBillingAddressFieldChange);
-
-            expect(onBillingAddressFieldChange).not.toHaveBeenCalled();
+            expect(onPersist).not.toHaveBeenCalled();
 
             await userEvent.click(screen.getByTestId('firstNameInput-text'));
 
-            expect(onBillingAddressFieldChange).toHaveBeenCalledTimes(1);
-            expect(onBillingAddressFieldChange).toHaveBeenCalledWith(
-                expect.objectContaining({ postalCode: '90210' }),
-                '',
+            expect(onPersist).toHaveBeenCalledTimes(1);
+            expect(onPersist).toHaveBeenCalledWith(
+                expect.objectContaining({ postalCode: '90210', orderComment: '' }),
             );
+            expect(onPersist.mock.calls[0][0]).not.toHaveProperty('billingSameAsShipping');
         });
 
-        it('does not notify onBillingAddressFieldChange when focus moves to a submit button', async () => {
-            const onBillingAddressFieldChange = jest.fn();
+        it('does not persist when focus moves to a submit button', async () => {
             const submitButton = document.createElement('button');
 
             submitButton.type = 'submit';
             document.body.appendChild(submitButton);
 
-            await typePostalCodeInForm(onBillingAddressFieldChange);
+            await typePostalCodeInForm();
 
             act(() => submitButton.focus());
 
-            expect(onBillingAddressFieldChange).not.toHaveBeenCalled();
+            expect(onPersist).not.toHaveBeenCalled();
 
             submitButton.remove();
         });
 
-        it('does not notify onBillingAddressFieldChange when focus moves nowhere', async () => {
-            const onBillingAddressFieldChange = jest.fn();
-
-            const postalCodeInput = await typePostalCodeInForm(onBillingAddressFieldChange);
+        it('does not persist when focus moves nowhere', async () => {
+            const postalCodeInput = await typePostalCodeInForm();
 
             act(() => postalCodeInput.blur());
 
-            expect(onBillingAddressFieldChange).not.toHaveBeenCalled();
+            expect(onPersist).not.toHaveBeenCalled();
         });
 
-        it('does not notify onBillingAddressFieldChange when a non-tax field is blurred', async () => {
-            const onBillingAddressFieldChange = jest.fn();
-
-            renderForm({ ...defaultProps, onBillingAddressFieldChange });
+        it('does not persist when a non-tax field is blurred', async () => {
+            renderForm(defaultProps);
 
             await userEvent.type(screen.getByTestId('firstNameInput-text'), 'Jane');
             await userEvent.tab();
 
-            expect(onBillingAddressFieldChange).not.toHaveBeenCalled();
+            expect(onPersist).not.toHaveBeenCalled();
         });
     });
 

@@ -26,8 +26,8 @@ import { getShippableItemsCount } from '../../shipping';
 import BillingSameAsShippingField from '../../shipping/BillingSameAsShippingField';
 import PaymentContext from '../PaymentContext';
 
-// Text inputs that can change tax (the state dropdown is stateOrProvinceCode).
-const TYPED_TAX_FIELDS = ['stateOrProvince', 'postalCode'];
+// Text inputs that can change tax; the state dropdown is stateOrProvinceCode.
+const TAX_TEXT_FIELDS = ['stateOrProvince', 'postalCode'];
 
 type PaymentBillingFormValues = BillingFormValues & { billingSameAsShipping: boolean };
 
@@ -48,7 +48,6 @@ export interface PaymentBillingFormProps {
         addressValues: AddressFormValues,
         orderComment: string,
     ): void;
-    onBillingAddressFieldChange?(addressValues: AddressFormValues, orderComment: string): void;
     onSelectAddress(address: Partial<Address>, orderComment: string): Promise<unknown>;
     onUnhandledError(error: Error): void;
 }
@@ -66,7 +65,6 @@ const PaymentBillingFormComponent = ({
     onPersist,
     onBillingSameAsShippingChange,
     onBillingCountryChange,
-    onBillingAddressFieldChange,
     onSelectAddress,
     onUnhandledError,
 }: PaymentBillingFormProps & WithLanguageProps & FormikProps<PaymentBillingFormValues>) => {
@@ -202,53 +200,47 @@ const PaymentBillingFormComponent = ({
         void handleSelectAddress({});
     };
 
-    const getAddressValues = (overrides: Partial<AddressFormValues> = {}) => {
-        const {
-            billingSameAsShipping: _billingSameAsShipping,
-            orderComment,
-            ...addressValues
-        } = values;
+    const persistInBackground = (overrides?: Partial<BillingFormValues>) => {
+        const { billingSameAsShipping: _billingSameAsShipping, ...billingValues } = values;
 
-        return { addressValues: { ...addressValues, ...overrides }, orderComment };
+        onPersist({ ...billingValues, ...overrides }).catch((error) => {
+            if (error instanceof Error) {
+                onUnhandledError(error);
+            }
+        });
     };
 
-    // Dropdowns save on change. `values` doesn't include the new value yet.
     const handleAddressFieldChange = (fieldName: string, value: string | string[]) => {
         if (typeof value !== 'string') {
             return;
         }
 
         if (fieldName === 'countryCode' && value) {
-            const { addressValues, orderComment } = getAddressValues();
+            const {
+                billingSameAsShipping: _billingSameAsShipping,
+                orderComment,
+                ...addressValues
+            } = values;
 
             onBillingCountryChange(value, addressValues, orderComment);
         }
 
+        // `values` doesn't include the new value yet.
         if (fieldName === 'stateOrProvinceCode') {
-            const { addressValues, orderComment } = getAddressValues({ [fieldName]: value });
-
-            onBillingAddressFieldChange?.(addressValues, orderComment);
+            persistInBackground({ stateOrProvinceCode: value });
         }
     };
 
-    // Text fields save when focus moves to another element. Not when it moves to
-    // Place Order or nowhere (Safari doesn't focus clicked buttons): the save would
-    // disable the button mid-click and swallow it. The pre-submit save covers that.
-    const handleAddressFieldBlur = (event: FocusEvent<HTMLDivElement>) => {
-        const { name } = event.target as HTMLInputElement;
-        const nextFocused = event.relatedTarget as HTMLElement | null;
-
+    // Skipped when focus moves to Place Order or nowhere (Safari doesn't focus
+    // clicked buttons): saving would disable the button mid-click and swallow it.
+    const handleAddressFieldBlur = ({ target, relatedTarget }: FocusEvent<HTMLDivElement>) => {
         if (
-            !TYPED_TAX_FIELDS.includes(name) ||
-            !nextFocused ||
-            nextFocused.closest('[type="submit"]')
+            TAX_TEXT_FIELDS.includes((target as HTMLInputElement).name) &&
+            relatedTarget instanceof HTMLElement &&
+            !relatedTarget.closest('[type="submit"]')
         ) {
-            return;
+            persistInBackground();
         }
-
-        const { addressValues, orderComment } = getAddressValues();
-
-        onBillingAddressFieldChange?.(addressValues, orderComment);
     };
 
     return (
