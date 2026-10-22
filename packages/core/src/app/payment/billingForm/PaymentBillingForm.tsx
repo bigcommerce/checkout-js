@@ -205,10 +205,13 @@ const PaymentBillingFormComponent = ({
         const nextValues = { ...billingValues, ...overrides };
 
         // Only tax fields justify an early save; other edits are saved on Place Order.
+        const nextStateCode = nextValues.stateOrProvinceCode ?? '';
+        const savedStateCode = billingAddress?.stateOrProvinceCode ?? '';
+        // Compare codes when either side has one, so clearing a dropdown still counts.
         const hasTaxFieldChange =
             nextValues.postalCode !== (billingAddress?.postalCode ?? '') ||
-            (nextValues.stateOrProvinceCode
-                ? nextValues.stateOrProvinceCode !== billingAddress?.stateOrProvinceCode
+            (nextStateCode || savedStateCode
+                ? nextStateCode !== savedStateCode
                 : nextValues.stateOrProvince !== (billingAddress?.stateOrProvince ?? ''));
 
         if (!nextValues.countryCode || !hasTaxFieldChange) {
