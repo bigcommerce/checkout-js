@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.923.0](https://github.com/bigcommerce/checkout-js/compare/v1.922.2...v1.923.0) (2026-10-22)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10520 save billing address on change of postal code and state ([#3421](https://github.com/bigcommerce/checkout-js/issues/3421)) ([0614d48](https://github.com/bigcommerce/checkout-js/commit/0614d4855f83a0c402d9b67a0d5ba26054fb0852))
+
 ### [1.922.2](https://github.com/bigcommerce/checkout-js/compare/v1.922.1...v1.922.2) (2026-10-21)
 
 ### [1.922.1](https://github.com/bigcommerce/checkout-js/compare/v1.922.0...v1.922.1) (2026-10-21)
