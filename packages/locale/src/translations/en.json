@@ -319,6 +319,7 @@
             "redeemable_payments_text": "Redeemable Payments",
             "instrument_storage_options_text": "Payment Storage Options",
             "stripev3_auth_3ds_fail": "User did not authenticate",
+            "apple_pay_name_text": "Apple Pay",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm cannot process your payment for this order, please select another payment method.",
             "klarna_continue_action": "Continue with Klarna",
@@ -538,6 +539,7 @@
             "total_savings_text": "You saved <span class=\"total-savings-highlight\">{totalDiscount}</span> in total!"
         },
         "remote": {
+            "auto_vaulting_disclaimer_text": "By paying with {methodNames}, you agree the merchant may charge your card for future payments under its terms.",
             "browser_unsupported": "The selected payment method requires a different web browser. Please choose another payment method.",
             "connection_error": "Connection to remote checkout refused, please try later.",
             "continue_with_text": "Or continue with",
