@@ -6,7 +6,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
-import React, { type FunctionComponent } from 'react';
+import React, { act, type FunctionComponent } from 'react';
 
 import {
     CapabilitiesContext,
@@ -257,6 +257,163 @@ describe('PaymentBillingForm', () => {
             await userEvent.type(screen.getByTestId('firstNameInput-text'), 'Jane');
 
             expect(defaultProps.onBillingCountryChange).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('billing state dropdown change', () => {
+        it('persists the new state code and clears the state name', async () => {
+            renderForm({
+                ...defaultProps,
+                getFields: (): FormField[] => [
+                    ...getFieldsWithCountry(),
+                    {
+                        custom: false,
+                        default: '',
+                        fieldType: 'dropdown',
+                        id: 'field_state',
+                        label: 'State',
+                        name: 'stateOrProvinceCode',
+                        options: {
+                            items: [
+                                { label: 'California', value: 'CA' },
+                                { label: 'Texas', value: 'TX' },
+                            ],
+                        },
+                        required: false,
+                        type: 'array',
+                    },
+                ],
+            });
+
+            await userEvent.selectOptions(screen.getByTestId('provinceCodeInput-select'), 'TX');
+
+            expect(onPersist).toHaveBeenCalledWith(
+                expect.objectContaining({ stateOrProvince: '', stateOrProvinceCode: 'TX' }),
+            );
+        });
+    });
+
+    describe('billing postal code change', () => {
+        const getFieldsWithPostalCode = (): FormField[] => [
+            ...getFieldsWithCountry(),
+            {
+                custom: false,
+                default: '',
+                id: 'field_postal',
+                label: 'Postal Code',
+                name: 'postalCode',
+                required: false,
+            },
+        ];
+
+        const typePostalCodeInForm = async () => {
+            renderForm({ ...defaultProps, getFields: getFieldsWithPostalCode });
+
+            const postalCodeInput = screen.getByTestId('postCodeInput-text');
+
+            await userEvent.clear(postalCodeInput);
+            await userEvent.type(postalCodeInput, '90210');
+
+            return postalCodeInput;
+        };
+
+        it('does not persist when the address has no country', async () => {
+            renderForm({
+                ...defaultProps,
+                billingAddress: { ...getBillingAddress(), countryCode: '' },
+                getFields: getFieldsWithPostalCode,
+            });
+
+            await userEvent.type(screen.getByTestId('postCodeInput-text'), '1');
+            await userEvent.click(screen.getByTestId('firstNameInput-text'));
+
+            expect(onPersist).not.toHaveBeenCalled();
+        });
+
+        it('persists when moving to another field, not while typing', async () => {
+            await typePostalCodeInForm();
+
+            expect(onPersist).not.toHaveBeenCalled();
+
+            await userEvent.click(screen.getByTestId('firstNameInput-text'));
+
+            expect(onPersist).toHaveBeenCalledTimes(1);
+            expect(onPersist).toHaveBeenCalledWith(
+                expect.objectContaining({ postalCode: '90210', orderComment: '' }),
+            );
+            expect(onPersist.mock.calls[0][0]).not.toHaveProperty('billingSameAsShipping');
+        });
+
+        it('does not persist when the postal code matches the saved one', async () => {
+            renderForm({ ...defaultProps, getFields: getFieldsWithPostalCode });
+
+            const postalCodeInput = screen.getByTestId('postCodeInput-text');
+
+            await userEvent.clear(postalCodeInput);
+            await userEvent.type(postalCodeInput, '95555');
+            await userEvent.click(screen.getByTestId('firstNameInput-text'));
+
+            expect(onPersist).not.toHaveBeenCalled();
+        });
+
+        it('does not persist when focus moves to a submit button', async () => {
+            const submitButton = document.createElement('button');
+
+            submitButton.type = 'submit';
+            document.body.appendChild(submitButton);
+
+            await typePostalCodeInForm();
+
+            act(() => submitButton.focus());
+
+            expect(onPersist).not.toHaveBeenCalled();
+
+            submitButton.remove();
+        });
+
+        it('does not persist when focus moves nowhere', async () => {
+            const postalCodeInput = await typePostalCodeInForm();
+
+            act(() => postalCodeInput.blur());
+
+            expect(onPersist).not.toHaveBeenCalled();
+        });
+
+        it('reports editing while a text field is focused and not after it blurs', async () => {
+            const onAddressEditingChange = jest.fn();
+
+            renderForm({ ...defaultProps, onAddressEditingChange });
+
+            await userEvent.click(screen.getByTestId('firstNameInput-text'));
+
+            expect(onAddressEditingChange).toHaveBeenLastCalledWith(true);
+
+            act(() => screen.getByTestId('firstNameInput-text').blur());
+
+            expect(onAddressEditingChange).toHaveBeenLastCalledWith(false);
+        });
+
+        it('does not report editing for the country select', async () => {
+            const onAddressEditingChange = jest.fn();
+
+            renderForm({
+                ...defaultProps,
+                getFields: getFieldsWithCountry,
+                onAddressEditingChange,
+            });
+
+            await userEvent.click(screen.getByTestId('countryCodeInput-select'));
+
+            expect(onAddressEditingChange).toHaveBeenLastCalledWith(false);
+        });
+
+        it('does not persist when a non-tax field is blurred', async () => {
+            renderForm(defaultProps);
+
+            await userEvent.type(screen.getByTestId('firstNameInput-text'), 'Jane');
+            await userEvent.tab();
+
+            expect(onPersist).not.toHaveBeenCalled();
         });
     });
 

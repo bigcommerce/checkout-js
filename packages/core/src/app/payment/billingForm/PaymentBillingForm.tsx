@@ -1,6 +1,6 @@
 import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, setNestedObjectValues, withFormik } from 'formik';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { type FocusEvent, useCallback, useContext, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -26,6 +26,11 @@ import { getShippableItemsCount } from '../../shipping';
 import BillingSameAsShippingField from '../../shipping/BillingSameAsShippingField';
 import PaymentContext from '../PaymentContext';
 
+type TaxField = 'postalCode' | 'stateOrProvince' | 'stateOrProvinceCode';
+
+// Text inputs that can change tax; the state dropdown is stateOrProvinceCode.
+const TAX_TEXT_FIELDS: string[] = ['postalCode', 'stateOrProvince'];
+
 type PaymentBillingFormValues = BillingFormValues & { billingSameAsShipping: boolean };
 
 export interface PaymentBillingFormProps {
@@ -45,6 +50,7 @@ export interface PaymentBillingFormProps {
         addressValues: AddressFormValues,
         orderComment: string,
     ): void;
+    onAddressEditingChange?(isEditing: boolean): void;
     onSelectAddress(address: Partial<Address>, orderComment: string): Promise<unknown>;
     onUnhandledError(error: Error): void;
 }
@@ -60,6 +66,7 @@ const PaymentBillingFormComponent = ({
     validateForm,
     values,
     onPersist,
+    onAddressEditingChange,
     onBillingSameAsShippingChange,
     onBillingCountryChange,
     onSelectAddress,
@@ -197,20 +204,66 @@ const PaymentBillingFormComponent = ({
         void handleSelectAddress({});
     };
 
-    const handleAddressFieldChange = useCallback(
-        (fieldName: string, value: string | string[]) => {
-            if (fieldName === 'countryCode' && typeof value === 'string' && value) {
-                const {
-                    billingSameAsShipping: _billingSameAsShipping,
-                    orderComment,
-                    ...addressValues
-                } = values;
+    // Only tax fields justify an early save; other edits are saved on Place Order.
+    const persistTaxField = (
+        fieldName: TaxField,
+        value: string,
+        overrides?: Partial<BillingFormValues>,
+    ) => {
+        if (!values.countryCode || value === (billingAddress?.[fieldName] ?? '')) {
+            return;
+        }
 
-                onBillingCountryChange(value, addressValues, orderComment);
+        const { billingSameAsShipping: _billingSameAsShipping, ...billingValues } = values;
+
+        onPersist({ ...billingValues, ...overrides, [fieldName]: value }).catch((error) => {
+            if (error instanceof Error) {
+                onUnhandledError(error);
             }
-        },
-        [onBillingCountryChange, values],
-    );
+        });
+    };
+
+    const handleAddressFieldChange = (fieldName: string, value: string | string[]) => {
+        if (typeof value !== 'string') {
+            return;
+        }
+
+        if (fieldName === 'countryCode' && value) {
+            const {
+                billingSameAsShipping: _billingSameAsShipping,
+                orderComment,
+                ...addressValues
+            } = values;
+
+            onBillingCountryChange(value, addressValues, orderComment);
+        }
+
+        // Clear the name so a stale one can't mask the new code.
+        if (fieldName === 'stateOrProvinceCode') {
+            persistTaxField('stateOrProvinceCode', value, { stateOrProvince: '' });
+        }
+    };
+
+    // Skipped when focus moves to Place Order or nowhere (Safari doesn't focus
+    // clicked buttons): saving would disable the button mid-click and swallow it.
+    const handleAddressFieldBlur = ({ target, relatedTarget }: FocusEvent<HTMLDivElement>) => {
+        onAddressEditingChange?.(false);
+
+        const { name, value } = target as HTMLInputElement;
+
+        if (
+            TAX_TEXT_FIELDS.includes(name) &&
+            relatedTarget instanceof HTMLElement &&
+            !relatedTarget.closest('[type="submit"]')
+        ) {
+            persistTaxField(name as TaxField, value);
+        }
+    };
+
+    // Country changes reload methods themselves, so they don't count as editing.
+    const handleAddressFieldFocus = ({ target }: FocusEvent<HTMLDivElement>) => {
+        onAddressEditingChange?.((target as HTMLInputElement).name !== 'countryCode');
+    };
 
     return (
         <div className="checkout-billing-form" data-test="checkout-billing-form">
@@ -249,14 +302,19 @@ const PaymentBillingFormComponent = ({
 
                         {!restrictManualAddressEntry && !hasValidCustomerAddress && (
                             <AddressFormSkeleton isLoading={isResettingAddress}>
-                                <AddressForm
-                                    countryCode={values.countryCode}
-                                    formFields={editableFormFields}
-                                    onChange={handleAddressFieldChange}
-                                    setFieldValue={setFieldValue}
-                                    shouldShowSaveAddress={shouldShowSaveAddress}
-                                    type={AddressType.Billing}
-                                />
+                                <div
+                                    onBlur={handleAddressFieldBlur}
+                                    onFocus={handleAddressFieldFocus}
+                                >
+                                    <AddressForm
+                                        countryCode={values.countryCode}
+                                        formFields={editableFormFields}
+                                        onChange={handleAddressFieldChange}
+                                        setFieldValue={setFieldValue}
+                                        shouldShowSaveAddress={shouldShowSaveAddress}
+                                        type={AddressType.Billing}
+                                    />
+                                </div>
                             </AddressFormSkeleton>
                         )}
                     </Fieldset>

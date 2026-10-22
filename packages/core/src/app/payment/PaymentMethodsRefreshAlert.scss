@@ -1,6 +1,7 @@
 @import "../../scss/Base";
 
-.paymentMethodsRefreshAlert {
+.paymentMethodsRefreshAlert,
+.priceChangedAlert {
     outline: none;
 
     .alertBox {
@@ -8,7 +9,7 @@
         position: relative;
     }
 
-    &-closeButton {
+    .paymentMethodsRefreshAlert-closeButton {
         background: none;
         border: 0;
         cursor: pointer;

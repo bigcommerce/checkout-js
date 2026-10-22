@@ -70,7 +70,11 @@ jest.mock('./billingForm', () => {
     const { default: PaymentContextActual } = require('./PaymentContext');
 
     return {
-        PaymentBillingBlock: () => {
+        PaymentBillingBlock: ({
+            onAddressEditingChange,
+        }: {
+            onAddressEditingChange?: (isEditing: boolean) => void;
+        }) => {
             const context = ReactActual.useContext(PaymentContextActual);
 
             ReactActual.useEffect(() => {
@@ -80,7 +84,11 @@ jest.mock('./billingForm', () => {
             return ReactActual.createElement(
                 'div',
                 { 'data-test': 'payment-billing-block' },
-                ReactActual.createElement('input', { 'data-test': 'billing-block-probe' }),
+                ReactActual.createElement('input', {
+                    'data-test': 'billing-block-probe',
+                    onFocus: () => onAddressEditingChange?.(true),
+                    onBlur: () => onAddressEditingChange?.(false),
+                }),
             );
         },
     };
@@ -278,6 +286,141 @@ describe('Payment step', () => {
         expect(mockEnsureBillingAddressSaved).toHaveBeenCalled();
         expect(submitOrderSpy).not.toHaveBeenCalled();
         expect(replaceLocation).not.toHaveBeenCalled();
+    });
+
+    describe('when saving the billing address on submit changes the total (enhancedThemeV1)', () => {
+        const scrollIntoViewMock = jest.fn();
+
+        beforeAll(() => {
+            window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+        });
+
+        beforeEach(() => {
+            scrollIntoViewMock.mockClear();
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: enhancedThemeV1Config,
+            });
+
+            // Typed postal code saved by the pre-submit save, with a tax change.
+            checkout.updateCheckout('put', '/checkouts/*/billing-address/*', {
+                ...checkoutWithShippingAndBilling,
+                grandTotal: checkoutWithShippingAndBilling.grandTotal + 1,
+                billingAddress: {
+                    ...checkoutWithShippingAndBilling.billingAddress,
+                    postalCode: '90210',
+                } as BillingAddress,
+            });
+
+            mockEnsureBillingAddressSaved = jest.fn(async () => {
+                await checkoutService.updateBillingAddress({ postalCode: '90210' });
+
+                return true;
+            });
+        });
+
+        it('does not place the order and scrolls the price changed alert into view', async () => {
+            const submitOrderSpy = jest.spyOn(checkoutService, 'submitOrder');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await act(async () => userEvent.click(screen.getByText('Place order')));
+
+            expect(mockEnsureBillingAddressSaved).toHaveBeenCalled();
+            expect(submitOrderSpy).not.toHaveBeenCalled();
+
+            const alert = await screen.findByTestId('price-changed-alert');
+
+            // The alert scrolls last, so the methods reload doesn't pull the page away.
+            await waitFor(() => expect(scrollIntoViewMock).toHaveBeenCalled());
+            expect(scrollIntoViewMock.mock.instances.at(-1)).toBe(alert);
+        });
+
+        it('places the order on the next click once the total is unchanged', async () => {
+            const submitOrderSpy = jest.spyOn(checkoutService, 'submitOrder');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await act(async () => userEvent.click(screen.getByText('Place order')));
+
+            await screen.findByTestId('price-changed-alert');
+
+            mockEnsureBillingAddressSaved.mockResolvedValue(true);
+
+            await act(async () => userEvent.click(screen.getByText('Place order')));
+
+            await waitFor(() => expect(submitOrderSpy).toHaveBeenCalled());
+            expect(screen.queryByTestId('price-changed-alert')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('when a billing address save changes the total outside submit (enhancedThemeV1)', () => {
+        const scrollIntoViewMock = jest.fn();
+
+        beforeAll(() => {
+            window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+        });
+
+        beforeEach(() => {
+            scrollIntoViewMock.mockClear();
+            mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(true);
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: enhancedThemeV1Config,
+            });
+        });
+
+        it('does not show the price changed alert or scroll away while the shopper edits the billing address', async () => {
+            checkout.updateCheckout('put', '/checkouts/*/billing-address/*', {
+                ...checkoutWithShippingAndBilling,
+                grandTotal: checkoutWithShippingAndBilling.grandTotal + 1,
+                billingAddress: {
+                    ...checkoutWithShippingAndBilling.billingAddress,
+                    postalCode: '90210',
+                } as BillingAddress,
+            });
+
+            const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            act(() => screen.getByTestId('billing-block-probe').focus());
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({ postalCode: '90210' });
+            });
+
+            await waitFor(() => expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(2));
+            expect(screen.queryByTestId('price-changed-alert')).not.toBeInTheDocument();
+            expect(scrollIntoViewMock).not.toHaveBeenCalled();
+        });
+
+        it('scrolls to the payment methods without the price changed alert when the total changes for another reason', async () => {
+            checkout.updateCheckout('put', '/checkout/*', {
+                ...checkoutWithShippingAndBilling,
+                grandTotal: checkoutWithShippingAndBilling.grandTotal + 1,
+            });
+
+            const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await act(async () => {
+                await checkoutService.updateCheckout({ customerMessage: 'gift wrap please' });
+            });
+
+            await waitFor(() => expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(2));
+            expect(screen.queryByTestId('price-changed-alert')).not.toBeInTheDocument();
+            expect(scrollIntoViewMock).toHaveBeenCalled();
+        });
     });
 
     it('disables Place Order while the embedded billing (enhancedThemeV1) address is being persisted', async () => {
