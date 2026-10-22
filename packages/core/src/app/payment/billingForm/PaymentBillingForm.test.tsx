@@ -344,6 +344,18 @@ describe('PaymentBillingForm', () => {
             expect(onPersist.mock.calls[0][0]).not.toHaveProperty('billingSameAsShipping');
         });
 
+        it('does not persist when the postal code matches the saved one', async () => {
+            renderForm({ ...defaultProps, getFields: getFieldsWithPostalCode });
+
+            const postalCodeInput = screen.getByTestId('postCodeInput-text');
+
+            await userEvent.clear(postalCodeInput);
+            await userEvent.type(postalCodeInput, '95555');
+            await userEvent.click(screen.getByTestId('firstNameInput-text'));
+
+            expect(onPersist).not.toHaveBeenCalled();
+        });
+
         it('does not persist when focus moves to a submit button', async () => {
             const submitButton = document.createElement('button');
 

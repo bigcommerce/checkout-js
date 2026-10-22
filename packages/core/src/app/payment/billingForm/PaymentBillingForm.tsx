@@ -26,8 +26,10 @@ import { getShippableItemsCount } from '../../shipping';
 import BillingSameAsShippingField from '../../shipping/BillingSameAsShippingField';
 import PaymentContext from '../PaymentContext';
 
+type TaxField = 'postalCode' | 'stateOrProvince' | 'stateOrProvinceCode';
+
 // Text inputs that can change tax; the state dropdown is stateOrProvinceCode.
-const TAX_TEXT_FIELDS = ['stateOrProvince', 'postalCode'];
+const TAX_TEXT_FIELDS: string[] = ['postalCode', 'stateOrProvince'];
 
 type PaymentBillingFormValues = BillingFormValues & { billingSameAsShipping: boolean };
 
@@ -202,25 +204,19 @@ const PaymentBillingFormComponent = ({
         void handleSelectAddress({});
     };
 
-    const persistInBackground = (overrides?: Partial<BillingFormValues>) => {
-        const { billingSameAsShipping: _billingSameAsShipping, ...billingValues } = values;
-        const nextValues = { ...billingValues, ...overrides };
-
-        // Only tax fields justify an early save; other edits are saved on Place Order.
-        const nextStateCode = nextValues.stateOrProvinceCode ?? '';
-        const savedStateCode = billingAddress?.stateOrProvinceCode ?? '';
-        // Compare codes when either side has one, so clearing a dropdown still counts.
-        const hasTaxFieldChange =
-            nextValues.postalCode !== (billingAddress?.postalCode ?? '') ||
-            (nextStateCode || savedStateCode
-                ? nextStateCode !== savedStateCode
-                : nextValues.stateOrProvince !== (billingAddress?.stateOrProvince ?? ''));
-
-        if (!nextValues.countryCode || !hasTaxFieldChange) {
+    // Only tax fields justify an early save; other edits are saved on Place Order.
+    const persistTaxField = (
+        fieldName: TaxField,
+        value: string,
+        overrides?: Partial<BillingFormValues>,
+    ) => {
+        if (!values.countryCode || value === (billingAddress?.[fieldName] ?? '')) {
             return;
         }
 
-        onPersist(nextValues).catch((error) => {
+        const { billingSameAsShipping: _billingSameAsShipping, ...billingValues } = values;
+
+        onPersist({ ...billingValues, ...overrides, [fieldName]: value }).catch((error) => {
             if (error instanceof Error) {
                 onUnhandledError(error);
             }
@@ -244,7 +240,7 @@ const PaymentBillingFormComponent = ({
 
         // Clear the name so a stale one can't mask the new code.
         if (fieldName === 'stateOrProvinceCode') {
-            persistInBackground({ stateOrProvince: '', stateOrProvinceCode: value });
+            persistTaxField('stateOrProvinceCode', value, { stateOrProvince: '' });
         }
     };
 
@@ -253,12 +249,14 @@ const PaymentBillingFormComponent = ({
     const handleAddressFieldBlur = ({ target, relatedTarget }: FocusEvent<HTMLDivElement>) => {
         onAddressEditingChange?.(false);
 
+        const { name, value } = target as HTMLInputElement;
+
         if (
-            TAX_TEXT_FIELDS.includes((target as HTMLInputElement).name) &&
+            TAX_TEXT_FIELDS.includes(name) &&
             relatedTarget instanceof HTMLElement &&
             !relatedTarget.closest('[type="submit"]')
         ) {
-            persistInBackground();
+            persistTaxField(name as TaxField, value);
         }
     };
 
