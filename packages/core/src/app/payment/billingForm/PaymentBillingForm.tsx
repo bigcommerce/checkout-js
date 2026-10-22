@@ -202,12 +202,20 @@ const PaymentBillingFormComponent = ({
 
     const persistInBackground = (overrides?: Partial<BillingFormValues>) => {
         const { billingSameAsShipping: _billingSameAsShipping, ...billingValues } = values;
+        const nextValues = { ...billingValues, ...overrides };
 
-        if (!billingValues.countryCode) {
+        // Only tax fields justify an early save; other edits are saved on Place Order.
+        const hasTaxFieldChange =
+            nextValues.postalCode !== (billingAddress?.postalCode ?? '') ||
+            (nextValues.stateOrProvinceCode
+                ? nextValues.stateOrProvinceCode !== billingAddress?.stateOrProvinceCode
+                : nextValues.stateOrProvince !== (billingAddress?.stateOrProvince ?? ''));
+
+        if (!nextValues.countryCode || !hasTaxFieldChange) {
             return;
         }
 
-        onPersist({ ...billingValues, ...overrides }).catch((error) => {
+        onPersist(nextValues).catch((error) => {
             if (error instanceof Error) {
                 onUnhandledError(error);
             }
