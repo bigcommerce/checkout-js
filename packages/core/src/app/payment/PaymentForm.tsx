@@ -60,6 +60,13 @@ import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
 
 import './PaymentForm.scss';
 
+// A postal code or state save can reload methods while the shopper is still filling
+// in the billing address; don't scroll them away from it.
+const isEditingBillingAddress = () =>
+    !!document.activeElement?.matches(
+        '.checkout-billing-form input:not([type="checkbox"]), .checkout-billing-form select:not([name="countryCode"])',
+    );
+
 export interface PaymentFormProps {
     additionalField?: Capabilities['payment']['additionalField'];
     availableStoreCredit?: number;
@@ -180,7 +187,7 @@ const PaymentForm: FunctionComponent<
     const methodListRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!isReloadingPaymentMethods) {
+        if (!isReloadingPaymentMethods || isEditingBillingAddress()) {
             return;
         }
 

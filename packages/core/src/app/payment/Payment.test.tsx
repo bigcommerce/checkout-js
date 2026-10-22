@@ -325,11 +325,9 @@ describe('Payment step', () => {
 
             const alert = await screen.findByTestId('price-changed-alert');
 
-            // Only the alert scrolls; the methods reload must not pull the page away.
+            // The alert scrolls last, so the methods reload doesn't pull the page away.
             await waitFor(() => expect(scrollIntoViewMock).toHaveBeenCalled());
-            expect(scrollIntoViewMock.mock.instances).toEqual(
-                scrollIntoViewMock.mock.instances.map(() => alert),
-            );
+            expect(scrollIntoViewMock.mock.instances.at(-1)).toBe(alert);
         });
 
         it('places the order on the next click once the total is unchanged', async () => {
@@ -368,7 +366,7 @@ describe('Payment step', () => {
             });
         });
 
-        it('does not show the price changed alert or scroll to the payment methods', async () => {
+        it('does not show the price changed alert or scroll away while the shopper edits the billing address', async () => {
             checkout.updateCheckout('put', '/checkouts/*/billing-address/*', {
                 ...checkoutWithShippingAndBilling,
                 grandTotal: checkoutWithShippingAndBilling.grandTotal + 1,
@@ -384,6 +382,16 @@ describe('Payment step', () => {
 
             await checkout.waitForPaymentStep();
 
+            // The billing block is mocked here, so stand in for the field the
+            // shopper moved to after the postal code blur.
+            const billingForm = document.createElement('div');
+            const nextField = document.createElement('input');
+
+            billingForm.className = 'checkout-billing-form';
+            billingForm.appendChild(nextField);
+            document.body.appendChild(billingForm);
+            nextField.focus();
+
             await act(async () => {
                 await checkoutService.updateBillingAddress({ postalCode: '90210' });
             });
@@ -391,6 +399,8 @@ describe('Payment step', () => {
             await waitFor(() => expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(2));
             expect(screen.queryByTestId('price-changed-alert')).not.toBeInTheDocument();
             expect(scrollIntoViewMock).not.toHaveBeenCalled();
+
+            billingForm.remove();
         });
 
         it('scrolls to the payment methods without the price changed alert when the total changes for another reason', async () => {

@@ -191,8 +191,6 @@ const Payment = (
         PaymentMethodsRefreshAlertData | undefined
     >();
     const [isPriceChangedAlertVisible, setIsPriceChangedAlertVisible] = useState(false);
-    // A ref, not state: the SDK loading status re-renders synchronously.
-    const skipMethodsScrollRef = useRef(false);
 
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
@@ -737,7 +735,7 @@ const Payment = (
         }
     };
 
-    const handleCartTotalChange = async (shouldSkipMethodsScroll: boolean): Promise<void> => {
+    const handleCartTotalChange = async (): Promise<void> => {
         const isReady = isReadyRef.current;
 
         if (!isReady) {
@@ -746,13 +744,7 @@ const Payment = (
 
         dismissMethodsRefreshAlert();
 
-        skipMethodsScrollRef.current = shouldSkipMethodsScroll;
-
-        try {
-            await loadPaymentMethodsOrThrow();
-        } finally {
-            skipMethodsScrollRef.current = false;
-        }
+        await loadPaymentMethodsOrThrow();
     };
 
     const getContextValue = memoizeOne(() => {
@@ -927,33 +919,10 @@ const Payment = (
                 }
             }
 
-            const initialData = checkoutService.getState().data;
-            let lastCheckout = initialData.getCheckout();
-            let lastBillingAddress = initialData.getBillingAddress();
-
-            // Billing address is selected too: a billing save updates it and the total
-            // together, so a non-country billing edit can skip scrolling to the methods.
             grandTotalChangeUnsubscribe.current = checkoutServiceSubscribe(
-                ({ data }) => {
-                    const checkout = data.getCheckout();
-                    const billingAddress = data.getBillingAddress();
-                    const isTotalChange =
-                        checkout?.grandTotal !== lastCheckout?.grandTotal ||
-                        checkout?.outstandingBalance !== lastCheckout?.outstandingBalance;
-                    const isNonCountryBillingChange =
-                        billingAddress !== lastBillingAddress &&
-                        billingAddress?.countryCode === lastBillingAddress?.countryCode;
-
-                    lastCheckout = checkout;
-                    lastBillingAddress = billingAddress;
-
-                    if (isTotalChange) {
-                        void handleCartTotalChange(isNonCountryBillingChange);
-                    }
-                },
+                () => handleCartTotalChange(),
                 ({ data }) => data.getCheckout()?.grandTotal,
                 ({ data }) => data.getCheckout()?.outstandingBalance,
-                ({ data }) => data.getBillingAddress(),
             );
 
             if (enhancedThemeV1) {
@@ -1043,11 +1012,7 @@ const Payment = (
                         isInitializingPayment={props.isInitializingPayment}
                         isPaymentDataRequired={props.isPaymentDataRequired}
                         isPriceChangedAlertVisible={isPriceChangedAlertVisible}
-                        isReloadingPaymentMethods={
-                            enhancedThemeV1 &&
-                            isReloadingPaymentMethods &&
-                            !skipMethodsScrollRef.current
-                        }
+                        isReloadingPaymentMethods={enhancedThemeV1 && isReloadingPaymentMethods}
                         isStoreCreditApplied={props.isStoreCreditApplied}
                         isTermsConditionsRequired={props.isTermsConditionsRequired}
                         isUsingMultiShipping={props.isUsingMultiShipping}
