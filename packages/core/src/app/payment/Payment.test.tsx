@@ -58,6 +58,7 @@ import { type PaymentContextProps } from './PaymentContext';
 // enhancedThemeV1 off, so the block never renders and this stays unused there.
 
 let mockEnsureBillingAddressSaved: jest.Mock<Promise<boolean>>;
+let mockIsBillingFormInvalid = false;
 
 jest.mock('@bigcommerce/checkout/dom-utils', () => ({
     ...jest.requireActual('@bigcommerce/checkout/dom-utils'),
@@ -75,6 +76,7 @@ jest.mock('./billingForm', () => {
 
             ReactActual.useEffect(() => {
                 context?.setEnsureBillingAddressSaved(mockEnsureBillingAddressSaved);
+                context?.setBillingFormInvalid(mockIsBillingFormInvalid);
             }, [context]);
 
             return ReactActual.createElement(
@@ -141,6 +143,7 @@ describe('Payment step', () => {
         checkout.resetHandlers();
         sessionStorage.clear();
         mockPaymentContextEffect = undefined;
+        mockIsBillingFormInvalid = false;
     });
 
     afterAll(() => {
@@ -318,6 +321,41 @@ describe('Payment step', () => {
         await act(async () => {
             void checkoutService.updateBillingAddress({});
         });
+
+        await waitFor(() =>
+            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+            expect(
+                screen.getByRole('button', { name: /place order/i }).hasAttribute('disabled'),
+            ).toBeTruthy(),
+        );
+    });
+
+    it('disables Place Order while the embedded billing (enhancedThemeV1) form fails validation', async () => {
+        const enhancedThemeV1Config = {
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    checkoutUserExperienceSettings: {
+                        ...checkoutSettings.storeConfig.checkoutSettings
+                            .checkoutUserExperienceSettings,
+                        enhancedCheckoutThemeV1: true,
+                    },
+                },
+            },
+        };
+
+        mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(true);
+        mockIsBillingFormInvalid = true;
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+            config: enhancedThemeV1Config,
+        });
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
 
         await waitFor(() =>
             // eslint-disable-next-line jest-dom/prefer-to-have-attribute

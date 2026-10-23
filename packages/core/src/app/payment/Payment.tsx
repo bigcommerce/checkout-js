@@ -187,6 +187,8 @@ const Payment = (
     });
 
     const [isCartStockRefreshComplete, setIsCartStockRefreshComplete] = useState(false);
+    // Reported by the enhancedThemeV1 billing form; disables submit while it fails validation.
+    const [isBillingFormInvalid, setBillingFormInvalid] = useState(false);
     const [methodsRefreshAlert, setMethodsRefreshAlert] = useState<
         PaymentMethodsRefreshAlertData | undefined
     >();
@@ -201,6 +203,9 @@ const Payment = (
     // can't finalize before the entered billing address is validated and saved.
     const ensureBillingAddressSavedRef: MutableRefObject<EnsureBillingAddressSaved | null> =
         useRef(null);
+    // Mirrors isBillingFormInvalid for callbacks that payment methods capture once
+    // (e.g. PayPal's onValidate), so they never read a stale value.
+    const isBillingFormInvalidRef = useRef(false);
 
     const { checkoutService, checkoutState: initialCheckoutState } = useCheckout(() => undefined);
 
@@ -734,6 +739,8 @@ const Payment = (
         return {
             disableSubmit,
             reloadPaymentMethods: () => loadPaymentMethodsOrThrow(),
+            isBillingFormValid: () => !isBillingFormInvalidRef.current,
+            setBillingFormInvalid,
             setEnsureBillingAddressSaved,
             setSubmit,
             setValidationSchema,
@@ -964,6 +971,9 @@ const Payment = (
     const { selectedMethod = props.defaultMethod } = state;
     const uniqueSelectedMethodId =
         selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
+
+    isBillingFormInvalidRef.current = enhancedThemeV1 && isBillingFormInvalid;
+
     // enhancedThemeV1 embeds the billing form in the payment step. Disable "Place Order"
     // while its billing address is loading or being persisted (initialization,
     // address-book change, or the pre-submit save), so a click can't silently
@@ -1012,6 +1022,7 @@ const Payment = (
                             (uniqueSelectedMethodId &&
                                 state.shouldDisableSubmit[uniqueSelectedMethodId]) ||
                             isBillingFormBusy ||
+                            isBillingFormInvalidRef.current ||
                             isReloadingPaymentMethods ||
                             undefined
                         }

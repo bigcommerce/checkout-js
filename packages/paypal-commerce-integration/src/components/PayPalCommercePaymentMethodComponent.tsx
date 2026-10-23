@@ -55,6 +55,7 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<
 
     const termsValue = paymentForm.getFieldValue('terms');
     const shouldSaveInstrument = paymentForm.getFieldValue('shouldSaveInstrument');
+    const isBillingFormValid = paymentForm.isBillingFormValid?.() ?? true;
 
     const validateForm = async () => {
         const validationErrors = await paymentForm.validateForm();
@@ -95,7 +96,7 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<
 
     useEffect(() => {
         void validateButton();
-    }, [termsValue]);
+    }, [termsValue, isBillingFormValid]);
 
     useEffect(() => {
         fieldsValuesRef.current = {

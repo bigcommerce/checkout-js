@@ -1,5 +1,5 @@
 import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
-import { type FormikProps, setNestedObjectValues, withFormik } from 'formik';
+import { type FormikProps, setNestedObjectValues, validateYupSchema, withFormik } from 'formik';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
@@ -55,8 +55,10 @@ const PaymentBillingFormComponent = ({
     billingAddress,
     isLoading,
     isUsingMultiShipping,
+    language,
     setFieldValue,
     setTouched,
+    isValid,
     validateForm,
     values,
     onPersist,
@@ -178,6 +180,54 @@ const PaymentBillingFormComponent = ({
             setEnsureBillingAddressSaved(null);
         };
     }, [paymentContext, ensureBillingAddressSaved]);
+
+    // Formik's isValid only refreshes on mount, value changes and reinitialize, but the
+    // schema also depends on the loaded form fields and the selected method. Validate
+    // against the current schema directly so the submit button never disagrees with
+    // the pre-submit validateForm in ensureBillingAddressSaved.
+    const [isSchemaValid, setIsSchemaValid] = useState(isValid);
+
+    useEffect(() => {
+        let isCurrent = true;
+
+        validateYupSchema(values, getBillingFormValidationSchema(language, getFields, methodId))
+            .then(
+                () => true,
+                () => false,
+            )
+            .then((result) => {
+                if (isCurrent) {
+                    setIsSchemaValid(result);
+                }
+            });
+
+        return () => {
+            isCurrent = false;
+        };
+    }, [values, language, getFields, methodId]);
+
+    // Mirrors ensureBillingAddressSaved: a checked, visible "same as shipping" toggle
+    // skips validation, and loading / address resets block the submit.
+    const isBillingFormInvalid =
+        isLoading || isResettingAddress || (!isBillingAddressCollapsed && !isSchemaValid);
+
+    useEffect(() => {
+        const setBillingFormInvalid = paymentContext?.setBillingFormInvalid;
+
+        if (!setBillingFormInvalid) {
+            return;
+        }
+
+        setBillingFormInvalid(isBillingFormInvalid);
+    }, [paymentContext?.setBillingFormInvalid, isBillingFormInvalid]);
+
+    useEffect(() => {
+        const setBillingFormInvalid = paymentContext?.setBillingFormInvalid;
+
+        return () => {
+            setBillingFormInvalid?.(false);
+        };
+    }, [paymentContext?.setBillingFormInvalid]);
 
     const handleSelectAddress = async (address: Partial<Address>) => {
         setIsResettingAddress(true);

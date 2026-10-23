@@ -17,16 +17,30 @@ export default function createPaymentFormService(
 
     const { isSubmitted, setSubmitted } = formContext;
 
-    const { disableSubmit, setSubmit, setValidationSchema, hidePaymentSubmitButton } =
-        paymentContext;
+    const {
+        disableSubmit,
+        setSubmit,
+        setValidationSchema,
+        hidePaymentSubmitButton,
+        isBillingFormValid = () => true,
+    } = paymentContext;
 
     const getFieldValue = <T>(key: string): T | unknown => values[key];
+
+    // The enhancedThemeV1 billing form is its own Formik form, so fold its validity
+    // in here: methods that render their own button (e.g. PayPal) only ask this.
+    const validatePaymentForm: PaymentFormService['validateForm'] = async (formValues) => {
+        const errors = await validateForm(formValues);
+
+        return isBillingFormValid() ? errors : { ...errors, billingAddress: 'invalid' };
+    };
 
     return {
         disableSubmit,
         getFieldValue,
         getFormValues: () => values,
         hidePaymentSubmitButton,
+        isBillingFormValid,
         isSubmitted: () => isSubmitted,
         setFieldTouched: setFieldTouched as PaymentFormService['setFieldTouched'],
         setFieldValue: setFieldValue as PaymentFormService['setFieldValue'],
@@ -34,6 +48,6 @@ export default function createPaymentFormService(
         setSubmitted,
         setValidationSchema,
         submitForm,
-        validateForm,
+        validateForm: validatePaymentForm,
     };
 }

@@ -35,6 +35,7 @@ describe('PaymentBillingForm', () => {
     let onPersist: jest.Mock;
     let capturedEnsureBillingAddressSaved: EnsureBillingAddressSaved | null;
     let setEnsureBillingAddressSaved: jest.Mock;
+    let setBillingFormInvalid: jest.Mock;
     let defaultProps: PaymentBillingFormProps;
 
     const PaymentBillingFormTest: FunctionComponent<PaymentBillingFormProps> = (props) => (
@@ -43,6 +44,7 @@ describe('PaymentBillingForm', () => {
                 <CapabilitiesContext.Provider value={defaultCapabilities}>
                     <PaymentContext.Provider
                         value={{
+                            setBillingFormInvalid,
                             setEnsureBillingAddressSaved,
                             disableSubmit: jest.fn(),
                             setSubmit: jest.fn(),
@@ -92,6 +94,8 @@ describe('PaymentBillingForm', () => {
                 capturedEnsureBillingAddressSaved = ensureBillingAddressSaved;
             },
         );
+
+        setBillingFormInvalid = jest.fn();
 
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
@@ -227,6 +231,80 @@ describe('PaymentBillingForm', () => {
 
         await expect(capturedEnsureBillingAddressSaved?.()).resolves.toBe(false);
         expect(onUnhandledError).toHaveBeenCalledWith(error);
+    });
+
+    describe('billing form validity', () => {
+        it('reports the form as valid when the address passes validation', async () => {
+            renderForm(defaultProps);
+
+            await waitFor(() => expect(setBillingFormInvalid).toHaveBeenLastCalledWith(false));
+        });
+
+        it('reports the form as invalid when the address fails validation', async () => {
+            renderForm({ ...defaultProps, billingAddress: getEmptyBillingAddress() });
+
+            await waitFor(() => expect(setBillingFormInvalid).toHaveBeenLastCalledWith(true));
+        });
+
+        it('reports the form as invalid once a required field is cleared', async () => {
+            renderForm(defaultProps);
+
+            await waitFor(() => expect(setBillingFormInvalid).toHaveBeenLastCalledWith(false));
+
+            await userEvent.clear(screen.getByTestId('firstNameInput-text'));
+
+            await waitFor(() => expect(setBillingFormInvalid).toHaveBeenLastCalledWith(true));
+        });
+
+        it('does not report an invalid address hidden behind a checked same-as-shipping toggle', async () => {
+            renderForm({
+                ...defaultProps,
+                billingAddress: getEmptyBillingAddress(),
+                isBillingSameAsShipping: true,
+            });
+
+            await waitFor(() => expect(setBillingFormInvalid).toHaveBeenCalled());
+            expect(setBillingFormInvalid).not.toHaveBeenCalledWith(true);
+        });
+
+        it('reports the form as invalid when the fields load after mount and the address fails them', async () => {
+            const { rerender } = renderForm({
+                ...defaultProps,
+                billingAddress: getEmptyBillingAddress(),
+                getFields: () => [],
+            });
+
+            await waitFor(() => expect(setBillingFormInvalid).toHaveBeenLastCalledWith(false));
+
+            rerender(
+                <PaymentBillingFormTest
+                    {...defaultProps}
+                    billingAddress={getEmptyBillingAddress()}
+                    getFields={() => getFormFields()}
+                />,
+            );
+
+            await waitFor(() => expect(setBillingFormInvalid).toHaveBeenLastCalledWith(true));
+        });
+
+        it('reports the form as invalid while billing data is still loading', async () => {
+            renderForm({ ...defaultProps, isLoading: true });
+
+            await waitFor(() => expect(setBillingFormInvalid).toHaveBeenLastCalledWith(true));
+        });
+
+        it('clears the invalid flag on unmount', async () => {
+            const { unmount } = renderForm({
+                ...defaultProps,
+                billingAddress: getEmptyBillingAddress(),
+            });
+
+            await waitFor(() => expect(setBillingFormInvalid).toHaveBeenLastCalledWith(true));
+
+            unmount();
+
+            expect(setBillingFormInvalid).toHaveBeenLastCalledWith(false);
+        });
     });
 
     describe('billing country change', () => {

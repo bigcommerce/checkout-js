@@ -36,6 +36,7 @@ const PaymentMethodContainer: ComponentType<
     checkoutState,
     disableSubmit,
     hidePaymentSubmitButton,
+    isBillingFormValid,
     isEmbedded,
     isSubmitted,
     isUsingMultiShipping,
@@ -54,6 +55,7 @@ const PaymentMethodContainer: ComponentType<
     const paymentContext = {
         disableSubmit,
         hidePaymentSubmitButton,
+        isBillingFormValid,
         setSubmit,
         setValidationSchema,
     };

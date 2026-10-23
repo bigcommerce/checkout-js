@@ -448,4 +448,48 @@ describe('PayPalCommercePaymentMethodComponent', () => {
 
         expect(buttonActionsMock.disable).toHaveBeenCalled();
     });
+
+    it('re-validates the PayPal button when the billing form validity changes', async () => {
+        let isBillingFormValid = true;
+
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onInitButton', async (actions) => {
+                if (options.paypalcommerce?.onError) {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                    await options.paypalcommerce.onInitButton(actions);
+                }
+            });
+
+            return Promise.resolve(checkoutState);
+        });
+
+        const getPaymentForm = (): PaymentFormService => ({
+            ...paymentForm,
+            isBillingFormValid: () => isBillingFormValid,
+        });
+
+        const { rerender } = render(
+            <PayPalCommercePaymentMethodComponent {...props} paymentForm={getPaymentForm()} />,
+        );
+
+        const buttonActionsMock = { disable: jest.fn(), enable: jest.fn() };
+
+        eventEmitter.emit('onInitButton', buttonActionsMock);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(buttonActionsMock.enable).toHaveBeenCalled();
+
+        // The payment form service folds billing validity into validateForm.
+        isBillingFormValid = false;
+        jest.spyOn(paymentForm, 'validateForm').mockResolvedValue({ billingAddress: 'invalid' });
+
+        rerender(
+            <PayPalCommercePaymentMethodComponent {...props} paymentForm={getPaymentForm()} />,
+        );
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(buttonActionsMock.disable).toHaveBeenCalled();
+    });
 });

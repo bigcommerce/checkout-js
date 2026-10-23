@@ -13,6 +13,12 @@ export interface PaymentContextProps {
     setEnsureBillingAddressSaved?(
         ensureBillingAddressSaved: EnsureBillingAddressSaved | null,
     ): void;
+    // Lets the enhancedThemeV1 payment billing form report whether it currently fails
+    // validation, so the payment submit button can be disabled until it's fixed.
+    setBillingFormInvalid?(isInvalid: boolean): void;
+    // Whether the enhancedThemeV1 billing form currently passes validation (always
+    // true without one). Read by the payment form service's validateForm.
+    isBillingFormValid?(): boolean;
     // Reloads the payment methods after the billing form saves the address.
     reloadPaymentMethods?(): Promise<void>;
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
