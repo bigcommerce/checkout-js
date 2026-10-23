@@ -19,6 +19,17 @@ database migrations that may change our decision to roll forward instead of
 back?
 -->
 
+## New experiments
+
+<!--
+Complete this only if the pull request adds a new experiment (feature flag).
+New experiments must be OFF for custom checkouts.
+-->
+
+- [ ] Gated on `isCustomCheckout`: `isCustomCheckout ? false : isExperimentEnabled(...)`
+- [ ] Uses `false` as the `isExperimentEnabled` fallback
+- [ ] Includes a test for the custom checkout case (flag ON, `isCustomCheckout` true, feature stays OFF)
+
 ## Testing
 
 <!--
