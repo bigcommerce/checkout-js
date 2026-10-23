@@ -13,6 +13,9 @@ export interface PaymentContextProps {
     setEnsureBillingAddressSaved?(
         ensureBillingAddressSaved: EnsureBillingAddressSaved | null,
     ): void;
+    // Runs the callback registered above so payment methods can validate billing
+    // before opening their own flow. Resolves undefined when none is registered.
+    ensureBillingAddressSaved?(): Promise<boolean | undefined>;
     // Reloads the payment methods after the billing form saves the address.
     reloadPaymentMethods?(): Promise<void>;
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
