@@ -19,6 +19,26 @@ database migrations that may change our decision to roll forward instead of
 back?
 -->
 
+## New experiments
+
+<!--
+Complete this only if the pull request adds a new experiment (feature flag).
+
+New experiments must be OFF for custom checkouts. Custom checkouts are
+merchant-hosted forks that may run older code, and a rollout alone can't
+protect them: if a flag is missing, `isExperimentEnabled` falls back to its
+default. Gating on `checkoutSettings.isCustomCheckout` (true when the channel's
+checkout type is custom) keeps the experiment OFF for them regardless of
+rollout state or whether the flag exists.
+
+Existing flags are not affected. To enable an experiment for custom
+checkouts, make that decision explicitly in a separate change.
+-->
+
+- [ ] Gated on `isCustomCheckout`: `isCustomCheckout ? false : isExperimentEnabled(...)`
+- [ ] Uses `false` as the `isExperimentEnabled` fallback
+- [ ] Includes a test for the custom checkout case (flag ON, `isCustomCheckout` true, feature stays OFF)
+
 ## Testing
 
 <!--
