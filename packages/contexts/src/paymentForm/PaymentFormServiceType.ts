@@ -14,6 +14,8 @@ export interface PaymentFormValues {
 
 export interface PaymentFormService {
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
+    // Resolves undefined when no billing form is registered
+    ensureBillingAddressSaved?(): Promise<boolean | undefined>;
     getFieldValue<T>(field: string): T | unknown;
     getFormValues(): PaymentFormValues;
     hidePaymentSubmitButton(method: PaymentMethod, hidden?: boolean): void;

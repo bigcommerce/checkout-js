@@ -17,13 +17,19 @@ export default function createPaymentFormService(
 
     const { isSubmitted, setSubmitted } = formContext;
 
-    const { disableSubmit, setSubmit, setValidationSchema, hidePaymentSubmitButton } =
-        paymentContext;
+    const {
+        disableSubmit,
+        ensureBillingAddressSaved,
+        setSubmit,
+        setValidationSchema,
+        hidePaymentSubmitButton,
+    } = paymentContext;
 
     const getFieldValue = <T>(key: string): T | unknown => values[key];
 
     return {
         disableSubmit,
+        ensureBillingAddressSaved,
         getFieldValue,
         getFormValues: () => values,
         hidePaymentSubmitButton,

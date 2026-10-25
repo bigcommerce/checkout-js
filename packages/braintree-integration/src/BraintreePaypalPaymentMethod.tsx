@@ -74,6 +74,13 @@ const BraintreePaypalPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                             return reject();
                         }
 
+                        const isBillingAddressSaved =
+                            await paymentForm.ensureBillingAddressSaved?.();
+
+                        if (isBillingAddressSaved === false) {
+                            return reject();
+                        }
+
                         return resolve();
                     },
                     onInitButton: async (actions: ButtonActions) => {
