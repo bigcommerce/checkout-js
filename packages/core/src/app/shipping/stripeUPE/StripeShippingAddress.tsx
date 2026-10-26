@@ -160,17 +160,18 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
                     (country) => country.code === address.country,
                 )?.name;
                 const state = StripeStateMapper(address.country, address.state);
+                const countryName = country || address.country;
                 const shippingValue = {
                     firstName: firstName || names[0],
                     lastName: lastName || names[1],
                     company: '',
                     address1: address.line1,
                     address2: address.line2 || '',
-                    city: address.city,
+                    city: address.city || countryName,
                     stateOrProvince: state,
                     stateOrProvinceCode: state,
                     shouldSaveAddress: true,
-                    country: country || address.country,
+                    country: countryName,
                     countryCode: address.country,
                     postalCode: address.postal_code,
                     phone: phone || '',
