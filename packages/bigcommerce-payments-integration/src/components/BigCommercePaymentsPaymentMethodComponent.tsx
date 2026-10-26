@@ -149,12 +149,13 @@ const BigCommercePaymentsPaymentMethodComponent: FunctionComponent<
                         }
 
                         const isBillingAddressSaved =
-                          await paymentForm.ensureBillingAddressSaved?.();
+                            await paymentForm.ensureBillingAddressSaved?.();
 
                         if (isBillingAddressSaved === false) {
-                          return reject();
-                        }
+                            paymentForm.setSubmitted(true);
 
+                            return reject();
+                        }
 
                         return resolve();
                     },
