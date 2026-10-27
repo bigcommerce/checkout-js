@@ -9,7 +9,6 @@ describe('CheckoutButton', () => {
     it('initializes button when component is mounted', () => {
         const initialize = jest.fn();
         const onError = jest.fn();
-        const onClick = jest.fn();
 
         render(
             <CheckoutButton
@@ -17,7 +16,6 @@ describe('CheckoutButton', () => {
                 deinitialize={noop}
                 initialize={initialize}
                 methodId="foobar"
-                onClick={onClick}
                 onError={onError}
             />,
         );
@@ -27,7 +25,6 @@ describe('CheckoutButton', () => {
             foobar: {
                 container: 'foobarContainer',
                 onError,
-                onClick: expect.any(Function),
             },
         });
     });
@@ -35,7 +32,6 @@ describe('CheckoutButton', () => {
     it('deinitializes button when component unmounts', () => {
         const deinitialize = jest.fn();
         const onError = jest.fn();
-        const onClick = jest.fn();
 
         const { unmount } = render(
             <CheckoutButton
@@ -43,7 +39,6 @@ describe('CheckoutButton', () => {
                 deinitialize={deinitialize}
                 initialize={noop}
                 methodId="foobar"
-                onClick={onClick}
                 onError={onError}
             />,
         );

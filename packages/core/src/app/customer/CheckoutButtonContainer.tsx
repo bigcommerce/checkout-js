@@ -27,7 +27,6 @@ interface CheckoutButtonContainerProps {
     isPaymentStepActive: boolean;
     checkEmbeddedSupport(methodIds: string[]): void;
     onUnhandledError(error: Error): void;
-    onWalletButtonClick(methodId: string): void;
 }
 
 interface WithCheckoutCheckoutButtonContainerProps {
@@ -51,7 +50,6 @@ const CheckoutButtonContainer: FunctionComponent<
     isLoading,
     isPaymentStepActive,
     onUnhandledError,
-    onWalletButtonClick,
 }) => {
     const { language } = useLocale();
     const {
@@ -85,7 +83,6 @@ const CheckoutButtonContainer: FunctionComponent<
                             isShowingWalletButtonsOnTop={true}
                             key={methodId}
                             methodId={methodId}
-                            onClick={onWalletButtonClick}
                             onError={onUnhandledError}
                         />
                     </Suspense>
@@ -101,7 +98,6 @@ const CheckoutButtonContainer: FunctionComponent<
                         language={language}
                         methodId={methodId}
                         onUnhandledError={onUnhandledError}
-                        onWalletButtonClick={onWalletButtonClick}
                     />
                 </Suspense>
             );
