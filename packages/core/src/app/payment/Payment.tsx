@@ -674,6 +674,11 @@ const Payment = (
         [],
     );
 
+    const ensureBillingAddressSaved = useCallback(
+        async (): Promise<boolean | undefined> => ensureBillingAddressSavedRef.current?.(),
+        [],
+    );
+
     const persistGeoBillingCountryIfMissing = async (): Promise<void> => {
         if (initialCheckoutState.data.getCheckout()?.billingAddress?.countryCode) {
             return;
@@ -750,6 +755,7 @@ const Payment = (
     const getContextValue = memoizeOne(() => {
         return {
             disableSubmit,
+            ensureBillingAddressSaved,
             reloadPaymentMethods: () => loadPaymentMethodsOrThrow(),
             setEnsureBillingAddressSaved,
             setSubmit,
