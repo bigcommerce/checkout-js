@@ -2,6 +2,7 @@ import {
     type CheckoutSelectors,
     type CheckoutService,
     createCheckoutService,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
@@ -13,6 +14,7 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
+import { getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { retry } from '../common/utility';
@@ -65,6 +67,13 @@ describe('CheckoutButtonContainer', () => {
             </CheckoutProvider>,
         );
 
+    const createWalletMethod = (shouldVaultAllPayments: boolean): PaymentMethod => ({
+        ...getPaymentMethod(),
+        id: 'applepay',
+        method: 'credit-card',
+        config: { ...getPaymentMethod().config, displayName: '', shouldVaultAllPayments },
+    });
+
     beforeEach(() => {
         jest.mocked(resolveCheckoutButton).mockImplementation(() => MockCheckoutButton);
 
@@ -100,6 +109,30 @@ describe('CheckoutButtonContainer', () => {
         renderCheckoutButtonContainer();
 
         expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
+    });
+
+    it('renders the auto-vaulting disclaimer below the wallet buttons', async () => {
+        jest.spyOn(checkoutState.data, 'getPaymentMethods').mockReturnValue([
+            createWalletMethod(true),
+        ]);
+
+        renderCheckoutButtonContainer();
+
+        expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
+        expect(screen.getByTestId('auto-vaulting-disclaimer')).toHaveTextContent(
+            'By paying with Apple Pay, you agree the merchant may charge your card for future payments under its terms.',
+        );
+    });
+
+    it('does not render the auto-vaulting disclaimer when the wallet does not auto-vault', async () => {
+        jest.spyOn(checkoutState.data, 'getPaymentMethods').mockReturnValue([
+            createWalletMethod(false),
+        ]);
+
+        renderCheckoutButtonContainer();
+
+        expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
+        expect(screen.queryByTestId('auto-vaulting-disclaimer')).not.toBeInTheDocument();
     });
 
     it('does not render for a signed-in customer when the experiment is disabled', () => {
