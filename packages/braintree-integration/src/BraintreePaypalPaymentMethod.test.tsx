@@ -179,6 +179,7 @@ describe('BraintreePaypalPaymentMethod', () => {
 
     it('does not pass validation when billing address cannot be saved', async () => {
         jest.spyOn(paymentForm, 'ensureBillingAddressSaved').mockResolvedValue(false);
+        jest.mocked(paymentForm.setSubmitted).mockClear();
 
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onValidate', async (resolve: () => void, reject: () => void) => {
@@ -198,6 +199,7 @@ describe('BraintreePaypalPaymentMethod', () => {
         await new Promise((resolve) => process.nextTick(resolve));
 
         expect(paymentForm.ensureBillingAddressSaved).toHaveBeenCalled();
+        expect(paymentForm.setSubmitted).toHaveBeenCalledWith(true);
         expect(validationReject).toHaveBeenCalled();
         expect(validationSuccess).not.toHaveBeenCalled();
     });
