@@ -46,7 +46,6 @@ export interface WithCheckoutPaymentMethodProps {
 
 const KNOWN_API_METHOD_IDS = new Set([
     'cybersourcev2',
-    'nmi',
     'bigpaypay',
     'usaepay',
     'googlepay',
