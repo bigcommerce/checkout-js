@@ -188,6 +188,7 @@
             "returning_customer_text": "Returning Customer",
             "sign_in_action": "Sign In",
             "sign_in_action_v2": "Sign in",
+            "sign_in_cart_unavailable_error": "Your cart is no longer available. Please return to your cart and add your items again to continue.",
             "sign_in_error": "The email or password you entered is not valid.",
             "sign_in_throttled_error": "Due to excessive login attempts, please wait 10 seconds before attempting to log in again.",
             "sign_out_action": "Sign out",

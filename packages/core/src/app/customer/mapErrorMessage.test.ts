@@ -23,6 +23,14 @@ describe('mapErrorMessage()', () => {
         expect(translate).toHaveBeenCalledWith('customer.reset_password_before_login_error');
     });
 
+    it('returns translated cart unavailable error message', () => {
+        expect(mapErrorMessage({ body: { type: 'cart_unavailable' } }, translate)).toBe(
+            'customer.sign_in_cart_unavailable_error',
+        );
+
+        expect(translate).toHaveBeenCalledWith('customer.sign_in_cart_unavailable_error');
+    });
+
     it('returns translated sign in error message by default', () => {
         expect(mapErrorMessage({ body: { type: 'some_unknown_error' } }, translate)).toBe(
             'customer.sign_in_error',
