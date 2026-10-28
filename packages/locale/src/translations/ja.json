@@ -542,7 +542,7 @@
             "continue_with_text": "または続けて",
             "or_text": "または",
             "payment_method_error": "リモート支払方法の取得中にエラーが発生しました。もう一度やり直してください。",
-            "retry_same_card_action": "Try again or select a different card",
+            "retry_same_card_action": "もう一度お試しいただくか、別のカードを選択してください。",
             "select_different_card_action": "別のカードを選択",
             "session_error": "リモートセッションの有効期限が切れました。もう一度ログインしてください。",
             "shipping_address_error": "リモート配送先住所の取得中にエラーが発生しました。もう一度やり直してください。",

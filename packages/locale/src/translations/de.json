@@ -542,7 +542,7 @@
             "continue_with_text": "Oder fortfahren mit",
             "or_text": "oder",
             "payment_method_error": "Beim Abrufen Ihrer Remote-Zahlungsmethode ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-            "retry_same_card_action": "Try again or select a different card",
+            "retry_same_card_action": "Versuchen Sie es erneut oder wählen Sie eine andere Karte",
             "select_different_card_action": "Eine andere Karte wählen",
             "session_error": "Ihre Remote-Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
             "shipping_address_error": "Beim Abrufen Ihrer Remote-Versandadresse ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
