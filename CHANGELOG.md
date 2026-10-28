@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.925.1](https://github.com/bigcommerce/checkout-js/compare/v1.925.0...v1.925.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-7259 ppcp billing form validation ([#3429](https://github.com/bigcommerce/checkout-js/issues/3429)) ([5c19c9b](https://github.com/bigcommerce/checkout-js/commit/5c19c9bb2d4167eeda1b51e805a2a47602abc2de))
+
 ## [1.925.0](https://github.com/bigcommerce/checkout-js/compare/v1.924.1...v1.925.0) (2026-10-27)
 
 
