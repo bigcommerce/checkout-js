@@ -2,7 +2,6 @@ import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { type CheckoutSettings } from '@bigcommerce/checkout-sdk';
 
 import { CUSTOM_CHECKOUT_EXPERIMENT_OPT_INS } from './experiments/customCheckoutExperimentOptIns';
-import { CUSTOM_CHECKOUT_READY_EXPERIMENTS } from './experiments/customCheckoutReadyExperiments';
 import { isExperimentEnabledWithOptIn } from './isExperimentEnabledWithOptIn';
 
 const EXPERIMENT = 'PROJECT-1234.new_flag';
@@ -18,7 +17,6 @@ const getSettings = (
 
 describe('isExperimentEnabledWithOptIn', () => {
     afterEach(() => {
-        CUSTOM_CHECKOUT_READY_EXPERIMENTS.length = 0;
         CUSTOM_CHECKOUT_EXPERIMENT_OPT_INS.length = 0;
     });
 
@@ -41,40 +39,17 @@ describe('isExperimentEnabledWithOptIn', () => {
         it('returns false when the experiment is missing', () => {
             expect(isExperimentEnabledWithOptIn(getSettings(false), EXPERIMENT)).toBe(false);
         });
-
-        it('ignores custom checkout opt-ins', () => {
-            CUSTOM_CHECKOUT_READY_EXPERIMENTS.push(EXPERIMENT);
-            CUSTOM_CHECKOUT_EXPERIMENT_OPT_INS.push(EXPERIMENT);
-
-            expect(
-                isExperimentEnabledWithOptIn(
-                    getSettings(false, { [EXPERIMENT]: false }),
-                    EXPERIMENT,
-                ),
-            ).toBe(false);
-        });
     });
 
     describe('custom checkout', () => {
         it('returns false when the experiment is on but the custom checkout has not opted in', () => {
-            CUSTOM_CHECKOUT_READY_EXPERIMENTS.push(EXPERIMENT);
-
             expect(
                 isExperimentEnabledWithOptIn(getSettings(true, { [EXPERIMENT]: true }), EXPERIMENT),
             ).toBe(false);
         });
 
-        it('returns false when opted in but the experiment is not ready', () => {
-            CUSTOM_CHECKOUT_EXPERIMENT_OPT_INS.push(EXPERIMENT);
-
-            expect(
-                isExperimentEnabledWithOptIn(getSettings(true, { [EXPERIMENT]: true }), EXPERIMENT),
-            ).toBe(false);
-        });
-
-        describe('when opted in and the experiment is ready', () => {
+        describe('when opted in', () => {
             beforeEach(() => {
-                CUSTOM_CHECKOUT_READY_EXPERIMENTS.push(EXPERIMENT);
                 CUSTOM_CHECKOUT_EXPERIMENT_OPT_INS.push(EXPERIMENT);
             });
 
@@ -96,8 +71,8 @@ describe('isExperimentEnabledWithOptIn', () => {
                 ).toBe(true);
             });
 
-            it('returns true when the experiment has been removed', () => {
-                expect(isExperimentEnabledWithOptIn(getSettings(true), EXPERIMENT)).toBe(true);
+            it('returns false when the experiment does not exist yet', () => {
+                expect(isExperimentEnabledWithOptIn(getSettings(true), EXPERIMENT)).toBe(false);
             });
         });
     });

@@ -30,22 +30,22 @@ alone can't protect them: if a flag is missing, `isExperimentEnabled` falls
 back to its default. `isExperimentEnabledWithOptIn` keeps new experiments OFF for
 custom checkouts regardless of rollout state or whether the flag exists.
 
-A custom checkout can opt in to an experiment once it is listed in
-`CUSTOM_CHECKOUT_READY_EXPERIMENTS`, by adding it to
+A custom checkout can opt in to an experiment's rollout by adding it to
 `CUSTOM_CHECKOUT_EXPERIMENT_OPT_INS` in its fork
 (`packages/utility/src/experiments/customCheckoutExperimentOptIns.ts`).
-Only add an experiment to the ready list once the feature is complete.
+It then turns ON for that store only when the rollout reaches it.
 
-When removing an experiment, say so in the commit subject: the feature then
-reaches every checkout, including custom checkouts once they merge.
+When removing an experiment, remove the code before deleting the flag, so
+opted-in custom checkouts keep the feature until they merge. Say so in the
+commit subject: the feature then reaches every checkout, including custom
+checkouts once they merge.
 
 Existing flags are not affected.
 -->
 
 - [ ] Reads the experiment with `isExperimentEnabledWithOptIn(checkoutSettings, 'PROJECT-1234.flag_name')`
 - [ ] Includes a test for the custom checkout case (flag ON, `isCustomCheckout` true, feature stays OFF)
-- [ ] Added to `CUSTOM_CHECKOUT_READY_EXPERIMENTS` only if the feature is complete
-- [ ] If removing an experiment, the commit subject says the feature now applies to all checkouts
+- [ ] If removing an experiment, the code is removed before the flag is deleted, and the commit subject says the feature now applies to all checkouts
 
 ## Testing
 
