@@ -399,6 +399,63 @@ describe('PayPalCommercePaymentMethodComponent', () => {
         expect(validationReject).toHaveBeenCalled();
     });
 
+    it('rejects validation when the billing address cannot be saved', async () => {
+        jest.spyOn(paymentForm, 'ensureBillingAddressSaved').mockResolvedValue(false);
+
+        const setSubmitted = jest.spyOn(paymentForm, 'setSubmitted').mockClear();
+
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onValidate', async (resolve: () => void, reject: () => void) => {
+                if (options.paypalcommerce) {
+                    await options.paypalcommerce.onValidate(resolve, reject);
+                }
+            });
+
+            return Promise.resolve(checkoutState);
+        });
+
+        const validationSuccess = jest.fn();
+        const validationReject = jest.fn();
+
+        render(<PayPalCommercePaymentMethodComponent {...props} />);
+
+        eventEmitter.emit('onValidate', validationSuccess, validationReject);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(paymentForm.ensureBillingAddressSaved).toHaveBeenCalled();
+        expect(setSubmitted).toHaveBeenCalledWith(true);
+        expect(validationReject).toHaveBeenCalledTimes(1);
+        expect(validationSuccess).not.toHaveBeenCalled();
+    });
+
+    it('passes validation when the billing address is saved', async () => {
+        jest.spyOn(paymentForm, 'ensureBillingAddressSaved').mockResolvedValue(true);
+
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onValidate', async (resolve: () => void, reject: () => void) => {
+                if (options.paypalcommerce) {
+                    await options.paypalcommerce.onValidate(resolve, reject);
+                }
+            });
+
+            return Promise.resolve(checkoutState);
+        });
+
+        const validationSuccess = jest.fn();
+        const validationReject = jest.fn();
+
+        render(<PayPalCommercePaymentMethodComponent {...props} />);
+
+        eventEmitter.emit('onValidate', validationSuccess, validationReject);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(paymentForm.ensureBillingAddressSaved).toHaveBeenCalled();
+        expect(validationSuccess).toHaveBeenCalledTimes(1);
+        expect(validationReject).not.toHaveBeenCalled();
+    });
+
     it('passed form validation by calling onInitButton callback', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onInitButton', async (actions) => {
