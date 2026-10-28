@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.926.0](https://github.com/bigcommerce/checkout-js/compare/v1.925.2...v1.926.0) (2026-10-28)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10461 add opt-in experiment helper for custom checkouts ([#3436](https://github.com/bigcommerce/checkout-js/issues/3436)) ([2de4eef](https://github.com/bigcommerce/checkout-js/commit/2de4eef8aa63d5890239b854cc764b233e48f3e3))
+
 ### [1.925.2](https://github.com/bigcommerce/checkout-js/compare/v1.925.1...v1.925.2) (2026-10-28)
 
 
