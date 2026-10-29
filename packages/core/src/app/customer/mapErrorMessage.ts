@@ -14,6 +14,9 @@ export default function mapErrorMessage(
         case 'empty_cart':
             return translate('cart.empty_cart_error_message');
 
+        case 'cart_unavailable':
+            return translate('customer.sign_in_cart_unavailable_error');
+
         default:
             return translate('customer.sign_in_error');
     }
