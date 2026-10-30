@@ -36,7 +36,6 @@ describe('ApplePayButton', () => {
             language: createLanguageService(),
             methodId: 'applepay',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call

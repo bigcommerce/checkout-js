@@ -23,7 +23,6 @@ const AnalyticsProviderMock = ({ children, analyticsTracker = {} }: AnalyticsPro
         paymentRejected: jest.fn(),
         paymentComplete: jest.fn(),
         exitCheckout: jest.fn(),
-        walletButtonClick: jest.fn(),
     };
 
     return (

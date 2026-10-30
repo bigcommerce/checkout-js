@@ -505,10 +505,6 @@ const Checkout = ({
         analyticsTracker.exitCheckout();
     }, []);
 
-    const handleWalletButtonClick = useCallback((methodName: string): void => {
-        analyticsTracker.walletButtonClick(methodName);
-    }, []);
-
     const reloadWindow = useCallback((): void => {
         setState((prevState) => ({ ...prevState, error: undefined }));
 
@@ -547,7 +543,6 @@ const Checkout = ({
                         onSignOutError={handleError}
                         onSubscribeToNewsletter={handleNewsletterSubscription}
                         onUnhandledError={handleUnhandledError}
-                        onWalletButtonClick={handleWalletButtonClick}
                         step={step}
                         viewType={customerViewType}
                     />
@@ -812,7 +807,6 @@ const Checkout = ({
                                 checkEmbeddedSupport={checkEmbeddedSupport}
                                 defaultStepType={state.defaultStepType}
                                 onUnhandledError={handleUnhandledError}
-                                onWalletButtonClick={handleWalletButtonClick}
                             />
 
                             <ol className="checkout-steps">

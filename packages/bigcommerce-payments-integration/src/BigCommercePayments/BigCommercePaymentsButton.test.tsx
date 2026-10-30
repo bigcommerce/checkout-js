@@ -31,7 +31,6 @@ describe('BigCommercePaymentsButton', () => {
             language: createLanguageService(),
             methodId: 'bigcommerce_payments',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
     });
 
@@ -43,7 +42,6 @@ describe('BigCommercePaymentsButton', () => {
             integrations: [createBigCommercePaymentsCustomerStrategy],
             bigcommerce_payments: {
                 container: 'bigcommerce-payments-button-container',
-                onClick: expect.any(Function),
                 onComplete: expect.any(Function),
                 onError: expect.any(Function),
                 onUnhandledError: expect.any(Function),

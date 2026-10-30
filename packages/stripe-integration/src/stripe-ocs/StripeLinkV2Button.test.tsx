@@ -31,7 +31,6 @@ describe('StripeLinkV2Button', () => {
             language: createLanguageService(),
             methodId: 'stripeocs',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
     });
 
@@ -46,7 +45,6 @@ describe('StripeLinkV2Button', () => {
                 container: 'stripe-link',
                 methodId: 'optimized_checkout',
                 gatewayId: 'stripeocs',
-                onClick: expect.any(Function),
                 onComplete: expect.any(Function),
                 onUnhandledError: expect.any(Function),
             },

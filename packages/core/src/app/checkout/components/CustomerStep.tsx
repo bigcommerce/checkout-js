@@ -53,7 +53,6 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
     onSignInError,
     onSubscribeToNewsletter,
     onUnhandledError,
-    onWalletButtonClick,
 }) => {
     const { enhancedThemeV1 } = useThemeContext();
     const {
@@ -124,7 +123,6 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
                     onSignInError={onSignInError}
                     onSubscribeToNewsletter={onSubscribeToNewsletter}
                     onUnhandledError={onUnhandledError}
-                    onWalletButtonClick={onWalletButtonClick}
                     step={step}
                     viewType={viewType}
                 />

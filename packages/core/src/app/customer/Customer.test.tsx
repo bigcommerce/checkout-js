@@ -116,7 +116,6 @@ describe('Customer Component', () => {
             paymentRejected: jest.fn(),
             paymentComplete: jest.fn(),
             exitCheckout: jest.fn(),
-            walletButtonClick: jest.fn(),
         };
         defaultProps = {
             checkoutId: 'x',

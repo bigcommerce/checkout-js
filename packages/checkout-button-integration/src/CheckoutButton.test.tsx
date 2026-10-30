@@ -20,7 +20,6 @@ describe('CheckoutButton', () => {
             language: createLanguageService(),
             methodId: 'foobar',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
     });
 
@@ -35,8 +34,6 @@ describe('CheckoutButton', () => {
             methodId: 'foobar',
             foobar: {
                 container: 'button-container',
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                onClick: expect.any(Function),
                 onUnhandledError: defaultProps.onUnhandledError,
             },
         });
@@ -68,8 +65,6 @@ describe('CheckoutButton', () => {
             methodId: 'foobar',
             foobar: {
                 container: 'button-container',
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                onClick: expect.any(Function),
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 onComplete: expect.any(Function),
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
