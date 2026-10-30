@@ -143,6 +143,10 @@ $buttonWidthMap: (
         }
     }
 
+    .checkout-buttons-auto-layout + .auto-vaulting-disclaimer {
+        margin-top: spacing("half");
+    }
+
     #applepayCheckoutButton button,
     #braintreepaypalcreditCheckoutButton,
     #braintreepaypalCheckoutButton {
