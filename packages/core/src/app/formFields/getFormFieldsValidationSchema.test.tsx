@@ -1,3 +1,4 @@
+import { type FormField, type FormFieldItem } from '@bigcommerce/checkout-sdk';
 import { type ObjectSchema, type ValidationError } from 'yup';
 
 import { getFormFields } from '../address/formField.mock';
@@ -363,6 +364,57 @@ describe('getFormFieldsValidationSchema', () => {
                 });
                 expect(error).toBeDefined();
             });
+        });
+    });
+
+    describe('country field validation', () => {
+        const getCountryField = (items: FormFieldItem[]): FormField => ({
+            custom: false,
+            default: '',
+            fieldType: 'dropdown',
+            id: 'field_21',
+            label: 'Country',
+            name: 'countryCode',
+            options: { items },
+            required: true,
+            type: 'array',
+        });
+
+        it('resolves when country is one of the available countries', async () => {
+            const schema = getFormFieldsValidationSchema({
+                formFields: [
+                    ...formFields,
+                    getCountryField([{ value: 'US', label: 'United States' }]),
+                ],
+                translate,
+            });
+            const spy = jest.fn();
+
+            await schema
+                .validate({
+                    ...getShippingAddress(),
+                    countryCode: 'US',
+                })
+                .then(spy);
+
+            expect(spy).toHaveBeenCalled();
+        });
+
+        it('does not restrict country when available countries are not loaded', async () => {
+            const schema = getFormFieldsValidationSchema({
+                formFields: [...formFields, getCountryField([])],
+                translate,
+            });
+            const spy = jest.fn();
+
+            await schema
+                .validate({
+                    ...getShippingAddress(),
+                    countryCode: 'AU',
+                })
+                .then(spy);
+
+            expect(spy).toHaveBeenCalled();
         });
     });
 
