@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.927.0](https://github.com/bigcommerce/checkout-js/compare/v1.926.6...v1.927.0) (2026-11-02)
+
+
+### Features
+
+* **payment:** PAYPAL-7266 Add Billing address form validation for enhanced checkout experience ([252a441](https://github.com/bigcommerce/checkout-js/commit/252a4416bac3b54ac4b37fc25eccd869e9b651bc))
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-7267 fixed BCP billing form validation ([77754b4](https://github.com/bigcommerce/checkout-js/commit/77754b42c853a1fca1e043c1354971053c598e69))
+* **payment:** PAYPAL-7267 fixed BCP billing form validation ([1f1340a](https://github.com/bigcommerce/checkout-js/commit/1f1340a17e3716228998f0e2902455a43c138cd5))
+* **payment:** PAYPAL-7267 fixed BCP billing form validation ([bbb7ca0](https://github.com/bigcommerce/checkout-js/commit/bbb7ca0fa31b1135490982b1034b115c2f6f7a14))
+* **payment:** PAYPAL-7267 fixed BCP billing form validation ([c452c80](https://github.com/bigcommerce/checkout-js/commit/c452c804b6ec4fedab57b738da29f1d30fc1e8b7))
+
 ### [1.926.6](https://github.com/bigcommerce/checkout-js/compare/v1.926.5...v1.926.6) (2026-10-29)
 
 ### [1.926.5](https://github.com/bigcommerce/checkout-js/compare/v1.926.4...v1.926.5) (2026-10-29)
