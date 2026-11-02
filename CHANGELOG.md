@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.928.0](https://github.com/bigcommerce/checkout-js/compare/v1.927.1...v1.928.0) (2026-11-02)
+
+
+### Features
+
+* **payment:** show auto-vaulting disclaimer under wallet buttons ([#3441](https://github.com/bigcommerce/checkout-js/issues/3441)) ([6debf9d](https://github.com/bigcommerce/checkout-js/commit/6debf9d0bf372df3e747bac10a318733af6f4628))
+
 ### [1.927.1](https://github.com/bigcommerce/checkout-js/compare/v1.927.0...v1.927.1) (2026-11-02)
 
 
