@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.927.1](https://github.com/bigcommerce/checkout-js/compare/v1.927.0...v1.927.1) (2026-11-02)
+
+
+### Bug Fixes
+
+* **shipping:** STRIPE-1780 use country as city fallback in Stripe shipping form ([#3431](https://github.com/bigcommerce/checkout-js/issues/3431)) ([8304d7c](https://github.com/bigcommerce/checkout-js/commit/8304d7c1bd3194ad1a994f1bffaeedb156a660d6))
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-6032 removed PayPal Commmerce Fastlane Analytics and Wallet Button onClick event ([#3410](https://github.com/bigcommerce/checkout-js/issues/3410)) ([45f57e8](https://github.com/bigcommerce/checkout-js/commit/45f57e859dae180cefa90a894846226f90e0a99f))
+
 ## [1.927.0](https://github.com/bigcommerce/checkout-js/compare/v1.926.6...v1.927.0) (2026-11-02)
 
 
