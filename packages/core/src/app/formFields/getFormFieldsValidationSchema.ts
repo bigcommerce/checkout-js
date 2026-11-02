@@ -22,13 +22,20 @@ export default memoize(function getFormFieldsValidationSchema({
         ...formFields
             .filter((field) => !field.custom && !isExtraField(field))
             .reduce<{ [key: string]: StringSchema }>(
-                (schema, { name, required, label, maxLength }) => {
+                (schema, { name, required, label, maxLength, options }) => {
                     schema[name] = string();
 
                     if (required) {
                         schema[name] = schema[name]
                             .trim()
                             .required(translate('required', { label, name }));
+                    }
+
+                    if (name === 'countryCode' && options?.items?.length) {
+                        schema[name] = schema[name].oneOf(
+                            options.items.map(({ value }) => value),
+                            translate('required', { label, name }),
+                        );
                     }
 
                     if (validateMaxLength && maxLength) {
