@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.929.0](https://github.com/bigcommerce/checkout-js/compare/v1.928.0...v1.929.0) (2026-11-02)
+
+
+### Features
+
+* **checkout:** Enable phone validation for PayPal Fastlane behind experiment ([#3444](https://github.com/bigcommerce/checkout-js/issues/3444)) ([c302f6c](https://github.com/bigcommerce/checkout-js/commit/c302f6c4072b21b14f9322f28b03da1f63f91483))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10541 Show error for unavailable shipping country ([#3445](https://github.com/bigcommerce/checkout-js/issues/3445)) ([4370b57](https://github.com/bigcommerce/checkout-js/commit/4370b5771530446add622238e1ead2af02fe5c70))
+
 ## [1.928.0](https://github.com/bigcommerce/checkout-js/compare/v1.927.1...v1.928.0) (2026-11-02)
 
 
