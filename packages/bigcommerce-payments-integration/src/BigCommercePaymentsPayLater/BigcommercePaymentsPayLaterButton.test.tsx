@@ -31,7 +31,6 @@ describe('BigcommercePaymentsPayLaterButton', () => {
             language: createLanguageService(),
             methodId: 'bigcommerce_payments_paylater',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
     });
 
@@ -43,7 +42,6 @@ describe('BigcommercePaymentsPayLaterButton', () => {
             integrations: [createBigCommercePaymentsPayLaterCustomerStrategy],
             bigcommerce_payments_paylater: {
                 container: 'bigcommerce-payments-paylater-button-container',
-                onClick: expect.any(Function),
                 onComplete: expect.any(Function),
                 onError: expect.any(Function),
                 onUnhandledError: expect.any(Function),

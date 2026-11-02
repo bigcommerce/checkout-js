@@ -59,7 +59,6 @@ describe('CheckoutButtonContainer', () => {
                         checkEmbeddedSupport={noop}
                         isPaymentStepActive={isPaymentStepActive}
                         onUnhandledError={noop}
-                        onWalletButtonClick={noop}
                     />
                 </LocaleProvider>
             </CheckoutProvider>,

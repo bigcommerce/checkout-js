@@ -15,5 +15,4 @@ export default interface CheckoutButtonProps {
     language: LanguageService;
     integrations?: CustomerInitializeOptions['integrations'];
     onUnhandledError(error: Error): void;
-    onWalletButtonClick(methodName: string): void;
 }

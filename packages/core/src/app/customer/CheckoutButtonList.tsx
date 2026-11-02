@@ -35,7 +35,6 @@ export interface CheckoutButtonListProps {
     checkEmbeddedSupport?(methodIds: string[]): void;
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
-    onClick?(methodId: string): void;
     onError?(error: Error): void;
 }
 
@@ -55,8 +54,7 @@ const CheckoutButtonList: FunctionComponent<
     checkEmbeddedSupport,
     deinitialize,
     initialize,
-    onClick = noop,
-    onError,
+    onError = noop,
 }) => {
     const { language } = useLocale();
     const {
@@ -101,8 +99,7 @@ const CheckoutButtonList: FunctionComponent<
                             isShowingWalletButtonsOnTop={false}
                             key={methodId}
                             methodId={methodId}
-                            onClick={onClick}
-                            onError={onClick}
+                            onError={onError}
                         />
                     </LazyContainer>
                 );
@@ -116,8 +113,7 @@ const CheckoutButtonList: FunctionComponent<
                         containerId={`${methodId}CheckoutButton`}
                         language={language}
                         methodId={methodId}
-                        onUnhandledError={onClick}
-                        onWalletButtonClick={onClick}
+                        onUnhandledError={onError}
                     />
                 </LazyContainer>
             );

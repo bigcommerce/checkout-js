@@ -12,7 +12,6 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
     containerId,
     methodId,
     onUnhandledError,
-    onWalletButtonClick,
     additionalInitializationOptions,
     integrations,
 }) => {
@@ -24,7 +23,6 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
                 [methodId]: {
                     container: containerId,
                     onUnhandledError,
-                    onClick: () => onWalletButtonClick(methodId),
                     ...additionalInitializationOptions,
                 },
             });

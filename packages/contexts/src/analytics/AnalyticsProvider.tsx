@@ -3,9 +3,7 @@ import {
     type BodlService,
     type CheckoutService,
     createBodlService,
-    createPayPalCommerceAnalyticTracker,
     createStepTracker,
-    type PayPalCommerceAnalyticTrackerService,
     type StepTracker,
 } from '@bigcommerce/checkout-sdk/essential';
 import React, { type ReactNode, useMemo } from 'react';
@@ -25,14 +23,6 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
     );
     const getBodlService = useMemo(
         () => createAnalyticsService<BodlService>(createBodlService, [checkoutService.subscribe]),
-        [checkoutService],
-    );
-    const getPayPalCommerceAnalyticTracker = useMemo(
-        () =>
-            createAnalyticsService<PayPalCommerceAnalyticTrackerService>(
-                createPayPalCommerceAnalyticTracker,
-                [checkoutService],
-            ),
         [checkoutService],
     );
 
@@ -69,16 +59,14 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
 
     const customerPaymentMethodExecuted = (payload: BodlEventsPayload) => {
         getBodlService().customerPaymentMethodExecuted(payload);
-        getPayPalCommerceAnalyticTracker().customerPaymentMethodExecuted();
     };
 
     const showShippingMethods = () => {
         getBodlService().showShippingMethods();
     };
 
-    const selectedPaymentMethod = (methodName: string, methodId: string) => {
+    const selectedPaymentMethod = (methodName: string) => {
         getBodlService().selectedPaymentMethod(methodName);
-        getPayPalCommerceAnalyticTracker().selectedPaymentMethod(methodId);
     };
 
     const clickPayButton = (payload: BodlEventsPayload) => {
@@ -91,15 +79,10 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
 
     const paymentComplete = () => {
         getBodlService().paymentComplete();
-        getPayPalCommerceAnalyticTracker().paymentComplete();
     };
 
     const exitCheckout = () => {
         getBodlService().exitCheckout();
-    };
-
-    const walletButtonClick = (methodId: string) => {
-        getPayPalCommerceAnalyticTracker().walletButtonClick(methodId);
     };
 
     const analyticsTracker: AnalyticsEvents = {
@@ -117,7 +100,6 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
         paymentRejected,
         paymentComplete,
         exitCheckout,
-        walletButtonClick,
     };
 
     return (

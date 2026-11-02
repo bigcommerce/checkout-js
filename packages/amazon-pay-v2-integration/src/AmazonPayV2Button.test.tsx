@@ -21,7 +21,6 @@ describe('AmazonPayV2Button', () => {
             language: createLanguageService(),
             methodId: 'amazonpay',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
     });
 

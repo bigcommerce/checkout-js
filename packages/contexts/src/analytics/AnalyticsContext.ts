@@ -16,7 +16,6 @@ export interface AnalyticsEvents {
     paymentRejected(): void;
     paymentComplete(): void;
     exitCheckout(): void;
-    walletButtonClick(methodId: string): void;
 }
 
 export interface AnalyticsContextProps {
