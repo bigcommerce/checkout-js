@@ -74,10 +74,11 @@ const AddressForm: React.FC<AddressFormProps> = ({
         config?.checkoutSettings,
         'CHECKOUT-10428.phone_validation_for_paypal_fastlane',
     );
-    const isPhoneNumberValidationEnabled = !isPhoneValidationForPayPalFastlaneExperimentOn
-        ? !isPayPalFastlaneEnabled &&
-          (config?.checkoutSettings.isPhoneNumberValidationEnabled ?? false)
-        : (config?.checkoutSettings.isPhoneNumberValidationEnabled ?? false);
+    const isPhoneValidationSettingEnabled =
+        config?.checkoutSettings.isPhoneNumberValidationEnabled ?? false;
+    const isPhoneNumberValidationEnabled = isPhoneValidationForPayPalFastlaneExperimentOn
+        ? isPhoneValidationSettingEnabled
+        : !isPayPalFastlaneEnabled && isPhoneValidationSettingEnabled;
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
     const sortedFormFields = enhancedThemeV1 ? moveCountryFieldToTop(formFields) : formFields;
 
