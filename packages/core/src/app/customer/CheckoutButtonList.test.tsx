@@ -2,11 +2,13 @@ import {
     type CheckoutSelectors,
     type CheckoutService,
     createCheckoutService,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React from 'react';
 
 import { CheckoutProvider, defaultCapabilities } from '@bigcommerce/checkout/contexts';
+import { getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
@@ -23,6 +25,17 @@ describe('CheckoutButtonList', () => {
                 <CheckoutButtonList deinitialize={noop} initialize={noop} {...props} />
             </CheckoutProvider>,
         );
+
+    const createWalletMethod = (
+        id: string,
+        method: string,
+        shouldVaultAllPayments: boolean,
+    ): PaymentMethod => ({
+        ...getPaymentMethod(),
+        id,
+        method,
+        config: { ...getPaymentMethod().config, displayName: '', shouldVaultAllPayments },
+    });
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -88,6 +101,34 @@ describe('CheckoutButtonList', () => {
         renderCheckoutButtonList({ methodIds: ['applepay'] });
 
         expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
+    });
+
+    it('renders one disclaimer naming every rendered auto-vaulting wallet', async () => {
+        jest.spyOn(checkoutService, 'getState').mockReturnValue(checkoutState);
+        jest.spyOn(checkoutState.data, 'getPaymentMethods').mockReturnValue([
+            createWalletMethod('applepay', 'credit-card', true),
+            createWalletMethod('googlepaystripeocs', 'googlepay', true),
+        ]);
+
+        renderCheckoutButtonList({ methodIds: ['applepay', 'googlepaystripeocs'] });
+
+        expect(await screen.findByTestId('auto-vaulting-disclaimer')).toBeInTheDocument();
+        expect(screen.getByTestId('auto-vaulting-disclaimer')).toHaveTextContent(
+            'By paying with Apple Pay or Google Pay, you agree the merchant may charge your card for future payments under its terms.',
+        );
+    });
+
+    it('does not render the disclaimer when no rendered wallet auto-vaults', async () => {
+        jest.spyOn(checkoutService, 'getState').mockReturnValue(checkoutState);
+        jest.spyOn(checkoutState.data, 'getPaymentMethods').mockReturnValue([
+            createWalletMethod('applepay', 'credit-card', false),
+            createWalletMethod('googlepaystripeocs', 'googlepay', true),
+        ]);
+
+        renderCheckoutButtonList({ methodIds: ['applepay'] });
+
+        expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
+        expect(screen.queryByTestId('auto-vaulting-disclaimer')).not.toBeInTheDocument();
     });
 
     it('notifies parent if methods are incompatible with Embedded Checkout', () => {
