@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.930.1](https://github.com/bigcommerce/checkout-js/compare/v1.930.0...v1.930.1) (2026-11-03)
+
+
+### Bug Fixes
+
+* **payment:** PI-5846 Cardinal BIN profiling timeout is treated as fatal in CyberSource v2 3DS flow, aborting checkout before enrollment check ([#3447](https://github.com/bigcommerce/checkout-js/issues/3447)) ([0d710ce](https://github.com/bigcommerce/checkout-js/commit/0d710ce6d8e63e0ca7a1c7e95aa33db3f8bce2af))
+
 ## [1.930.0](https://github.com/bigcommerce/checkout-js/compare/v1.929.0...v1.930.0) (2026-11-03)
 
 
