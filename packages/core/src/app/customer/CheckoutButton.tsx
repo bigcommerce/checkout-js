@@ -2,7 +2,6 @@ import {
     type CustomerInitializeOptions,
     type CustomerRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { noop } from 'lodash';
 import React, { type ReactElement, useEffect } from 'react';
 
 const WALLET_BUTTON_HEIGHT = 40;
@@ -14,7 +13,6 @@ export interface CheckoutButtonProps {
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
     onError?(error: Error): void;
-    onClick?(methodId: string): void;
 }
 
 const CheckoutButton = ({
@@ -24,7 +22,6 @@ const CheckoutButton = ({
     deinitialize,
     initialize,
     onError,
-    onClick = noop,
 }: CheckoutButtonProps): ReactElement => {
     useEffect(() => {
         const heightOption =
@@ -39,7 +36,6 @@ const CheckoutButton = ({
                 ...heightOption,
                 container: containerId,
                 onError,
-                onClick: () => onClick(methodId),
             },
         });
 

@@ -24,4 +24,19 @@ describe('AutoVaultingDisclaimer', () => {
         expect(disclaimer).toHaveClass('optimizedCheckout-secondaryDarkest');
         expect(disclaimer).toHaveClass('sub-text-medium');
     });
+
+    it('renders the alternative copy with the provided translation data', () => {
+        render(
+            <AutoVaultingDisclaimer
+                translationData={{ methodNames: 'Apple Pay or Google Pay' }}
+                translationId="remote.auto_vaulting_disclaimer_text"
+            />,
+        );
+
+        expect(
+            screen.getByText(
+                'By paying with Apple Pay or Google Pay, you agree the merchant may charge your card for future payments under its terms.',
+            ),
+        ).toBeInTheDocument();
+    });
 });

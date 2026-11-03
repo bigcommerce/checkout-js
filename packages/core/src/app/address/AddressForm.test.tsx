@@ -165,9 +165,13 @@ describe('AddressForm Component', () => {
         const getConfigMockWithPhoneValidation = ({
             isPhoneNumberValidationEnabled,
             providerWithCustomCheckout = null,
+            features = {},
+            isCustomCheckout = false,
         }: {
             isPhoneNumberValidationEnabled: boolean;
             providerWithCustomCheckout?: string | null;
+            features?: Record<string, boolean>;
+            isCustomCheckout?: boolean;
         }) => {
             const config = getStoreConfig();
 
@@ -177,6 +181,8 @@ describe('AddressForm Component', () => {
                     ...config.checkoutSettings,
                     isPhoneNumberValidationEnabled,
                     providerWithCustomCheckout,
+                    isCustomCheckout,
+                    features: { ...config.checkoutSettings.features, ...features },
                 },
             };
         };
@@ -199,6 +205,37 @@ describe('AddressForm Component', () => {
                 getConfigMockWithPhoneValidation({
                     isPhoneNumberValidationEnabled: true,
                     providerWithCustomCheckout: 'bigcommerce_payments_fastlane',
+                }),
+            );
+
+            renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
+
+            expect(screen.queryByTestId('intl-tel-input-mock')).not.toBeInTheDocument();
+            expect(screen.getByTestId('phoneInput-text')).toBeInTheDocument();
+        });
+
+        it('renders new phone number field for PayPal Fastlane when experiment is on', () => {
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                getConfigMockWithPhoneValidation({
+                    isPhoneNumberValidationEnabled: true,
+                    providerWithCustomCheckout: 'bigcommerce_payments_fastlane',
+                    features: { 'CHECKOUT-10428.phone_validation_for_paypal_fastlane': true },
+                }),
+            );
+
+            renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
+
+            expect(screen.getByTestId('intl-tel-input-mock')).toBeInTheDocument();
+            expect(screen.queryByTestId('phoneInput-text')).not.toBeInTheDocument();
+        });
+
+        it('renders legacy phone field for PayPal Fastlane on a custom checkout even when experiment is on', () => {
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                getConfigMockWithPhoneValidation({
+                    isPhoneNumberValidationEnabled: true,
+                    providerWithCustomCheckout: 'bigcommerce_payments_fastlane',
+                    features: { 'CHECKOUT-10428.phone_validation_for_paypal_fastlane': true },
+                    isCustomCheckout: true,
                 }),
             );
 

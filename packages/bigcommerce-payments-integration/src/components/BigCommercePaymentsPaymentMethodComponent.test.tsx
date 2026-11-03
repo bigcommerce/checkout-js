@@ -402,4 +402,96 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
         expect(paymentForm.setFieldTouched).toHaveBeenCalledTimes(2);
         expect(validationReject).toHaveBeenCalled();
     });
+
+    describe('billing address saving during onValidate callback', () => {
+        const renderAndValidate = async (paymentFormMock: PaymentFormService) => {
+            jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+                eventEmitter.on('onValidate', async (resolve, reject) => {
+                    if (options.bigcommerce_payments?.onValidate) {
+                        await options.bigcommerce_payments.onValidate(resolve, reject);
+                    }
+                });
+
+                return Promise.resolve(checkoutState);
+            });
+
+            const validationSuccess = jest.fn();
+            const validationReject = jest.fn();
+
+            render(
+                <BigCommercePaymentsPaymentMethodComponent
+                    {...props}
+                    paymentForm={paymentFormMock}
+                />,
+            );
+
+            eventEmitter.emit('onValidate', validationSuccess, validationReject);
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            return { validationSuccess, validationReject };
+        };
+
+        it('resolves validation when billing address is saved', async () => {
+            const paymentFormMock: PaymentFormService = {
+                ...getPaymentFormServiceMock(),
+                validateForm: jest.fn().mockResolvedValue({}),
+                ensureBillingAddressSaved: jest.fn().mockResolvedValue(true),
+            };
+
+            const { validationSuccess, validationReject } =
+                await renderAndValidate(paymentFormMock);
+
+            expect(paymentFormMock.ensureBillingAddressSaved).toHaveBeenCalled();
+            expect(paymentFormMock.setSubmitted).not.toHaveBeenCalled();
+            expect(validationSuccess).toHaveBeenCalled();
+            expect(validationReject).not.toHaveBeenCalled();
+        });
+
+        it('rejects validation when billing address is not saved', async () => {
+            const paymentFormMock: PaymentFormService = {
+                ...getPaymentFormServiceMock(),
+                validateForm: jest.fn().mockResolvedValue({}),
+                ensureBillingAddressSaved: jest.fn().mockResolvedValue(false),
+            };
+
+            const { validationSuccess, validationReject } =
+                await renderAndValidate(paymentFormMock);
+
+            expect(paymentFormMock.ensureBillingAddressSaved).toHaveBeenCalled();
+            expect(paymentFormMock.setSubmitted).toHaveBeenCalledWith(true);
+            expect(validationReject).toHaveBeenCalled();
+            expect(validationSuccess).not.toHaveBeenCalled();
+        });
+
+        it('resolves validation when billing address saving result is undefined', async () => {
+            const paymentFormMock: PaymentFormService = {
+                ...getPaymentFormServiceMock(),
+                validateForm: jest.fn().mockResolvedValue({}),
+                ensureBillingAddressSaved: jest.fn().mockResolvedValue(undefined),
+            };
+
+            const { validationSuccess, validationReject } =
+                await renderAndValidate(paymentFormMock);
+
+            expect(paymentFormMock.ensureBillingAddressSaved).toHaveBeenCalled();
+            expect(validationSuccess).toHaveBeenCalled();
+            expect(validationReject).not.toHaveBeenCalled();
+        });
+
+        it('does not save billing address when form validation fails', async () => {
+            const paymentFormMock: PaymentFormService = {
+                ...getPaymentFormServiceMock(),
+                validateForm: jest.fn().mockResolvedValue({ field1: 'validation error message' }),
+                ensureBillingAddressSaved: jest.fn().mockResolvedValue(true),
+            };
+
+            const { validationSuccess, validationReject } =
+                await renderAndValidate(paymentFormMock);
+
+            expect(paymentFormMock.ensureBillingAddressSaved).not.toHaveBeenCalled();
+            expect(validationReject).toHaveBeenCalled();
+            expect(validationSuccess).not.toHaveBeenCalled();
+        });
+    });
 });

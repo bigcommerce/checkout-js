@@ -31,7 +31,6 @@ describe('PayPalCommerceButton', () => {
             language: createLanguageService(),
             methodId: 'paypalcommerce',
             onUnhandledError: jest.fn(),
-            onWalletButtonClick: jest.fn(),
         };
     });
 
@@ -43,7 +42,6 @@ describe('PayPalCommerceButton', () => {
             integrations: [createPayPalCommerceCustomerStrategy],
             paypalcommerce: {
                 container: 'paypalcommerce-button-container',
-                onClick: expect.any(Function),
                 onComplete: expect.any(Function),
                 onError: expect.any(Function),
                 onUnhandledError: expect.any(Function),

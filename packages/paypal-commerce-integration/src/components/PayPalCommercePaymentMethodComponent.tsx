@@ -146,6 +146,15 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<
                             return reject();
                         }
 
+                        const isBillingAddressSaved =
+                            await paymentForm.ensureBillingAddressSaved?.();
+
+                        if (isBillingAddressSaved === false) {
+                            paymentForm.setSubmitted(true);
+
+                            return reject();
+                        }
+
                         return resolve();
                     },
                     onInitButton: async (actions: ButtonActions) => {

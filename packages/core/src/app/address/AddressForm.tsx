@@ -17,6 +17,7 @@ import {
     DynamicFormFieldType,
     Fieldset,
 } from '@bigcommerce/checkout/ui';
+import { isExperimentEnabledWithOptIn } from '@bigcommerce/checkout/utility';
 
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
@@ -69,10 +70,15 @@ const AddressForm: React.FC<AddressFormProps> = ({
     const isPayPalFastlaneEnabled = isPayPalFastlaneMethod(
         getProviderWithCustomCheckout(config?.checkoutSettings.providerWithCustomCheckout),
     );
-    // PayPal Fastlane stores keep the legacy phone input for now, due to incident
-    const isPhoneNumberValidationEnabled =
-        !isPayPalFastlaneEnabled &&
-        (config?.checkoutSettings.isPhoneNumberValidationEnabled ?? false);
+    const isPhoneValidationForPayPalFastlaneExperimentOn = isExperimentEnabledWithOptIn(
+        config?.checkoutSettings,
+        'CHECKOUT-10428.phone_validation_for_paypal_fastlane',
+    );
+    const isPhoneValidationSettingEnabled =
+        config?.checkoutSettings.isPhoneNumberValidationEnabled ?? false;
+    const isPhoneNumberValidationEnabled = isPhoneValidationForPayPalFastlaneExperimentOn
+        ? isPhoneValidationSettingEnabled
+        : !isPayPalFastlaneEnabled && isPhoneValidationSettingEnabled;
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
     const sortedFormFields = enhancedThemeV1 ? moveCountryFieldToTop(formFields) : formFields;
 

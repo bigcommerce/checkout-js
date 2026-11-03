@@ -42,6 +42,7 @@ export function getTranslatedPaymentMethodName(
             [PaymentMethodId.Affirm]: language.translate('payment.affirm_name_text'),
             [PaymentMethodId.Afterpay]: language.translate('payment.afterpay_name_text'),
             [PaymentMethodId.AmazonPay]: language.translate('payment.amazon_name_text'),
+            [PaymentMethodId.ApplePay]: language.translate('payment.apple_pay_name_text'),
             [PaymentMethodId.Bolt]: language.translate('payment.bolt_name_text'),
             [PaymentMethodId.Clearpay]: language.translate('payment.clearpay_name_text'),
             [PaymentMethodType.GooglePay]: language.translate('payment.google_pay_name_text'),

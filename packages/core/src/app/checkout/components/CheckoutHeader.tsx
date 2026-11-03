@@ -17,7 +17,6 @@ export interface CheckoutHeaderProps {
     buttonConfigs: PaymentMethod[];
     checkEmbeddedSupport: (methodIds: string[]) => boolean;
     onUnhandledError: (error: Error) => void;
-    onWalletButtonClick: (methodName: string) => void;
 }
 
 export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
@@ -26,7 +25,6 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
     buttonConfigs,
     checkEmbeddedSupport,
     onUnhandledError,
-    onWalletButtonClick,
 }) => {
     const {
         selectedState: { checkout, config, flashMessages },
@@ -57,7 +55,6 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
                     checkEmbeddedSupport={checkEmbeddedSupport}
                     isPaymentStepActive={isPaymentStepActive}
                     onUnhandledError={onUnhandledError}
-                    onWalletButtonClick={onWalletButtonClick}
                 />
             )}
         </>

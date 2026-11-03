@@ -6,6 +6,7 @@ import {
     useCapabilities,
     useLocale,
 } from '@bigcommerce/checkout/contexts';
+import { AutoVaultingDisclaimer } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { LazyContainer, WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
@@ -13,6 +14,7 @@ import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 import { withCheckout } from '../checkout';
 import { retry } from '../common/utility';
 
+import { getAutoVaultingMethodNames } from './getAutoVaultingMethodNames';
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 
@@ -27,7 +29,6 @@ interface CheckoutButtonContainerProps {
     isPaymentStepActive: boolean;
     checkEmbeddedSupport(methodIds: string[]): void;
     onUnhandledError(error: Error): void;
-    onWalletButtonClick(methodId: string): void;
 }
 
 interface WithCheckoutCheckoutButtonContainerProps {
@@ -51,7 +52,6 @@ const CheckoutButtonContainer: FunctionComponent<
     isLoading,
     isPaymentStepActive,
     onUnhandledError,
-    onWalletButtonClick,
 }) => {
     const { language } = useLocale();
     const {
@@ -67,6 +67,12 @@ const CheckoutButtonContainer: FunctionComponent<
     } catch (error) {
         return null;
     }
+
+    const autoVaultingMethodNames = getAutoVaultingMethodNames(
+        language,
+        availableMethodIds,
+        checkoutState.data.getPaymentMethods(),
+    );
 
     const renderButtons = () =>
         availableMethodIds.map((methodId) => {
@@ -85,7 +91,6 @@ const CheckoutButtonContainer: FunctionComponent<
                             isShowingWalletButtonsOnTop={true}
                             key={methodId}
                             methodId={methodId}
-                            onClick={onWalletButtonClick}
                             onError={onUnhandledError}
                         />
                     </Suspense>
@@ -101,7 +106,6 @@ const CheckoutButtonContainer: FunctionComponent<
                         language={language}
                         methodId={methodId}
                         onUnhandledError={onUnhandledError}
-                        onWalletButtonClick={onWalletButtonClick}
                     />
                 </Suspense>
             );
@@ -126,6 +130,12 @@ const CheckoutButtonContainer: FunctionComponent<
                         <div className="checkoutRemote">{renderButtons()}</div>
                     </WalletButtonsContainerSkeleton>
                 </div>
+                {autoVaultingMethodNames.length > 0 && (
+                    <AutoVaultingDisclaimer
+                        translationData={{ methodNames: autoVaultingMethodNames }}
+                        translationId="remote.auto_vaulting_disclaimer_text"
+                    />
+                )}
                 <div className="checkout-separator">
                     <span className="optimizedCheckout-headingSecondary sub-header">
                         <TranslatedString id="remote.or_text" />

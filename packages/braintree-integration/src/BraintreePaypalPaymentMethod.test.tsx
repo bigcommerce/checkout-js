@@ -177,6 +177,81 @@ describe('BraintreePaypalPaymentMethod', () => {
         expect(validationReject).toHaveBeenCalled();
     });
 
+    it('does not pass validation when billing address cannot be saved', async () => {
+        jest.spyOn(paymentForm, 'ensureBillingAddressSaved').mockResolvedValue(false);
+        jest.mocked(paymentForm.setSubmitted).mockClear();
+
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onValidate', async (resolve: () => void, reject: () => void) => {
+                await options.braintree?.onValidate?.(resolve, reject);
+            });
+
+            return Promise.resolve(checkoutState);
+        });
+
+        const validationSuccess = jest.fn();
+        const validationReject = jest.fn();
+
+        render(<BraintreePaypalPaymentMethodTest />);
+
+        eventEmitter.emit('onValidate', validationSuccess, validationReject);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(paymentForm.ensureBillingAddressSaved).toHaveBeenCalled();
+        expect(paymentForm.setSubmitted).toHaveBeenCalledWith(true);
+        expect(validationReject).toHaveBeenCalled();
+        expect(validationSuccess).not.toHaveBeenCalled();
+    });
+
+    it('passes validation when billing address is saved', async () => {
+        jest.spyOn(paymentForm, 'ensureBillingAddressSaved').mockResolvedValue(true);
+
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onValidate', async (resolve: () => void, reject: () => void) => {
+                await options.braintree?.onValidate?.(resolve, reject);
+            });
+
+            return Promise.resolve(checkoutState);
+        });
+
+        const validationSuccess = jest.fn();
+        const validationReject = jest.fn();
+
+        render(<BraintreePaypalPaymentMethodTest />);
+
+        eventEmitter.emit('onValidate', validationSuccess, validationReject);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(validationSuccess).toHaveBeenCalled();
+        expect(validationReject).not.toHaveBeenCalled();
+    });
+
+    it('passes validation when no billing form is registered', async () => {
+        jest.spyOn(paymentForm, 'ensureBillingAddressSaved').mockResolvedValue(undefined);
+
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onValidate', async (resolve: () => void, reject: () => void) => {
+                await options.braintree?.onValidate?.(resolve, reject);
+            });
+
+            return Promise.resolve(checkoutState);
+        });
+
+        const validationSuccess = jest.fn();
+        const validationReject = jest.fn();
+
+        render(<BraintreePaypalPaymentMethodTest />);
+
+        eventEmitter.emit('onValidate', validationSuccess, validationReject);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(validationSuccess).toHaveBeenCalled();
+        expect(validationReject).not.toHaveBeenCalled();
+    });
+
     it('hides payment submit button by calling onRenderButton callback', () => {
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onRenderButton', () => {

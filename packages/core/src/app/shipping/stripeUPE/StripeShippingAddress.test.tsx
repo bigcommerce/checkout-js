@@ -305,6 +305,61 @@ describe('StripeShippingAddress Component', () => {
         );
     });
 
+    it('uses country name as city when Stripe returns an empty city', () => {
+        defaultProps.initialize = getInitializeMock({
+            ...stripeEvent,
+            value: {
+                ...stripeEvent.value,
+                address: {
+                    ...stripeEvent.value.address,
+                    city: '',
+                },
+            },
+        });
+
+        renderTestComponent();
+
+        expect(defaultProps.onAddressSelect).toHaveBeenCalledWith(
+            expect.objectContaining({
+                city: 'United States',
+            }),
+        );
+    });
+
+    it('uses country code as city when city is empty and country is not in the available list', () => {
+        defaultProps.initialize = getInitializeMock({
+            ...stripeEvent,
+            value: {
+                ...stripeEvent.value,
+                address: {
+                    ...stripeEvent.value.address,
+                    city: '',
+                    country: 'GI',
+                },
+            },
+        });
+
+        renderTestComponent();
+
+        expect(defaultProps.onAddressSelect).toHaveBeenCalledWith(
+            expect.objectContaining({
+                city: 'GI',
+            }),
+        );
+    });
+
+    it('keeps city from Stripe when provided', () => {
+        defaultProps.initialize = getInitializeMock();
+
+        renderTestComponent();
+
+        expect(defaultProps.onAddressSelect).toHaveBeenCalledWith(
+            expect.objectContaining({
+                city: 'string',
+            }),
+        );
+    });
+
     it('handle loading if no available shipping options', () => {
         defaultProps.initialize = getInitializeMock({
             ...stripeEvent,
