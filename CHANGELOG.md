@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.930.0](https://github.com/bigcommerce/checkout-js/compare/v1.929.0...v1.930.0) (2026-11-03)
+
+
+### Features
+
+* **payment:** Move NMI to the new resolver ([#3435](https://github.com/bigcommerce/checkout-js/issues/3435)) ([3b6bbff](https://github.com/bigcommerce/checkout-js/commit/3b6bbffa1c5134eff4e11b86195e6cc80efe0e14))
+
 ## [1.929.0](https://github.com/bigcommerce/checkout-js/compare/v1.928.0...v1.929.0) (2026-11-02)
 
 
