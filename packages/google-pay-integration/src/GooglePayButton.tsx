@@ -24,6 +24,7 @@ import {
     isEmbedded,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
+import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 
 import './GooglePayButton.scss';
 
@@ -59,8 +60,13 @@ const GooglePayButton: FunctionComponent<CheckoutButtonProps> = (props) => {
         createGooglePayTdOnlineMartCustomerStrategy,
     ];
 
+    const additionalInitializationOptions = {
+        onPaymentAuthorize: navigateToOrderConfirmation,
+    };
+
     return (
         <CheckoutButton
+            additionalInitializationOptions={additionalInitializationOptions}
             checkoutButtonContainerClass="google-pay-top-button"
             integrations={integrations}
             {...props}
