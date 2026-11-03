@@ -1,5 +1,7 @@
 import { type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
+export const FETCH_SUGGESTIONS_DEBOUNCE_WAIT = 300;
+
 export const toAutocompleteItems = (
     results?: google.maps.places.AutocompletePrediction[],
 ): AutocompleteItem[] => {
