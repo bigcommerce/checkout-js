@@ -49,7 +49,6 @@ const KNOWN_API_METHOD_IDS = new Set([
     'bigpaypay',
     'usaepay',
     'googlepay',
-    'quickbooks',
     'orbital',
     'stripe',
     'firstdatae4v14',
