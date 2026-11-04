@@ -542,7 +542,7 @@
             "continue_with_text": "Of ga door met",
             "or_text": "OF",
             "payment_method_error": "Er is een fout opgetreden bij het ophalen van uw externe betaalmethode. Probeer het opnieuw.",
-            "retry_same_card_action": "Try again or select a different card",
+            "retry_same_card_action": "Probeer het opnieuw of selecteer een andere kaart",
             "select_different_card_action": "Selecteer een andere kaart",
             "session_error": "Uw externe sessie is verlopen. Log opnieuw in.",
             "shipping_address_error": "Er is een fout opgetreden bij het ophalen van uw externe verzendadres. Probeer het opnieuw.",

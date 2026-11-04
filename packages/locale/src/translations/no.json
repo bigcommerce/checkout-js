@@ -542,7 +542,7 @@
             "continue_with_text": "Eller fortsett med",
             "or_text": "eller",
             "payment_method_error": "Det oppsto en feil under henting av den eksterne betalingsmåten din. Prøv igjen.",
-            "retry_same_card_action": "Try again or select a different card",
+            "retry_same_card_action": "Prøv igjen eller velg et annet kort",
             "select_different_card_action": "Velg et annet kort",
             "session_error": "Den eksterne økten din er utløpt. Logg på igjen.",
             "shipping_address_error": "Det oppsto en feil under henting av den eksterne leveringsadressen din. Prøv igjen.",

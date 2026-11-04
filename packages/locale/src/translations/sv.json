@@ -542,7 +542,7 @@
             "continue_with_text": "Eller fortsätt med",
             "or_text": "ELLER",
             "payment_method_error": "Det gick inte att hämta din fjärrbetalningsmetod. Försök igen.",
-            "retry_same_card_action": "Try again or select a different card",
+            "retry_same_card_action": "Försök igen eller välj ett annat kort",
             "select_different_card_action": "Välj ett annat kort",
             "session_error": "Din fjärrsession har gått ut. Logga in igen.",
             "shipping_address_error": "Det gick inte att hämta din fjärrleveransadress. Försök igen.",

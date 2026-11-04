@@ -542,7 +542,7 @@
             "continue_with_text": "Ou continuer avec",
             "or_text": "OU",
             "payment_method_error": "Une erreur s'est produite lors de la récupération de votre mode de paiement à distance. Veuillez réessayer.",
-            "retry_same_card_action": "Try again or select a different card",
+            "retry_same_card_action": "Réessayez ou sélectionnez une autre carte",
             "select_different_card_action": "Sélectionner une autre carte",
             "session_error": "Votre session à distance a expiré. Veuillez vous reconnecter.",
             "shipping_address_error": "Une erreur s'est produite lors de la récupération de votre adresse de livraison à distance. Veuillez réessayer.",
