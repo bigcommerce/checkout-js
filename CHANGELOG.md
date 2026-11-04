@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.931.0](https://github.com/bigcommerce/checkout-js/compare/v1.930.1...v1.931.0) (2026-11-04)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#3370](https://github.com/bigcommerce/checkout-js/issues/3370)) ([b6ead6f](https://github.com/bigcommerce/checkout-js/commit/b6ead6f35e7ff8e2b3a6714a862e11baaaa11971))
+* **other:** LOCAL-1444 delivery translation ([#3381](https://github.com/bigcommerce/checkout-js/issues/3381)) ([7c72f8f](https://github.com/bigcommerce/checkout-js/commit/7c72f8f96b6e661db16cae81da6c3e1bc44ea56c))
+* **other:** LOCAL-1444 delivery translation ([#3400](https://github.com/bigcommerce/checkout-js/issues/3400)) ([479ccc6](https://github.com/bigcommerce/checkout-js/commit/479ccc6238c0496b0c546ced9d9a6b4869b6807e))
+* **other:** LOCAL-1444 delivery translation ([#3412](https://github.com/bigcommerce/checkout-js/issues/3412)) ([c445a36](https://github.com/bigcommerce/checkout-js/commit/c445a36a12c26e2880c5b2e8f95664890c300ca3))
+* **other:** LOCAL-1444 delivery translation ([#3430](https://github.com/bigcommerce/checkout-js/issues/3430)) ([19c87aa](https://github.com/bigcommerce/checkout-js/commit/19c87aa9387f468dd0d52ad967739c134406fcb2))
+* **other:** LOCAL-1444 delivery translation ([#3446](https://github.com/bigcommerce/checkout-js/issues/3446)) ([7c90e4a](https://github.com/bigcommerce/checkout-js/commit/7c90e4a2193dee83763f83456f6b8d93398b46c4))
+
 ### [1.930.1](https://github.com/bigcommerce/checkout-js/compare/v1.930.0...v1.930.1) (2026-11-03)
 
 
