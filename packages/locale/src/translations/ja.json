@@ -343,6 +343,7 @@
             "payment_methods_unavailable_error": "現在、支払い方法を読み込むことができません。しばらくしてからもう一度お試しいただくか、ストアにお問い合わせください。",
             "payment_methods_reloaded_method_unavailable_text": "請求先住所の国が{countryName}に設定されたため、支払いオプションを再読み込みしました。{methodName}はこの国ではご利用いただけません。別の支払い方法を選択してください。",
             "payment_methods_updated_for_country_text": "請求先住所の国が{countryName}に設定されたため、支払いオプションを更新しました。",
+            "price_changed_text": "We updated the order total to reflect your billing address. Nothing’s been charged yet. Review the new amount and submit the order again when you’re ready.",
             "paypal_complete_action": "注文を完了する",
             "paypal_continue_action": "PayPalで続ける",
             "paypal_pay_later_complete_action": "注文を完了する",

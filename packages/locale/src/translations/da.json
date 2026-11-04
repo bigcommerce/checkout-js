@@ -343,6 +343,7 @@
             "payment_methods_unavailable_error": "Vi kan ikke indlæse betalingsmetoder i øjeblikket. Prøv igen senere, eller kontakt butikken for at få hjælp.",
             "payment_methods_reloaded_method_unavailable_text": "Betalingsmuligheder genindlæst for {countryName} som faktureringsland. {methodName} er ikke tilgængelig i dette land. Vælg en anden betalingsmetode.",
             "payment_methods_updated_for_country_text": "Betalingsmuligheder opdateret for {countryName} som faktureringsland.",
+            "price_changed_text": "We updated the order total to reflect your billing address. Nothing’s been charged yet. Review the new amount and submit the order again when you’re ready.",
             "paypal_complete_action": "Gennemfør ordre",
             "paypal_continue_action": "Fortsæt med PayPal",
             "paypal_pay_later_complete_action": "Gennemfør ordre",

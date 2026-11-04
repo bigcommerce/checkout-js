@@ -343,6 +343,7 @@
             "payment_methods_unavailable_error": "Al momento non possiamo caricare i metodi di pagamento. Riprova più tardi o contatta il negozio per assistenza.",
             "payment_methods_reloaded_method_unavailable_text": "Opzioni di pagamento ricaricate per {countryName} come paese di fatturazione. {methodName} non è disponibile in questo paese, seleziona un altro metodo di pagamento.",
             "payment_methods_updated_for_country_text": "Opzioni di pagamento aggiornate per {countryName} come paese di fatturazione.",
+            "price_changed_text": "We updated the order total to reflect your billing address. Nothing’s been charged yet. Review the new amount and submit the order again when you’re ready.",
             "paypal_complete_action": "Completa ordine",
             "paypal_continue_action": "Continua con PayPal",
             "paypal_pay_later_complete_action": "Completa ordine",

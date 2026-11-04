@@ -343,6 +343,7 @@
             "payment_methods_unavailable_error": "We kunnen op dit moment geen betaalmethoden laden. Probeer het later opnieuw of neem contact op met de winkel voor hulp.",
             "payment_methods_reloaded_method_unavailable_text": "Betaalopties opnieuw geladen voor {countryName} als het facturatieland. {methodName} is niet beschikbaar in dit land, kies een andere betaalmethode.",
             "payment_methods_updated_for_country_text": "Betaalopties bijgewerkt voor {countryName} als facturatieland.",
+            "price_changed_text": "We updated the order total to reflect your billing address. Nothing’s been charged yet. Review the new amount and submit the order again when you’re ready.",
             "paypal_complete_action": "Bestelling voltooien",
             "paypal_continue_action": "Doorgaan met PayPal",
             "paypal_pay_later_complete_action": "Bestelling voltooien",
