@@ -291,6 +291,7 @@
             "checkoutcom_sepa_payment_type": "Tipo de pagamento: único (não recorrente)",
             "clearpay_name_text": "Clearpay",
             "credit_card_text": "Cartão de crédito",
+            "credit_card_more_cards_action": "Show more accepted cards",
             "credit_card_customer_code_label": "Código do cliente",
             "credit_card_cvv_help_action": "What is a CVV?",
             "credit_card_cvv_help_text": "No VISA e no Mastercard, o CVV é um código de três dígitos, impresso na parte de trás. No American Express é o código de quatro dígitos, impresso na frente. O CVV é uma medida de segurança para garantir que você está em posse do cartão.",

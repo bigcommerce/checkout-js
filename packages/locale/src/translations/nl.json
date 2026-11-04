@@ -291,6 +291,7 @@
             "checkoutcom_sepa_payment_type": "Betaalwijze: eenmalig (niet-terugkerend)",
             "clearpay_name_text": "Clearpay",
             "credit_card_text": "Creditcard",
+            "credit_card_more_cards_action": "Show more accepted cards",
             "credit_card_customer_code_label": "Klantcode",
             "credit_card_cvv_help_action": "Wat is een CVV?",
             "credit_card_cvv_help_text": "Bij VISA en Mastercard is de CVV een driecijferige code op de achterkant van de kaart. Bij American Express is dit de viercijferige code op de voorkant van de kaart. De CVV is een beveiligingsmaatregel om te controleren of u in het bezit bent van de kaart.",
