@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.932.0](https://github.com/bigcommerce/checkout-js/compare/v1.931.0...v1.932.0) (2026-11-04)
+
+
+### Features
+
+* **payment:** Move Quickbooks to the new resolver ([#3440](https://github.com/bigcommerce/checkout-js/issues/3440)) ([eb99bd7](https://github.com/bigcommerce/checkout-js/commit/eb99bd728093868c35539aa205a6138bf07a1957))
+
 ## [1.931.0](https://github.com/bigcommerce/checkout-js/compare/v1.930.1...v1.931.0) (2026-11-04)
 
 
