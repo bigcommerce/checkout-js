@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.932.3](https://github.com/bigcommerce/checkout-js/compare/v1.932.2...v1.932.3) (2026-11-05)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10539 No cart summary when cart is empty after sign out ([#3450](https://github.com/bigcommerce/checkout-js/issues/3450)) ([facc1e9](https://github.com/bigcommerce/checkout-js/commit/facc1e91adec5717169b12f73374afcd37fed79a))
+
 ### [1.932.2](https://github.com/bigcommerce/checkout-js/compare/v1.932.1...v1.932.2) (2026-11-05)
 
 
