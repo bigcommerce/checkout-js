@@ -823,9 +823,10 @@ const Checkout = ({
                                     )}
                             </ol>
                         </div>
+
+                        <CartSummary isMultiShippingMode={state.isMultiShippingMode} />
                     </>
                 )}
-                <CartSummary isMultiShippingMode={state.isMultiShippingMode} />
             </div>
             {errorModal}
         </div>
