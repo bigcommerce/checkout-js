@@ -8,7 +8,7 @@ import { createStripeLinkV2CustomerStrategy } from '@bigcommerce/checkout-sdk/in
 import React from 'react';
 
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
-import { render } from '@bigcommerce/checkout/test-utils';
+import { act, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import StripeLinkV2Button from './StripeLinkV2Button';
 
@@ -46,8 +46,35 @@ describe('StripeLinkV2Button', () => {
                 methodId: 'optimized_checkout',
                 gatewayId: 'stripeocs',
                 onComplete: expect.any(Function),
+                onReady: expect.any(Function),
                 onUnhandledError: expect.any(Function),
             },
         });
+    });
+
+    it('shows skeleton until Stripe Link button is ready', () => {
+        render(<StripeLinkV2Button {...defaultProps} />);
+
+        expect(screen.getByTestId('stripe-link-v2-button-skeleton')).toBeInTheDocument();
+
+        const [[options]] = jest.mocked(checkoutService.initializeCustomer).mock.calls;
+        const { onReady } = (options as { stripeocs: { onReady: () => void } }).stripeocs;
+
+        act(() => {
+            onReady();
+        });
+
+        expect(screen.queryByTestId('stripe-link-v2-button-skeleton')).not.toBeInTheDocument();
+    });
+
+    it('hides skeleton and reports the error if initialization fails', async () => {
+        const error = new Error('init failed');
+
+        jest.spyOn(checkoutService, 'initializeCustomer').mockRejectedValue(error);
+
+        render(<StripeLinkV2Button {...defaultProps} />);
+
+        await waitFor(() => expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(error));
+        expect(screen.queryByTestId('stripe-link-v2-button-skeleton')).not.toBeInTheDocument();
     });
 });
