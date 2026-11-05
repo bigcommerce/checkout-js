@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.932.2](https://github.com/bigcommerce/checkout-js/compare/v1.932.1...v1.932.2) (2026-11-05)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10554 Preserve company names containing slash ([#3452](https://github.com/bigcommerce/checkout-js/issues/3452)) ([c89aee3](https://github.com/bigcommerce/checkout-js/commit/c89aee34847a48c979c1f1280dbc6a527b1fa0b3))
+
 ### [1.932.1](https://github.com/bigcommerce/checkout-js/compare/v1.932.0...v1.932.1) (2026-11-05)
 
 ## [1.932.0](https://github.com/bigcommerce/checkout-js/compare/v1.931.0...v1.932.0) (2026-11-04)
