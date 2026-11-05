@@ -378,6 +378,31 @@ const Checkout = ({
         }
     }, []);
 
+    const handleSignInError = useCallback(
+        (error: Error): void => {
+            const features = checkoutService.getState().data.getConfig()?.checkoutSettings.features;
+
+            if (
+                features?.['CHECKOUT-10495.login_without_cart_on_checkout'] &&
+                isErrorWithType(error) &&
+                error.type === 'checkout_not_available'
+            ) {
+                checkoutService.clearError(error);
+                setState((prevState) => ({
+                    ...prevState,
+                    error: Object.assign(new Error(error.message), {
+                        type: 'sign_in_cart_unavailable',
+                    }),
+                }));
+
+                return;
+            }
+
+            handleError(error);
+        },
+        [handleError],
+    );
+
     const handleUnhandledError = useCallback((error: Error): void => {
         handleError(error);
 
@@ -538,7 +563,7 @@ const Checkout = ({
                         onExpanded={handleExpanded}
                         onReady={handleReady}
                         onSignIn={handleCustomerAuthenticated}
-                        onSignInError={handleError}
+                        onSignInError={handleSignInError}
                         onSignOut={handleSignOut}
                         onSignOutError={handleError}
                         onSubscribeToNewsletter={handleNewsletterSubscription}
@@ -774,12 +799,15 @@ const Checkout = ({
                 state.error,
                 language.translate.bind(language),
             );
+            const closeModalHandler = action === 'reload' ? reloadWindow : handleCloseErrorModal;
 
             errorModal = (
                 <ErrorModal
                     error={state.error}
                     message={message}
-                    onClose={action === 'reload' ? reloadWindow : handleCloseErrorModal}
+                    onClose={
+                        action === 'cart' ? () => setTopLocationHref(cartUrl) : closeModalHandler
+                    }
                 />
             );
         }

@@ -11,6 +11,12 @@ export function mapCheckoutComponentErrorMessage(
                 action: 'reload',
             };
 
+        case 'sign_in_cart_unavailable':
+            return {
+                message: translate('customer.sign_in_cart_unavailable_error'),
+                action: 'cart',
+            };
+
         default:
             return {
                 message: error.message,
