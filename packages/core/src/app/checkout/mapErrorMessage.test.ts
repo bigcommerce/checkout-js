@@ -22,6 +22,6 @@ describe('mapErrorMessage()', () => {
         );
 
         expect(message).toBe(translate('customer.sign_in_cart_unavailable_error'));
-        expect(action).toBe('cart');
+        expect(action).toBe('cart_page');
     });
 });

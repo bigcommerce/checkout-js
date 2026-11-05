@@ -407,6 +407,19 @@ const Checkout = ({
         [handleError],
     );
 
+    const getCloseErrorModalHandler = (action: string) => {
+        switch (action) {
+            case 'reload':
+                return reloadWindow;
+
+            case 'cart_page':
+                return () => setTopLocationHref(cartUrl);
+
+            default:
+                return handleCloseErrorModal;
+        }
+    };
+
     const handleUnhandledError = useCallback((error: Error): void => {
         handleError(error);
 
@@ -803,15 +816,12 @@ const Checkout = ({
                 state.error,
                 language.translate.bind(language),
             );
-            const closeModalHandler = action === 'reload' ? reloadWindow : handleCloseErrorModal;
 
             errorModal = (
                 <ErrorModal
                     error={state.error}
                     message={message}
-                    onClose={
-                        action === 'cart' ? () => setTopLocationHref(cartUrl) : closeModalHandler
-                    }
+                    onClose={getCloseErrorModalHandler(action)}
                 />
             );
         }
