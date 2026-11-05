@@ -16,16 +16,28 @@ function parseCompany(company: string | undefined): string {
         : (company ?? '');
 }
 
+function stripLabel(company: string | undefined, label: string): string {
+    const prefix = `${label}${DELIMITER}`;
+
+    return label && company?.startsWith(prefix)
+        ? company.substring(prefix.length)
+        : (company ?? '');
+}
+
 export function joinLabelAndCompany(label: string, company: string): string {
     return label ? `${label}${DELIMITER}${company}` : company;
 }
 
 function splitCompanyLabel<T extends Address>(address: T): T {
-    const { company } = address;
+    const { company, label } = address;
+
+    if (label !== undefined) {
+        return { ...address, company: stripLabel(company, label) };
+    }
 
     return {
         ...address,
-        label: address.label || parseLabel(company),
+        label: parseLabel(company),
         company: parseCompany(company),
     };
 }
@@ -41,8 +53,14 @@ export function decodeAddressLabel<T extends Address | undefined>(
 
 /** WRITE boundary: fold `label` back into `company` for the BC API and drop it. Idempotent. */
 export function encodeAddressForWrite<T extends Partial<AddressRequestBody>>(address: T): T {
-    const label = address.label || parseLabel(address.company);
-    const { label: _label, ...rest } = address;
+    const { label, ...rest } = address;
 
-    return { ...(rest as T), company: joinLabelAndCompany(label, parseCompany(address.company)) };
+    if (label === undefined) {
+        return { ...(rest as T), company: address.company ?? '' };
+    }
+
+    return {
+        ...(rest as T),
+        company: joinLabelAndCompany(label, stripLabel(address.company, label)),
+    };
 }

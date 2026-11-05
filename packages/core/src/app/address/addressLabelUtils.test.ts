@@ -33,6 +33,36 @@ describe('decodeAddressLabel', () => {
             company: 'Acme Corp',
         });
     });
+
+    it('strips only the known label prefix when company name contains a slash', () => {
+        const address = { label: 'HQ', company: 'HQ/ Smith/ Sons' } as Address;
+
+        expect(decodeAddressLabel(address, true)).toMatchObject({
+            label: 'HQ',
+            company: 'Smith/ Sons',
+        });
+    });
+
+    it('keeps a slash company name intact when called twice', () => {
+        const address = { company: 'HQ/ Smith/ Sons' } as Address;
+
+        const decodedOnce = decodeAddressLabel(address, true);
+        const decodedTwice = decodeAddressLabel(decodedOnce, true);
+
+        expect(decodedTwice).toMatchObject({
+            label: 'HQ',
+            company: 'Smith/ Sons',
+        });
+    });
+
+    it('does not split company when label is empty', () => {
+        const address = { label: '', company: 'Smith/ Sons' } as Address;
+
+        expect(decodeAddressLabel(address, true)).toMatchObject({
+            label: '',
+            company: 'Smith/ Sons',
+        });
+    });
 });
 
 describe('encodeAddressForWrite', () => {
@@ -53,5 +83,36 @@ describe('encodeAddressForWrite', () => {
         const encoded = encodeAddressForWrite(reDecoded);
 
         expect(encoded.company).toBe(joinLabelAndCompany('Acme', 'Acme Corp'));
+    });
+
+    it('keeps a slash company name intact when folding the label back', () => {
+        const address = { label: 'HQ', company: 'Smith/ Sons' } as AddressRequestBody;
+
+        expect(encodeAddressForWrite(address).company).toBe('HQ/ Smith/ Sons');
+    });
+
+    it('does not duplicate the label when company is already encoded', () => {
+        const address = { label: 'HQ', company: 'HQ/ Smith/ Sons' } as AddressRequestBody;
+
+        expect(encodeAddressForWrite(address).company).toBe('HQ/ Smith/ Sons');
+    });
+
+    it('passes company through unchanged when there is no label', () => {
+        const address = { company: 'Smith/ Sons' } as AddressRequestBody;
+
+        const encoded = encodeAddressForWrite(address);
+
+        expect(encoded).not.toHaveProperty('label');
+        expect(encoded.company).toBe('Smith/ Sons');
+    });
+
+    it('survives a round trip when company name contains a slash', () => {
+        const raw = { company: 'HQ/ Smith/ Sons' } as Address;
+
+        const selected = decodeAddressLabel(raw, true);
+        const reDecoded = decodeAddressLabel(selected, true);
+        const encoded = encodeAddressForWrite(reDecoded);
+
+        expect(encoded.company).toBe('HQ/ Smith/ Sons');
     });
 });
