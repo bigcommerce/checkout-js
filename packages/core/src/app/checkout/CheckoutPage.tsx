@@ -42,6 +42,7 @@ import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/loca
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
 import {
     CannotCreatePersonalAccountSessionStorage,
+    isExperimentEnabledWithOptIn,
     navigateToOrderConfirmation as navigateToOrderConfirmationUtility,
 } from '@bigcommerce/checkout/utility';
 
@@ -380,10 +381,13 @@ const Checkout = ({
 
     const handleSignInError = useCallback(
         (error: Error): void => {
-            const features = checkoutService.getState().data.getConfig()?.checkoutSettings.features;
+            const checkoutSettings = checkoutService.getState().data.getConfig()?.checkoutSettings;
 
             if (
-                features?.['CHECKOUT-10495.login_without_cart_on_checkout'] &&
+                isExperimentEnabledWithOptIn(
+                    checkoutSettings,
+                    'CHECKOUT-10495.login_without_cart_on_checkout',
+                ) &&
                 isErrorWithType(error) &&
                 error.type === 'checkout_not_available'
             ) {

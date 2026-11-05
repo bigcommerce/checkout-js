@@ -452,7 +452,7 @@ describe('Checkout', () => {
                 const cartUnavailableMessage =
                     "Your cart is no longer available. You're now signed in. Select OK to return to your cart and add your items again.";
 
-                const useExperiment = (isOn: boolean) => {
+                const useExperiment = (isOn: boolean, isCustomCheckout = false) => {
                     checkout.setRequestHandler(
                         http.get('/api/storefront/checkout-settings', () =>
                             HttpResponse.json({
@@ -461,6 +461,7 @@ describe('Checkout', () => {
                                     ...checkoutSettings.storeConfig,
                                     checkoutSettings: {
                                         ...checkoutSettings.storeConfig.checkoutSettings,
+                                        isCustomCheckout,
                                         features: {
                                             'CHECKOUT-10495.login_without_cart_on_checkout': isOn,
                                         },
@@ -493,6 +494,19 @@ describe('Checkout', () => {
                     expect(setTopLocationHref).toHaveBeenCalledWith(
                         checkoutSettings.storeConfig.links.cartLink,
                     );
+                });
+
+                it('does not show the cart unavailable message for a custom checkout', async () => {
+                    useExperiment(true, true);
+
+                    render(<CheckoutTest {...defaultProps} />);
+
+                    await checkout.waitForCustomerStep();
+                    await showLoginForm();
+                    await submitLoginForm();
+
+                    expect(screen.queryByText(cartUnavailableMessage)).not.toBeInTheDocument();
+                    expect(setTopLocationHref).not.toHaveBeenCalled();
                 });
 
                 it('does not show the cart unavailable message when the experiment is off', async () => {
