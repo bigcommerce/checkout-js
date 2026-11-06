@@ -1,0 +1,46 @@
+@import '../../../scss/Base';
+
+// Card surcharge UI (PI-5797): notices around the card form and the hint under the order button.
+.surchargeNotice,
+.surchargeStatus {
+  margin-top: spacing('single');
+}
+
+.surchargeStatus--calculating {
+  align-items: center;
+  border: container('border');
+  border-radius: 4px;
+  color: color('greys', 'dark');
+  display: flex;
+  font-size: fontSize('smaller');
+  padding: spacing('half') spacing('single');
+}
+
+.surchargeStatus-spinner {
+  animation: surchargeSpin 0.8s linear infinite;
+  border: 2px solid color('greys', 'light');
+  border-radius: 50%;
+  border-top-color: color('greys', 'dark');
+  display: inline-block;
+  height: 14px;
+  margin-right: spacing('half');
+  width: 14px;
+}
+
+.surchargeSubmitHint {
+  color: color('greys', 'dark');
+  font-size: fontSize('smallest');
+  margin: spacing('half') 0 0;
+  text-align: center;
+}
+
+.cart-priceItem--surchargeCalculating .cart-priceItem-value {
+  color: color('greys', 'dark');
+  font-style: italic;
+}
+
+@keyframes surchargeSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

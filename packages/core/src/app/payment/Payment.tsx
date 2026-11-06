@@ -103,6 +103,7 @@ import {
 } from './paymentMethod';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
 import { type PaymentMethodsRefreshAlertData } from './PaymentMethodsRefreshAlert';
+import { isSurchargeFee } from './surcharge';
 
 export interface PaymentProps {
     capabilities: Capabilities;
@@ -191,6 +192,7 @@ const Payment = (
         PaymentMethodsRefreshAlertData | undefined
     >();
     const [isPriceChangedAlertVisible, setIsPriceChangedAlertVisible] = useState(false);
+    const totalWithoutSurchargeRef = useRef<number>();
 
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
@@ -740,10 +742,37 @@ const Payment = (
         }
     };
 
+    // The total without a surcharge fee. A change that only moves the surcharge does not need the
+    // payment methods again, and reloading them would put the loading overlay over the card form
+    // while the shopper is typing in it 
+    const getTotalWithoutSurcharge = (): number | undefined => {
+        const checkout = checkoutService.getState().data.getCheckout();
+
+        if (!checkout) {
+            return undefined;
+        }
+
+        return (
+            checkout.grandTotal -
+            checkout.fees.filter(isSurchargeFee).reduce((sum, fee) => sum + fee.cost, 0)
+        );
+    };
+
     const handleCartTotalChange = async (): Promise<void> => {
         const isReady = isReadyRef.current;
 
         if (!isReady) {
+            return;
+        }
+
+        const totalWithoutSurcharge = getTotalWithoutSurcharge();
+        const onlySurchargeChanged =
+            totalWithoutSurcharge !== undefined &&
+            totalWithoutSurcharge === totalWithoutSurchargeRef.current;
+
+        totalWithoutSurchargeRef.current = totalWithoutSurcharge;
+
+        if (onlySurchargeChanged) {
             return;
         }
 
@@ -924,6 +953,8 @@ const Payment = (
                     onFinalizeError(error);
                 }
             }
+
+            totalWithoutSurchargeRef.current = getTotalWithoutSurcharge();
 
             grandTotalChangeUnsubscribe.current = checkoutServiceSubscribe(
                 () => handleCartTotalChange(),

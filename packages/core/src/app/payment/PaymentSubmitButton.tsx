@@ -6,6 +6,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button, ButtonSize, ButtonVariant, IconBolt } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
+import { ShopperCurrency } from '../currency';
 
 import { PaymentMethodId, PaymentMethodType } from './paymentMethod';
 
@@ -18,6 +19,7 @@ interface PaymentSubmitButtonTextProps {
     brandName?: string;
     isComplete?: boolean;
     isPaymentDataRequired?: boolean;
+    payAmount?: number;
 }
 
 const providersWithCustomClasses = [PaymentMethodId.Bolt];
@@ -32,6 +34,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         brandName,
         isComplete,
         isPaymentDataRequired,
+        payAmount,
     }) => {
         const { enhancedThemeV1 } = useThemeContext();
         const placeOrderActionId = enhancedThemeV1
@@ -116,6 +119,16 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
             return <TranslatedString id="payment.klarna_continue_action" />;
         }
 
+        //  the shopper sees the final amount on the button ("Pay $212.18").
+        if (payAmount !== undefined) {
+            return (
+                <>
+                    <TranslatedString id="payment.pay_amount_action" />{' '}
+                    <ShopperCurrency amount={payAmount} />
+                </>
+            );
+        }
+
         return <TranslatedString id={placeOrderActionId} />;
     },
 );
@@ -130,6 +143,7 @@ export interface PaymentSubmitButtonProps {
     brandName?: string;
     isComplete?: boolean;
     isPaymentDataRequired?: boolean;
+    payAmount?: number;
 }
 
 interface WithCheckoutPaymentSubmitButtonProps {
@@ -151,6 +165,7 @@ const PaymentSubmitButton: FunctionComponent<
     initialisationStrategyType,
     brandName,
     isComplete,
+    payAmount,
 }) => {
     const { enhancedThemeV1 } = useThemeContext();
 
@@ -182,6 +197,7 @@ const PaymentSubmitButton: FunctionComponent<
                 methodId={methodId}
                 methodName={methodName}
                 methodType={methodType}
+                payAmount={payAmount}
             />
         </Button>
     );

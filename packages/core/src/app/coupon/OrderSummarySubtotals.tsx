@@ -5,6 +5,8 @@ import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice } from '../order';
+import { SurchargeCalculatingRow } from '../payment/surcharge/SurchargeCalculatingRow';
+import { isSurchargeFee } from '../payment/surcharge/surchargeContract';
 
 import { AppliedGiftCertificates, CollapsibleCouponForm, Discounts } from './components';
 import { useMultiCoupon } from './useMultiCoupon';
@@ -46,7 +48,6 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
             )}
             <section className="subtotals-with-multi-coupon cart-section optimizedCheckout-orderSummary-cartSection">
                 <Discounts />
-
                 <OrderSummaryPrice
                     amount={shipping}
                     amountBeforeDiscount={shippingBeforeDiscount}
@@ -54,7 +55,6 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     testId="cart-shipping"
                     zeroLabel={<TranslatedString id="cart.free_text" />}
                 />
-
                 {!!giftWrappingAmount && (
                     <OrderSummaryPrice
                         amount={giftWrappingAmount}
@@ -62,7 +62,6 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                         testId="cart-gift-wrapping"
                     />
                 )}
-
                 {!!handlingAmount && (
                     <OrderSummaryPrice
                         amount={handlingAmount}
@@ -70,16 +69,16 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                         testId="cart-handling"
                     />
                 )}
-
-                {fees?.map((fee) => (
-                    <OrderSummaryPrice
-                        amount={fee.cost}
-                        key={fee.id}
-                        label={isOrderFee(fee) ? fee.customerDisplayName : fee.displayName}
-                        testId="cart-fees"
-                    />
-                ))}
-
+                {fees
+                    ?.filter((fee) => !isSurchargeFee(fee))
+                    .map((fee) => (
+                        <OrderSummaryPrice
+                            amount={fee.cost}
+                            key={fee.id}
+                            label={isOrderFee(fee) ? fee.customerDisplayName : fee.displayName}
+                            testId="cart-fees"
+                        />
+                    ))}
                 {!isTaxIncluded &&
                     (taxes || []).map((tax) => (
                         <OrderSummaryPrice
@@ -89,9 +88,20 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                             testId="cart-taxes"
                         />
                     ))}
-
+                ś{' '}
+                {fees
+                    ?.filter(isSurchargeFee)
+                    .map((fee) => (
+                        <OrderSummaryPrice
+                            amount={fee.cost}
+                            className="cart-priceItem--surcharge"
+                            key={fee.id}
+                            label={isOrderFee(fee) ? fee.customerDisplayName : fee.displayName}
+                            testId="cart-surcharge"
+                        />
+                    ))}
+                {!fees?.some(isSurchargeFee) && <SurchargeCalculatingRow />}
                 <AppliedGiftCertificates giftCertificates={appliedGiftCertificates} />
-
                 {!!storeCreditAmount && (
                     <OrderSummaryDiscount
                         amount={storeCreditAmount}
