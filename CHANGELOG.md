@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.933.0](https://github.com/bigcommerce/checkout-js/compare/v1.932.4...v1.933.0) (2026-11-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10495 Show cart unavailable message when signing in without a cart ([#3451](https://github.com/bigcommerce/checkout-js/issues/3451)) ([4b483de](https://github.com/bigcommerce/checkout-js/commit/4b483def47b1b32e79525a6634d0c0ac34f41c0f))
+
 ### [1.932.4](https://github.com/bigcommerce/checkout-js/compare/v1.932.3...v1.932.4) (2026-11-05)
 
 ### [1.932.3](https://github.com/bigcommerce/checkout-js/compare/v1.932.2...v1.932.3) (2026-11-05)
