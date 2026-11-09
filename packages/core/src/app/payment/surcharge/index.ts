@@ -1,4 +1,4 @@
-export { requestSurcharge } from './requestSurcharge';
+export { removeSurcharge, requestSurcharge } from './requestSurcharge';
 export { SurchargeCalculatingRow } from './SurchargeCalculatingRow';
 export { isSurchargeFee } from './surchargeContract';
 export {
@@ -8,6 +8,7 @@ export {
     SurchargeSubmitHint,
 } from './SurchargeNotices';
 export {
+    getSurchargeProviderData,
     getSurchargeState,
     isSurchargeEnabled,
     logSurchargeMethodDecision,

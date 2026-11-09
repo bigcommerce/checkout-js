@@ -1,8 +1,8 @@
+import { noop } from 'lodash';
 import { useEffect, useRef, useSyncExternalStore } from 'react';
 
-import { requestSurcharge } from './requestSurcharge';
+import { removeSurcharge, requestSurcharge } from './requestSurcharge';
 import { type SurchargeRequest, type SurchargeResult } from './surchargeContract';
-import { ensureSurchargeDevMockInstalled, isSurchargeDevMockEnabled } from './surchargeDevMock';
 
 /**
  * The surcharge shown BEFORE the shopper places the order (the "Calculating..." -> "Surcharge (3.0%)"
@@ -15,8 +15,6 @@ import { ensureSurchargeDevMockInstalled, isSurchargeDevMockEnabled } from './su
  *     backend answers `{ eligible, amount, rate, legalText, ... }` - the FE never calculates anything;
  *   - the answer is shown in the summary and in the total, the order button waits for it.
  *
- * Only the backend is mocked (surchargeDevMock.ts). The one thing to change when it exists is
- * `getSurchargeRequester`: today the feature is on only for the dev mock.
  */
 export type SurchargeState =
     | { status: 'idle' }
@@ -25,7 +23,6 @@ export type SurchargeState =
           status: 'ready';
           amount: number;
           rate?: number;
-          currency?: string;
           legalText?: string;
       }
     | { status: 'none' }
@@ -84,18 +81,15 @@ export function useSurchargeState(): SurchargeState {
     return useSyncExternalStore(subscribe, getSurchargeState, getSurchargeState);
 }
 
-// ASSUMED: there is no backend endpoint yet, so the feature is on only for the dev mock. When the
-// endpoint exists, replace this condition (for example with a flag from the payment method's
-// configuration, see the open question about knowing that surcharging is enabled).
 export function getSurchargeRequester(): SurchargeRequester | undefined {
-    if (!isSurchargeDevMockEnabled()) {
-        return undefined;
-    }
-
-    ensureSurchargeDevMockInstalled();
-
     return requestSurcharge;
 }
+
+// The `providerData` of the last answer. Echoed into the payment request on submit, even when the
+// answer was "not eligible".
+let providerData: Record<string, unknown> | undefined;
+
+export const getSurchargeProviderData = (): Record<string, unknown> | undefined => providerData;
 
 // Dev aid: say why the surcharge UI is (not) shown for the selected method.
 export function logSurchargeMethodDecision(
@@ -122,8 +116,11 @@ export function logSurchargeMethodDecision(
 export const isSurchargeEnabled = (): boolean => getSurchargeRequester() !== undefined;
 
 /**
- * Asks the backend for the surcharge whenever a pfToken is available and clears it otherwise. A stale
- * answer (the card or the amount changed while a request was in flight) is dropped.
+ * POST (calculate) when a pfToken is available: bcapp replaces the fee, or removes it when not eligible.
+ * DELETE when a `card_surcharge` fee is on the checkout but there is no card to calculate it for
+ * (page reload, card cleared, payment method switched away from BlueSnap). Never both at once.
+ * A stale answer (the card or the amount changed while a request was in flight) is not shown, but the
+ * checkout is still reloaded because bcapp may have changed the fee.
  *
  * `total` is NOT sent: the backend reads the amount from the checkout. It only tells us to ask again,
  * because the surcharge depends on the amount (coupon, shipping, address changes).
@@ -133,18 +130,36 @@ export function useSurchargeTrigger({
     checkoutId,
     paymentMethod,
     total,
+    cardType,
+    hasFee,
     onResolved,
 }: {
     pfToken?: string;
+    // The card brand/type. A different card needs a new calculation under the same pfToken.
+    cardType?: string;
+    // A `card_surcharge` fee is on the checkout right now.
+    hasFee: boolean;
     checkoutId?: string;
     paymentMethod?: SurchargeRequest['paymentMethod'];
     total: number;
-    // Called when the backend has answered. In the binding flow the backend has put the surcharge on the
-    // checkout (or taken it off), so the app reloads the checkout to show it.
-    onResolved?: () => void;
+    // Called when bcapp has answered a POST or a DELETE (it has already changed the fee on the checkout).
+    // The app reloads the checkout. The state turns ready (or idle) only after that.
+    onResolved?: () => Promise<void>;
 }): void {
     const requestId = useRef(0);
     const onResolvedRef = useRef(onResolved);
+    // POST and DELETE change the same fee on the server and must never overlap: a late POST would put
+    // the fee back after a DELETE (coupon: total change starts a POST, the payment methods reload resets
+    // the card form, the lost token starts a DELETE). Every call waits for the one before it, and a call
+    // that was superseded while it waited is skipped.
+    const queue = useRef<Promise<unknown>>(Promise.resolve());
+    const enqueue = <T>(id: number, call: () => Promise<T>): Promise<T | undefined> => {
+        const result = queue.current.then(() => (id === requestId.current ? call() : undefined));
+
+        queue.current = result.then(noop, noop);
+
+        return result;
+    };
 
     onResolvedRef.current = onResolved;
 
@@ -156,6 +171,7 @@ export function useSurchargeTrigger({
         const id = requestId.current;
 
         if (!requester || !pfToken || !checkoutId || !paymentMethod) {
+            providerData = undefined;
             publish({ status: 'idle' });
 
             return;
@@ -163,8 +179,23 @@ export function useSurchargeTrigger({
 
         publish({ status: 'calculating' });
 
-        requester({ checkoutId, paymentMethod, pfToken })
-            .then((result) => {
+        enqueue(id, () => requester({ checkoutId, paymentMethod, pfToken }))
+            .then(async (result) => {
+                if (!result) {
+                    // Skipped: superseded before it was sent. Nothing changed on the server.
+                    return;
+                }
+
+                if (id !== requestId.current) {
+                    // Superseded, but bcapp may have changed the fee: reload so the FE sees it.
+                    void onResolvedRef.current?.();
+
+                    return;
+                }
+
+                providerData = result.providerData;
+                await onResolvedRef.current?.();
+
                 if (id !== requestId.current) {
                     return;
                 }
@@ -175,19 +206,57 @@ export function useSurchargeTrigger({
                               status: 'ready',
                               amount: result.amount,
                               rate: result.rate,
-                              currency: result.currency,
-                              legalText: result.legalText,
                           }
                         : { status: 'none' },
                 );
-                onResolvedRef.current?.();
+            })
+            .catch(() => {
+                if (id === requestId.current) {
+                    providerData = undefined;
+                    publish({ status: 'error' });
+                }
+            });
+    }, [pfToken, cardType, checkoutId, paymentMethod?.id, paymentMethod?.gateway, total]);
+
+    // DELETE: a surcharge fee without a card. Runs once per (fee present, no card) change, so a failed
+    // DELETE does not loop. While it runs the state is `calculating` (Place order disabled); on failure
+    // the state is `error` and the form keeps Place order disabled because the fee is still there.
+    const shouldRemoveFee = hasFee && !pfToken && Boolean(checkoutId);
+
+    useEffect(() => {
+        if (!shouldRemoveFee || !checkoutId) {
+            return;
+        }
+
+        requestId.current += 1;
+
+        const id = requestId.current;
+
+        providerData = undefined;
+        publish({ status: 'calculating' });
+
+        enqueue(id, async () => {
+            await removeSurcharge({ checkoutId });
+
+            return true;
+        })
+            .then(async (result) => {
+                if (!result) {
+                    return;
+                }
+
+                await onResolvedRef.current?.();
+
+                if (id === requestId.current) {
+                    publish({ status: 'idle' });
+                }
             })
             .catch(() => {
                 if (id === requestId.current) {
                     publish({ status: 'error' });
                 }
             });
-    }, [pfToken, checkoutId, paymentMethod?.id, paymentMethod?.gateway, total]);
+    }, [shouldRemoveFee, checkoutId]);
 
     // Leaving the payment step must not leave a preview behind in the summary.
     useEffect(

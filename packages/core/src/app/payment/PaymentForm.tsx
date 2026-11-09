@@ -201,7 +201,8 @@ const PaymentForm: FunctionComponent<
         };
     });
     const surchargeState = useSurchargeState();
-    const isSurchargeOn = isSurchargeEnabled();
+    // PoC: BlueSnap Direct cards only.
+    const isSurchargeOn = isSurchargeEnabled() && selectedMethod?.gateway === 'bluesnapdirect';
     const isSurchargeCardBoxShown = useIsSurchargeCardBoxShown();
     // Same rule PaymentMethod.tsx uses to pick the card form, plus "the form already holds card fields"
     // for card methods that come from the newer payment integrations.
@@ -232,9 +233,11 @@ const PaymentForm: FunctionComponent<
             : undefined,
         // The total WITHOUT the surcharge: the surcharge itself must not make us ask again.
         total: orderAmount - surchargeFeeCost,
-        onResolved: () => {
+        cardType: hostedCardType,
+        hasFee: hasSurchargeFee,
+        onResolved: async () => {
             if (checkoutId) {
-                void checkoutService.loadCheckout(checkoutId);
+                await checkoutService.loadCheckout(checkoutId);
             }
         },
     });
@@ -242,8 +245,13 @@ const PaymentForm: FunctionComponent<
     // "Pay $X": the button shows the final amount once the surcharge is on the checkout.
     const payAmount = isSurchargeOn && isCardMethod && hasSurchargeFee ? orderAmount : undefined;
     const isSurchargeCalculating = surchargeState.status === 'calculating';
+    // A surcharge fee that could not be calculated or removed must not be paid (no current token).
+    const isSurchargeFeeUnresolved = surchargeState.status === 'error' && hasSurchargeFee;
     const isSubmitDisabled =
-        shouldDisableSubmit || Boolean(poMethodDisabledReason) || isSurchargeCalculating;
+        shouldDisableSubmit ||
+        Boolean(poMethodDisabledReason) ||
+        isSurchargeCalculating ||
+        isSurchargeFeeUnresolved;
     const hideSubmitPaymentButton =
         shouldHidePaymentSubmitButton || (isPaymentDataRequired() && isEmpty(methods));
 

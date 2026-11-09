@@ -88,7 +88,6 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                             testId="cart-taxes"
                         />
                     ))}
-                ś{' '}
                 {fees
                     ?.filter(isSurchargeFee)
                     .map((fee) => (

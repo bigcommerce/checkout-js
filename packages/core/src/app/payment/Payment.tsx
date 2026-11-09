@@ -103,7 +103,7 @@ import {
 } from './paymentMethod';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
 import { type PaymentMethodsRefreshAlertData } from './PaymentMethodsRefreshAlert';
-import { isSurchargeFee } from './surcharge';
+import { getSurchargeProviderData, isSurchargeFee } from './surcharge';
 
 export interface PaymentProps {
     capabilities: Capabilities;
@@ -568,8 +568,25 @@ const Payment = (
                       )
                     : noop;
 
+                const orderRequestBody = mapToOrderRequestBody(
+                    orderValues,
+                    isPaymentDataRequired(),
+                );
+                const surchargeProviderData = getSurchargeProviderData();
+
+                // PoC: echo the surcharge endpoint's providerData to the payment strategy untouched.
+                if (orderRequestBody.payment && surchargeProviderData) {
+                    orderRequestBody.payment = {
+                        ...orderRequestBody.payment,
+                        paymentData: {
+                            ...orderRequestBody.payment.paymentData,
+                            providerData: surchargeProviderData,
+                        },
+                    };
+                }
+
                 const state = await submitOrder({
-                    ...mapToOrderRequestBody(orderValues, isPaymentDataRequired()),
+                    ...orderRequestBody,
                     ...(persistB2BMetadata ? mapToB2BOrderRequestBody(b2bPaymentValues) : {}),
                 }).finally(unsubscribeB2BContext);
 
@@ -744,7 +761,7 @@ const Payment = (
 
     // The total without a surcharge fee. A change that only moves the surcharge does not need the
     // payment methods again, and reloading them would put the loading overlay over the card form
-    // while the shopper is typing in it 
+    // while the shopper is typing in it
     const getTotalWithoutSurcharge = (): number | undefined => {
         const checkout = checkoutService.getState().data.getCheckout();
 
@@ -766,13 +783,31 @@ const Payment = (
         }
 
         const totalWithoutSurcharge = getTotalWithoutSurcharge();
+        // Not `===`: grandTotal minus the fee is a float subtraction (30.84 - 0.89 can come out as
+        // 29.950000000000003), and a false "total changed" reloads the payment methods, which resets the
+        // card form and removes the surcharge.
+        const previousTotalWithoutSurcharge = totalWithoutSurchargeRef.current;
         const onlySurchargeChanged =
             totalWithoutSurcharge !== undefined &&
-            totalWithoutSurcharge === totalWithoutSurchargeRef.current;
+            previousTotalWithoutSurcharge !== undefined &&
+            Math.abs(totalWithoutSurcharge - previousTotalWithoutSurcharge) < 0.0005;
 
         totalWithoutSurchargeRef.current = totalWithoutSurcharge;
 
         if (onlySurchargeChanged) {
+            return;
+        }
+
+        // PoC surcharge: with a surcharged BlueSnap card on screen, a reload of the payment methods
+        // (coupon, shipping...) rebuilds the card fields, the card is lost, and the surcharge fee has to be
+        // removed. Keep the form. The surcharge trigger recalculates on the new total with the same
+        // pfToken. The methods list is refreshed on the next total change without a surcharge fee.
+        const checkoutForSurcharge = checkoutService.getState().data.getCheckout();
+
+        if (
+            selectedMethodRef.current?.gateway === 'bluesnapdirect' &&
+            checkoutForSurcharge?.fees.some(isSurchargeFee)
+        ) {
             return;
         }
 
