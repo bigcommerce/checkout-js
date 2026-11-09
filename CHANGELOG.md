@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.934.0](https://github.com/bigcommerce/checkout-js/compare/v1.933.0...v1.934.0) (2026-11-09)
+
+
+### Features
+
+* **payment:** STRIPE-1783 Improve Stripe Link load time with onReady hook in Stripe OCS checkout ([#3453](https://github.com/bigcommerce/checkout-js/issues/3453)) ([1639886](https://github.com/bigcommerce/checkout-js/commit/163988652bc7dc8e554c167e462e32e926953c98))
+
 ## [1.933.0](https://github.com/bigcommerce/checkout-js/compare/v1.932.4...v1.933.0) (2026-11-08)
 
 
