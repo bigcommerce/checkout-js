@@ -1,0 +1,85 @@
+// Figma: BCP-by-PayPal, CK3 / CK3b (PAYPAL-7373)
+.bcp-shopper-currency {
+  margin-bottom: 1rem;
+
+  &-options {
+    display: flex;
+    gap: 12px;
+  }
+
+  &-option {
+    display: flex;
+    flex: 1 0 0;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid #d9dce9;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    text-align: left;
+
+    &--selected {
+      padding: 11px 13px;
+      border: 2px solid #3c64f4;
+      background: #f6f7fc;
+      cursor: default;
+
+      .bcp-shopper-currency-amount {
+        font-weight: 600;
+      }
+    }
+
+    &:disabled {
+      cursor: wait;
+    }
+  }
+
+  &-code {
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: #f6f7fc;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  &-amount {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  &-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 16px;
+    font-size: 12px;
+    line-height: 1.4;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &-other-methods {
+    margin-top: 8px;
+    font-size: 13px;
+  }
+
+  &-pay-in-cart-currency {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #3c64f4;
+    font-weight: 500;
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .bcp-shopper-currency-options {
+    flex-direction: column;
+  }
+}
