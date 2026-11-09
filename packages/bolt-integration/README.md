@@ -1,6 +1,6 @@
 # bolt-integration
 
-This package contains the integration layer for the [Bolt](https://www.bolt.com/) provider.
+This package contains the integration layer for the [Bolt](https://www.boltapp.com/) provider.
 
 ## Running unit tests
 
