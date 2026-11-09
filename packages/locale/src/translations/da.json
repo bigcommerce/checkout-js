@@ -188,6 +188,7 @@
             "returning_customer_text": "Tilbagevendende kunde",
             "sign_in_action": "Log på",
             "sign_in_action_v2": "Log på",
+            "sign_in_cart_unavailable_error": "Your cart is no longer available. You're now signed in. Select OK to return to your cart and add your items again.",
             "sign_in_error": "Den e-mail eller adgangskode, du indtastede, er ikke gyldig.",
             "sign_in_throttled_error": "På grund af for mange loginforsøg skal du vente 10 sekunder, før du forsøger at logge ind igen.",
             "sign_out_action": "Log af",
@@ -319,6 +320,7 @@
             "redeemable_payments_text": "Indløselige betalinger",
             "instrument_storage_options_text": "Muligheder for gemning af betalinger",
             "stripev3_auth_3ds_fail": "Brugeren godkendte ikke",
+            "apple_pay_name_text": "Apple Pay",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm kan ikke behandle din betaling for denne ordre. Vælg en anden betalingsmetode.",
             "klarna_continue_action": "Fortsæt med Klarna",
@@ -539,6 +541,7 @@
             "total_savings_text": "Du har sparet <span class=\"total-savings-highlight\">{totalDiscount}</span> i alt!"
         },
         "remote": {
+            "auto_vaulting_disclaimer_text": "Ved betaling med {methodNames} accepterer du, at forhandleren må trække beløb fra kortet til fremtidige betalinger i henhold til forhandlerens vilkår.",
             "browser_unsupported": "Den valgte betalingsmetode kræver en anden webbrowser. Vælg en anden betalingsmetode.",
             "connection_error": "Forbindelsen til fjernbetaling blev afvist. Prøv igen senere.",
             "continue_with_text": "Eller fortsæt med",

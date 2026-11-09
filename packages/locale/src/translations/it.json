@@ -188,6 +188,7 @@
             "returning_customer_text": "Cliente che torna",
             "sign_in_action": "Accedi",
             "sign_in_action_v2": "Accedi",
+            "sign_in_cart_unavailable_error": "Your cart is no longer available. You're now signed in. Select OK to return to your cart and add your items again.",
             "sign_in_error": "L'e-mail o la password inserite non sono valide.",
             "sign_in_throttled_error": "Hai effettuato troppi tentativi. Attendi 10 secondi prima di provare nuovamente ad accedere.",
             "sign_out_action": "Esci",
@@ -319,6 +320,7 @@
             "redeemable_payments_text": "Pagamenti riscattabili",
             "instrument_storage_options_text": "Opzioni di archiviazione dei pagamenti",
             "stripev3_auth_3ds_fail": "L'utente non ha effettuato l'autenticazione",
+            "apple_pay_name_text": "Apple Pay",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm non è in grado di elaborare il pagamento per questo ordine: seleziona un altro metodo di pagamento.",
             "klarna_continue_action": "Prosegui con Klarna",
@@ -539,6 +541,7 @@
             "total_savings_text": "Ha risparmiato <span class=\"total-savings-highlight\">{totalDiscount}</span> in totale!"
         },
         "remote": {
+            "auto_vaulting_disclaimer_text": "Effettuando il pagamento con {methodNames}, accetta che l'esercente possa addebitare la sua carta per pagamenti futuri secondo i propri termini.",
             "browser_unsupported": "Il metodo di pagamento selezionato richiede un browser diverso. Scegline un altro.",
             "connection_error": "Connessione al checkout remoto rifiutata, riprova più tardi.",
             "continue_with_text": "Oppure continua con",
