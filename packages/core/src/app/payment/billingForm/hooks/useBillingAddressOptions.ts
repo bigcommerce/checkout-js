@@ -19,10 +19,9 @@ const mapConsignmentToCustomerAddress = (
 
 export const useBillingAddressOptions = () => {
     const {
-        selectedState: { cart, config, consignments, customer },
+        selectedState: { cart, consignments, customer },
     } = useCheckout(({ data }) => ({
         cart: data.getCart(),
-        config: data.getConfig(),
         consignments: data.getConsignments(),
         customer: data.getCustomer(),
     }));
@@ -34,14 +33,10 @@ export const useBillingAddressOptions = () => {
     const customerAddresses = customer?.addresses;
     const isPayPalFastlaneGuest = !!customer?.isGuest && isPayPalFastlaneEnabled;
     const hasPayPalFastlaneAddresses = isPayPalFastlaneGuest && paypalFastlaneAddresses.length > 0;
-    const isMultiShippingEnabled = !!config?.checkoutSettings.hasMultiShippingEnabled;
     const hasMultiShippingConsignments =
         !!cart && !!consignments && isUsingMultiShipping(consignments, cart.lineItems);
     const shouldIncludeConsignmentAddresses =
-        !hasCompanyAddressBook &&
-        !hasPayPalFastlaneAddresses &&
-        isMultiShippingEnabled &&
-        hasMultiShippingConsignments;
+        !hasCompanyAddressBook && !hasPayPalFastlaneAddresses && hasMultiShippingConsignments;
 
     const { addresses, consignmentAddresses } = useMemo(() => {
         const baseAddresses = (

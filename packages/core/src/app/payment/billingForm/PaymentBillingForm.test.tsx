@@ -538,12 +538,6 @@ describe('PaymentBillingForm', () => {
         });
 
         const mockMultiShipping = () => {
-            const config = getStoreConfig();
-
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
-                ...config,
-                checkoutSettings: { ...config.checkoutSettings, hasMultiShippingEnabled: true },
-            });
             jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([
                 { ...getConsignment(), id: 'consignment-1', shippingAddress: consignmentAddress },
                 { ...getConsignment(), id: 'consignment-2' },

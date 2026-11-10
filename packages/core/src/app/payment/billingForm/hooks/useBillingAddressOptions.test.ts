@@ -6,7 +6,6 @@ import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-
 
 import { getAddress } from '../../../address/address.mock';
 import { getCart } from '../../../cart/carts.mock';
-import { getStoreConfig } from '../../../config/config.mock';
 import { getCustomer, getGuestCustomer } from '../../../customer/customers.mock';
 import { getConsignment } from '../../../shipping/consignment.mock';
 
@@ -32,7 +31,6 @@ describe('useBillingAddressOptions', () => {
 
     let data: {
         getCart: jest.Mock;
-        getConfig: jest.Mock;
         getConsignments: jest.Mock;
         getCustomer: jest.Mock;
     };
@@ -53,22 +51,12 @@ describe('useBillingAddressOptions', () => {
         });
     };
 
-    const mockMultiShippingEnabled = (hasMultiShippingEnabled: boolean) => {
-        const config = getStoreConfig();
-
-        data.getConfig.mockReturnValue({
-            ...config,
-            checkoutSettings: { ...config.checkoutSettings, hasMultiShippingEnabled },
-        });
-    };
-
     const renderUseBillingAddressOptions = () =>
         renderHook(() => useBillingAddressOptions()).result.current;
 
     beforeEach(() => {
         data = {
             getCart: jest.fn().mockReturnValue(getCart()),
-            getConfig: jest.fn(),
             getConsignments: jest
                 .fn()
                 .mockReturnValue([
@@ -84,18 +72,8 @@ describe('useBillingAddressOptions', () => {
             }),
         );
 
-        mockMultiShippingEnabled(true);
         mockCapabilities();
         mockFastlane(false);
-    });
-
-    it('returns only the saved addresses when multi-shipping is disabled for the store', () => {
-        mockMultiShippingEnabled(false);
-
-        const { addresses, hasAddresses } = renderUseBillingAddressOptions();
-
-        expect(addresses).toEqual(getCustomer().addresses);
-        expect(hasAddresses).toBe(true);
     });
 
     it('returns only the saved addresses when the order ships to a single address', () => {
@@ -213,9 +191,9 @@ describe('useBillingAddressOptions', () => {
         ]);
     });
 
-    it('returns no addresses when there is no customer and multi-shipping is disabled', () => {
+    it('returns no addresses when there is no customer or consignment', () => {
         data.getCustomer.mockReturnValue(undefined);
-        mockMultiShippingEnabled(false);
+        data.getConsignments.mockReturnValue(undefined);
 
         const { addresses, hasAddresses } = renderUseBillingAddressOptions();
 
