@@ -18,12 +18,14 @@ import {
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
+import { getAddress } from '../../address/address.mock';
 import { getFormFields } from '../../address/formField.mock';
 import { getBillingAddress, getEmptyBillingAddress } from '../../billing/billingAddresses.mock';
 import { getCart } from '../../cart/carts.mock';
 import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
-import { getCustomer } from '../../customer/customers.mock';
+import { getCustomer, getGuestCustomer } from '../../customer/customers.mock';
+import { getConsignment } from '../../shipping/consignment.mock';
 import PaymentContext, { type EnsureBillingAddressSaved } from '../PaymentContext';
 
 import { PaymentBillingForm, type PaymentBillingFormProps } from './PaymentBillingForm';
@@ -521,6 +523,133 @@ describe('PaymentBillingForm', () => {
             fireEvent.click(screen.getByTestId('billingSameAsShipping'));
 
             await waitFor(() => expect(onBillingSameAsShippingChange).toHaveBeenCalledWith(true));
+        });
+    });
+
+    describe('address book', () => {
+        const consignmentAddress = {
+            ...getAddress(),
+            address1: '1 Consignment Way',
+            email: '',
+        };
+
+        beforeEach(() => {
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+        });
+
+        const mockMultiShipping = () => {
+            const config = getStoreConfig();
+
+            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+                ...config,
+                checkoutSettings: { ...config.checkoutSettings, hasMultiShippingEnabled: true },
+            });
+            jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([
+                { ...getConsignment(), id: 'consignment-1', shippingAddress: consignmentAddress },
+                { ...getConsignment(), id: 'consignment-2' },
+            ]);
+        };
+
+        it('hides the address fields and prompts to enter or select an address when there is no billing address', () => {
+            renderForm({ ...defaultProps, billingAddress: getEmptyBillingAddress() });
+
+            expect(screen.queryByText('First Name')).not.toBeInTheDocument();
+            expect(screen.getByText('Enter or select an address')).toBeInTheDocument();
+        });
+
+        it('shows the address fields when the shopper chooses to enter a new address', async () => {
+            renderForm({ ...defaultProps, billingAddress: getEmptyBillingAddress() });
+
+            fireEvent.click(await screen.findByTestId('address-select-button'));
+            fireEvent.click(await screen.findByTestId('add-new-address'));
+
+            expect(await screen.findByText('First Name')).toBeInTheDocument();
+            expect(screen.queryByText('Enter or select an address')).not.toBeInTheDocument();
+        });
+
+        it('shows the address fields when the billing address does not match a valid saved address', () => {
+            renderForm({
+                ...defaultProps,
+                billingAddress: {
+                    ...getBillingAddress(),
+                    address1: 'Infinity Testing Way',
+                    firstName: 'Invalid Address',
+                    lastName: '',
+                },
+            });
+
+            expect(screen.getByText('First Name')).toBeInTheDocument();
+        });
+
+        it('shows the address fields when the billing address fails validation on submit', async () => {
+            renderForm({ ...defaultProps, billingAddress: getEmptyBillingAddress() });
+
+            await waitFor(() =>
+                expect(capturedEnsureBillingAddressSaved).toEqual(expect.any(Function)),
+            );
+
+            expect(screen.queryByText('First Name')).not.toBeInTheDocument();
+
+            await act(async () => {
+                await expect(capturedEnsureBillingAddressSaved?.()).resolves.toBe(false);
+            });
+
+            expect(await screen.findByText('First Name')).toBeInTheDocument();
+        });
+
+        it('shows the address fields and no address book when there are no addresses', () => {
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+
+            renderForm({ ...defaultProps, billingAddress: getEmptyBillingAddress() });
+
+            expect(screen.queryByTestId('address-select-button')).not.toBeInTheDocument();
+            expect(screen.getByText('First Name')).toBeInTheDocument();
+        });
+
+        it('lists the shipping addresses when shipping to multiple addresses', async () => {
+            mockMultiShipping();
+
+            renderForm({ ...defaultProps, billingAddress: getEmptyBillingAddress() });
+
+            fireEvent.click(await screen.findByTestId('address-select-button'));
+
+            expect(await screen.findByText(consignmentAddress.address1)).toBeInTheDocument();
+        });
+
+        it('selects a shipping address without its placeholder id, type or email', async () => {
+            mockMultiShipping();
+
+            renderForm({ ...defaultProps, billingAddress: getEmptyBillingAddress() });
+
+            fireEvent.click(await screen.findByTestId('address-select-button'));
+            fireEvent.click(await screen.findByText(consignmentAddress.address1));
+
+            await waitFor(() => expect(defaultProps.onSelectAddress).toHaveBeenCalledTimes(1));
+
+            const [selectedAddress, orderComment] = (defaultProps.onSelectAddress as jest.Mock).mock
+                .calls[0];
+
+            expect(selectedAddress).toEqual(
+                expect.objectContaining({ address1: consignmentAddress.address1 }),
+            );
+            expect(selectedAddress).not.toHaveProperty('id');
+            expect(selectedAddress).not.toHaveProperty('type');
+            expect(selectedAddress).not.toHaveProperty('email');
+            expect(orderComment).toBe('');
+        });
+
+        it('selects a saved address as it is', async () => {
+            renderForm({ ...defaultProps, billingAddress: getEmptyBillingAddress() });
+
+            fireEvent.click(await screen.findByTestId('address-select-button'));
+            fireEvent.click(await screen.findByText('67890 Testing Way'));
+
+            await waitFor(() =>
+                expect(defaultProps.onSelectAddress).toHaveBeenCalledWith(
+                    expect.objectContaining({ id: 6, address1: '67890 Testing Way' }),
+                    '',
+                ),
+            );
         });
     });
 

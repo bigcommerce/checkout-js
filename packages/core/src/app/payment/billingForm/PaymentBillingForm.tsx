@@ -22,12 +22,13 @@ import {
     getBillingFormInitialValues,
     getBillingFormValidationSchema,
 } from '../../billing/billingFormConfig';
-import { useBillingAddressOptions } from '../../billing/hooks/useBillingAddressOptions';
 import StaticBillingAddress from '../../billing/StaticBillingAddress';
 import { OrderComments } from '../../orderComments';
 import { getShippableItemsCount } from '../../shipping';
 import BillingSameAsShippingField from '../../shipping/BillingSameAsShippingField';
 import PaymentContext from '../PaymentContext';
+
+import { useBillingAddressOptions } from './hooks/useBillingAddressOptions';
 
 type TaxField = 'postalCode' | 'stateOrProvince' | 'stateOrProvinceCode';
 
@@ -80,15 +81,7 @@ const PaymentBillingFormComponent = ({
     onUnhandledError,
 }: PaymentBillingFormProps & WithLanguageProps & FormikProps<PaymentBillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
-    const [isEnteringNewAddress, setIsEnteringNewAddress] = useState(
-        () => !!billingAddress?.address1,
-    );
-
-    useEffect(() => {
-        if (billingAddress?.address1) {
-            setIsEnteringNewAddress(true);
-        }
-    }, [billingAddress?.address1]);
+    const [isEnteringNewAddress, setIsEnteringNewAddress] = useState(false);
 
     const {
         addresses: billingAddresses,
@@ -145,7 +138,7 @@ const PaymentBillingFormComponent = ({
     const shouldShowAddressForm =
         !restrictManualAddressEntry &&
         !hasValidCustomerAddress &&
-        (!isAddressSelectVisible || isEnteringNewAddress);
+        (!isAddressSelectVisible || isEnteringNewAddress || !!billingAddress?.address1);
 
     const ensureBillingAddressSaved = useCallback(async (): Promise<boolean> => {
         if (isLoading || isResettingAddress) {

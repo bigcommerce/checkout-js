@@ -5,14 +5,14 @@ import { useCallback, useMemo } from 'react';
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
-import { decodeAddressLabel, isEqualAddress } from '../../address';
-import { isUsingMultiShipping } from '../../shipping';
+import { decodeAddressLabel, isEqualAddress } from '../../../address';
+import { isUsingMultiShipping } from '../../../shipping';
 
 const mapConsignmentToCustomerAddress = (
     { shippingAddress }: Consignment,
     index: number,
 ): CustomerAddress => ({
-    ...shippingAddress,
+    ...omit(shippingAddress, 'email'),
     id: -(index + 1),
     type: 'residential',
 });
