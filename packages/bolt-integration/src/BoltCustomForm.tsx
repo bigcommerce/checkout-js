@@ -9,8 +9,8 @@ export interface BoltCustomFormProps {
 }
 
 const agreementTranslationOptions = {
-    privacyPolicyUrl: 'https://www.bolt.com/privacy/',
-    termsUrl: 'https://www.bolt.com/end-user-terms/',
+    privacyPolicyUrl: 'https://www.boltapp.com/privacy/',
+    termsUrl: 'https://www.boltapp.com/end-user-terms/',
 };
 
 const benefitsList = [
