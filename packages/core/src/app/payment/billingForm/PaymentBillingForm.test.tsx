@@ -1,4 +1,5 @@
 import {
+    type Address,
     type CheckoutSelectors,
     type CheckoutService,
     createCheckoutService,
@@ -16,9 +17,10 @@ import {
     type LocaleContextType,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
-import { getAddress } from '../../address/address.mock';
+import { getAddress, getCustomerAddressB2B } from '../../address/address.mock';
 import { getFormFields } from '../../address/formField.mock';
 import { getBillingAddress, getEmptyBillingAddress } from '../../billing/billingAddresses.mock';
 import { getCart } from '../../cart/carts.mock';
@@ -30,6 +32,11 @@ import PaymentContext, { type EnsureBillingAddressSaved } from '../PaymentContex
 
 import { PaymentBillingForm, type PaymentBillingFormProps } from './PaymentBillingForm';
 
+jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
+    usePayPalFastlaneAddress: jest.fn(),
+}));
+
 describe('PaymentBillingForm', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -38,11 +45,12 @@ describe('PaymentBillingForm', () => {
     let capturedEnsureBillingAddressSaved: EnsureBillingAddressSaved | null;
     let setEnsureBillingAddressSaved: jest.Mock;
     let defaultProps: PaymentBillingFormProps;
+    let capabilities: typeof defaultCapabilities;
 
     const PaymentBillingFormTest: FunctionComponent<PaymentBillingFormProps> = (props) => (
         <CheckoutProvider checkoutService={checkoutService}>
             <LocaleContext.Provider value={localeContext}>
-                <CapabilitiesContext.Provider value={defaultCapabilities}>
+                <CapabilitiesContext.Provider value={capabilities}>
                     <PaymentContext.Provider
                         value={{
                             setEnsureBillingAddressSaved,
@@ -94,6 +102,13 @@ describe('PaymentBillingForm', () => {
                 capturedEnsureBillingAddressSaved = ensureBillingAddressSaved;
             },
         );
+
+        capabilities = defaultCapabilities;
+        (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+            isPayPalFastlaneEnabled: false,
+            paypalFastlaneAddresses: [],
+            shouldShowPayPalFastlaneLabel: false,
+        });
 
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
@@ -537,11 +552,25 @@ describe('PaymentBillingForm', () => {
             jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
         });
 
-        const mockMultiShipping = () => {
+        const renderMultiShippingForm = (
+            props: Partial<PaymentBillingFormProps> = {},
+            shippingAddress: Address = consignmentAddress,
+        ) => {
             jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([
-                { ...getConsignment(), id: 'consignment-1', shippingAddress: consignmentAddress },
+                { ...getConsignment(), id: 'consignment-1', shippingAddress },
                 { ...getConsignment(), id: 'consignment-2' },
             ]);
+
+            return renderForm({
+                ...defaultProps,
+                billingAddress: getEmptyBillingAddress(),
+                isUsingMultiShipping: true,
+                ...props,
+            });
+        };
+
+        const openAddressSelect = async () => {
+            fireEvent.click(await screen.findByTestId('address-select-button'));
         };
 
         it('hides the address fields and prompts to enter or select an address when there is no billing address', () => {
@@ -601,21 +630,17 @@ describe('PaymentBillingForm', () => {
         });
 
         it('lists the shipping addresses when shipping to multiple addresses', async () => {
-            mockMultiShipping();
+            renderMultiShippingForm();
 
-            renderForm({ ...defaultProps, billingAddress: getEmptyBillingAddress() });
-
-            fireEvent.click(await screen.findByTestId('address-select-button'));
+            await openAddressSelect();
 
             expect(await screen.findByText(consignmentAddress.address1)).toBeInTheDocument();
         });
 
         it('selects a shipping address without its placeholder id, type or email', async () => {
-            mockMultiShipping();
+            renderMultiShippingForm();
 
-            renderForm({ ...defaultProps, billingAddress: getEmptyBillingAddress() });
-
-            fireEvent.click(await screen.findByTestId('address-select-button'));
+            await openAddressSelect();
             fireEvent.click(await screen.findByText(consignmentAddress.address1));
 
             await waitFor(() => expect(defaultProps.onSelectAddress).toHaveBeenCalledTimes(1));
@@ -630,6 +655,84 @@ describe('PaymentBillingForm', () => {
             expect(selectedAddress).not.toHaveProperty('type');
             expect(selectedAddress).not.toHaveProperty('email');
             expect(orderComment).toBe('');
+        });
+
+        it('does not list the shipping addresses when shipping to a single address', async () => {
+            renderMultiShippingForm({ isUsingMultiShipping: false });
+
+            await openAddressSelect();
+
+            expect(await screen.findByText('67890 Testing Way')).toBeInTheDocument();
+            expect(screen.queryByText(consignmentAddress.address1)).not.toBeInTheDocument();
+        });
+
+        it('does not list the shipping addresses for B2B checkouts with a company address book', async () => {
+            capabilities = {
+                ...defaultCapabilities,
+                userJourney: { ...defaultCapabilities.userJourney, hasCompanyAddressBook: true },
+            };
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
+                ...getCustomer(),
+                addresses: getCustomer().addresses.map((address) => ({
+                    ...address,
+                    ...getCustomerAddressB2B({ isBilling: true }),
+                })),
+            });
+
+            renderMultiShippingForm(
+                {},
+                { ...consignmentAddress, ...getCustomerAddressB2B({ isBilling: true }) },
+            );
+
+            await openAddressSelect();
+
+            expect(await screen.findByText('67890 Testing Way')).toBeInTheDocument();
+            expect(screen.queryByText(consignmentAddress.address1)).not.toBeInTheDocument();
+        });
+
+        it('lists the shipping addresses for guests', async () => {
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+
+            renderMultiShippingForm();
+
+            expect(screen.queryByText('First Name')).not.toBeInTheDocument();
+
+            await openAddressSelect();
+
+            expect(await screen.findByText(consignmentAddress.address1)).toBeInTheDocument();
+        });
+
+        it('lists only the Fastlane addresses for a Fastlane guest who has them', async () => {
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+                isPayPalFastlaneEnabled: true,
+                paypalFastlaneAddresses: [
+                    { ...getAddress(), address1: 'Fastlane Way', id: 99, type: 'paypal-address' },
+                ],
+                shouldShowPayPalFastlaneLabel: true,
+            });
+
+            renderMultiShippingForm();
+
+            await openAddressSelect();
+
+            expect(await screen.findByText('Fastlane Way')).toBeInTheDocument();
+            expect(screen.queryByText(consignmentAddress.address1)).not.toBeInTheDocument();
+        });
+
+        it('lists the shipping addresses for a Fastlane guest without Fastlane addresses', async () => {
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+                isPayPalFastlaneEnabled: true,
+                paypalFastlaneAddresses: [],
+                shouldShowPayPalFastlaneLabel: false,
+            });
+
+            renderMultiShippingForm();
+
+            await openAddressSelect();
+
+            expect(await screen.findByText(consignmentAddress.address1)).toBeInTheDocument();
         });
 
         it('selects a saved address as it is', async () => {

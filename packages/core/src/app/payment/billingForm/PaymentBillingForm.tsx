@@ -1,5 +1,6 @@
 import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, setNestedObjectValues, withFormik } from 'formik';
+import { omit } from 'lodash';
 import React, { type FocusEvent, useCallback, useContext, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
@@ -8,6 +9,7 @@ import {
     withLanguage,
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton, Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import {
@@ -15,6 +17,7 @@ import {
     type AddressFormValues,
     AddressSelect,
     AddressType,
+    decodeAddressLabel,
     isValidCustomerAddress,
 } from '../../address';
 import {
@@ -28,7 +31,7 @@ import { getShippableItemsCount } from '../../shipping';
 import BillingSameAsShippingField from '../../shipping/BillingSameAsShippingField';
 import PaymentContext from '../PaymentContext';
 
-import { useBillingAddressOptions } from './hooks/useBillingAddressOptions';
+import { getConsignmentAddressOptions } from './getConsignmentAddressOptions';
 
 type TaxField = 'postalCode' | 'stateOrProvince' | 'stateOrProvinceCode';
 
@@ -82,25 +85,22 @@ const PaymentBillingFormComponent = ({
 }: PaymentBillingFormProps & WithLanguageProps & FormikProps<PaymentBillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const [isEnteringNewAddress, setIsEnteringNewAddress] = useState(false);
-
-    const {
-        addresses: billingAddresses,
-        hasAddresses,
-        toBillingAddress,
-    } = useBillingAddressOptions();
+    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const paymentContext = useContext(PaymentContext);
 
     const {
-        selectedState: { customer, config, cart, isUpdatingBillingAddress },
+        selectedState: { customer, config, cart, consignments, isUpdatingBillingAddress },
     } = useCheckout(({ data, statuses }) => ({
         customer: data.getCustomer(),
         config: data.getConfig(),
         cart: data.getCart(),
+        consignments: data.getConsignments(),
         isUpdatingBillingAddress: statuses.isUpdatingBillingAddress(),
     }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
         shipping: { hideBillingSameAsShippingCheck },
+        userJourney: { hasAddressLabel, hasCompanyAddressBook },
     } = useCapabilities();
 
     if (!config || !customer || !cart) {
@@ -108,6 +108,22 @@ const PaymentBillingFormComponent = ({
     }
 
     const isGuest = customer.isGuest;
+    const isPayPalFastlaneGuest = isGuest && isPayPalFastlaneEnabled;
+    const hasPayPalFastlaneAddresses = isPayPalFastlaneGuest && paypalFastlaneAddresses.length > 0;
+    const baseAddresses = isPayPalFastlaneGuest ? paypalFastlaneAddresses : customer.addresses;
+    const shouldIncludeConsignmentAddresses =
+        isUsingMultiShipping && !hasCompanyAddressBook && !hasPayPalFastlaneAddresses;
+    const consignmentAddresses =
+        shouldIncludeConsignmentAddresses && consignments
+            ? getConsignmentAddressOptions(consignments, baseAddresses).map((address) =>
+                  decodeAddressLabel(address, hasAddressLabel),
+              )
+            : [];
+    const billingAddresses = [
+        ...baseAddresses.map((address) => decodeAddressLabel(address, hasAddressLabel)),
+        ...consignmentAddresses,
+    ];
+    const hasAddresses = billingAddresses.length > 0;
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
     const customOrExtraFields = allFormFields.filter(
@@ -201,7 +217,14 @@ const PaymentBillingFormComponent = ({
         setIsResettingAddress(true);
 
         try {
-            await onSelectAddress(toBillingAddress(address), values.orderComment);
+            const isConsignmentAddress = consignmentAddresses.some(
+                (consignmentAddress) => consignmentAddress === address,
+            );
+
+            await onSelectAddress(
+                isConsignmentAddress ? omit(address, ['id', 'type']) : address,
+                values.orderComment,
+            );
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);
