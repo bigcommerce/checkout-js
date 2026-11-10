@@ -28,6 +28,7 @@
             "enter_address_action": "Enter a new address",
             "select_address_action": "Select an address",
             "enter_or_select_address_action": "Enter or select a different address",
+            "enter_or_select_address_placeholder": "Enter or select an address",
             "add_address_heading": "Add Address",
             "save_address_action": "Save address",
             "add_address_heading_v2": "Add address",

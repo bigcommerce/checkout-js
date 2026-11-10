@@ -33,15 +33,11 @@ export const useBillingAddressOptions = () => {
 
     const isGuest = customer?.isGuest;
     const customerAddresses = customer?.addresses;
-    const isRegisteredCustomer = !isGuest;
     const isMultiShippingEnabled = !!config?.checkoutSettings.hasMultiShippingEnabled;
     const hasMultiShippingConsignments =
         !!cart && !!consignments && isUsingMultiShipping(consignments, cart.lineItems);
     const shouldIncludeConsignmentAddresses =
-        isRegisteredCustomer &&
-        !hasCompanyAddressBook &&
-        isMultiShippingEnabled &&
-        hasMultiShippingConsignments;
+        !hasCompanyAddressBook && isMultiShippingEnabled && hasMultiShippingConsignments;
 
     const { addresses, consignmentAddresses } = useMemo(() => {
         const baseAddresses = (
