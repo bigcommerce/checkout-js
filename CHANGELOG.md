@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.934.2](https://github.com/bigcommerce/checkout-js/compare/v1.934.1...v1.934.2) (2026-11-10)
+
+
+### Bug Fixes
+
+* **provider:** PI-5771 Use boltapp.com for Bolt privacy and terms links ([856a280](https://github.com/bigcommerce/checkout-js/commit/856a280867b8fe71fec6ad30e462d6ab041668c2))
+
 ### [1.934.1](https://github.com/bigcommerce/checkout-js/compare/v1.934.0...v1.934.1) (2026-11-10)
 
 ## [1.934.0](https://github.com/bigcommerce/checkout-js/compare/v1.933.0...v1.934.0) (2026-11-09)
