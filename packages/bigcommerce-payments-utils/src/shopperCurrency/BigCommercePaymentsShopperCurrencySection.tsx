@@ -30,11 +30,21 @@ const BigCommercePaymentsShopperCurrencySection: FunctionComponent<{
         setContainer(hasOffer && containerId ? document.getElementById(containerId) : null);
     }, [hasOffer, containerId]);
 
-    if (!method || !container) {
+    const offer = method ? getShopperCurrencyOffer(method) : undefined;
+
+    if (!method || !offer || !container) {
         return null;
     }
 
-    return createPortal(<BigCommercePaymentsShopperCurrency method={method} />, container);
+    // An offer for a new country (after an address change) starts over: the shopper currency is
+    // preselected again until the shopper chooses
+    return createPortal(
+        <BigCommercePaymentsShopperCurrency
+            key={`${offer.countryCode}-${offer.currency}`}
+            method={method}
+        />,
+        container,
+    );
 };
 
 export default BigCommercePaymentsShopperCurrencySection;
