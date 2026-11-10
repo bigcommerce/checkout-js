@@ -31,17 +31,21 @@ export const useBillingAddressOptions = () => {
     } = useCapabilities();
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
-    const isGuest = customer?.isGuest;
     const customerAddresses = customer?.addresses;
+    const isPayPalFastlaneGuest = !!customer?.isGuest && isPayPalFastlaneEnabled;
+    const hasPayPalFastlaneAddresses = isPayPalFastlaneGuest && paypalFastlaneAddresses.length > 0;
     const isMultiShippingEnabled = !!config?.checkoutSettings.hasMultiShippingEnabled;
     const hasMultiShippingConsignments =
         !!cart && !!consignments && isUsingMultiShipping(consignments, cart.lineItems);
     const shouldIncludeConsignmentAddresses =
-        !hasCompanyAddressBook && isMultiShippingEnabled && hasMultiShippingConsignments;
+        !hasCompanyAddressBook &&
+        !hasPayPalFastlaneAddresses &&
+        isMultiShippingEnabled &&
+        hasMultiShippingConsignments;
 
     const { addresses, consignmentAddresses } = useMemo(() => {
         const baseAddresses = (
-            isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : (customerAddresses ?? [])
+            isPayPalFastlaneGuest ? paypalFastlaneAddresses : (customerAddresses ?? [])
         ).map((address) => decodeAddressLabel(address, hasAddressLabel));
 
         if (!shouldIncludeConsignmentAddresses || !consignments) {
@@ -66,8 +70,7 @@ export const useBillingAddressOptions = () => {
         consignments,
         customerAddresses,
         hasAddressLabel,
-        isGuest,
-        isPayPalFastlaneEnabled,
+        isPayPalFastlaneGuest,
         paypalFastlaneAddresses,
         shouldIncludeConsignmentAddresses,
     ]);
