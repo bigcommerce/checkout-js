@@ -1,9 +1,14 @@
 import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, setNestedObjectValues, withFormik } from 'formik';
+import { omit } from 'lodash';
 import React, { type FocusEvent, useCallback, useContext, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
-import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import {
+    TranslatedString,
+    withLanguage,
+    type WithLanguageProps,
+} from '@bigcommerce/checkout/locale';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton, Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -25,6 +30,8 @@ import { OrderComments } from '../../orderComments';
 import { getShippableItemsCount } from '../../shipping';
 import BillingSameAsShippingField from '../../shipping/BillingSameAsShippingField';
 import PaymentContext from '../PaymentContext';
+
+import { getConsignmentAddressOptions } from './getConsignmentAddressOptions';
 
 type TaxField = 'postalCode' | 'stateOrProvince' | 'stateOrProvinceCode';
 
@@ -55,6 +62,10 @@ export interface PaymentBillingFormProps {
     onUnhandledError(error: Error): void;
 }
 
+const ENTER_OR_SELECT_ADDRESS_PLACEHOLDER = (
+    <TranslatedString id="address.enter_or_select_address_placeholder" />
+);
+
 const PaymentBillingFormComponent = ({
     methodId,
     getFields,
@@ -73,21 +84,23 @@ const PaymentBillingFormComponent = ({
     onUnhandledError,
 }: PaymentBillingFormProps & WithLanguageProps & FormikProps<PaymentBillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
+    const [isEnteringNewAddress, setIsEnteringNewAddress] = useState(false);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const paymentContext = useContext(PaymentContext);
 
     const {
-        selectedState: { customer, config, cart, isUpdatingBillingAddress },
+        selectedState: { customer, config, cart, consignments, isUpdatingBillingAddress },
     } = useCheckout(({ data, statuses }) => ({
         customer: data.getCustomer(),
         config: data.getConfig(),
         cart: data.getCart(),
+        consignments: data.getConsignments(),
         isUpdatingBillingAddress: statuses.isUpdatingBillingAddress(),
     }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
         shipping: { hideBillingSameAsShippingCheck },
-        userJourney: { hasAddressLabel },
+        userJourney: { hasAddressLabel, hasCompanyAddressBook },
     } = useCapabilities();
 
     if (!config || !customer || !cart) {
@@ -95,6 +108,19 @@ const PaymentBillingFormComponent = ({
     }
 
     const isGuest = customer.isGuest;
+    const isPayPalFastlaneGuest = isGuest && isPayPalFastlaneEnabled;
+    const hasPayPalFastlaneAddresses = isPayPalFastlaneGuest && paypalFastlaneAddresses.length > 0;
+    const baseAddresses = isPayPalFastlaneGuest ? paypalFastlaneAddresses : customer.addresses;
+    const shouldIncludeConsignmentAddresses =
+        isUsingMultiShipping && !hasCompanyAddressBook && !hasPayPalFastlaneAddresses;
+    const consignmentAddresses =
+        shouldIncludeConsignmentAddresses && consignments
+            ? getConsignmentAddressOptions(consignments, baseAddresses)
+            : [];
+    const billingAddresses = [...baseAddresses, ...consignmentAddresses].map((address) =>
+        decodeAddressLabel(address, hasAddressLabel),
+    );
+    const hasAddresses = billingAddresses.length > 0;
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
     const customOrExtraFields = allFormFields.filter(
@@ -103,14 +129,6 @@ const PaymentBillingFormComponent = ({
     const hasCustomOrExtraFields = customOrExtraFields.length > 0;
     const editableFormFields =
         shouldRenderStaticAddress && hasCustomOrExtraFields ? customOrExtraFields : allFormFields;
-    const rawBillingAddresses =
-        isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : customer.addresses;
-
-    const billingAddresses = rawBillingAddresses.map((address) =>
-        decodeAddressLabel(address, hasAddressLabel),
-    );
-
-    const hasAddresses = rawBillingAddresses.length > 0;
     const hasValidCustomerAddress =
         billingAddress &&
         isValidCustomerAddress(
@@ -129,6 +147,11 @@ const PaymentBillingFormComponent = ({
         hasShippableItems;
     const isBillingAddressCollapsed =
         shouldShowBillingSameAsShipping && values.billingSameAsShipping;
+    const isAddressSelectVisible = hasAddresses && !shouldRenderStaticAddress;
+    const shouldShowAddressForm =
+        !restrictManualAddressEntry &&
+        !hasValidCustomerAddress &&
+        (!isAddressSelectVisible || isEnteringNewAddress || !!billingAddress?.address1);
 
     const ensureBillingAddressSaved = useCallback(async (): Promise<boolean> => {
         if (isLoading || isResettingAddress) {
@@ -143,6 +166,7 @@ const PaymentBillingFormComponent = ({
         const errors = await validateForm();
 
         if (Object.keys(errors).length > 0) {
+            setIsEnteringNewAddress(true);
             await setTouched(setNestedObjectValues(errors, true));
 
             return false;
@@ -190,7 +214,13 @@ const PaymentBillingFormComponent = ({
         setIsResettingAddress(true);
 
         try {
-            await onSelectAddress(address, values.orderComment);
+            const isConsignmentAddress =
+                billingAddresses.findIndex((option) => option === address) >= baseAddresses.length;
+
+            await onSelectAddress(
+                isConsignmentAddress ? omit(address, ['id', 'type']) : address,
+                values.orderComment,
+            );
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);
@@ -201,6 +231,7 @@ const PaymentBillingFormComponent = ({
     };
 
     const handleUseNewAddress = () => {
+        setIsEnteringNewAddress(true);
         void handleSelectAddress({});
     };
 
@@ -284,13 +315,18 @@ const PaymentBillingFormComponent = ({
                     )}
 
                     <Fieldset id="checkoutBillingAddress">
-                        {hasAddresses && !shouldRenderStaticAddress && (
+                        {isAddressSelectVisible && (
                             <Fieldset id="billingAddresses">
                                 <LoadingOverlay isLoading={isResettingAddress}>
                                     <AddressSelect
                                         addresses={billingAddresses}
                                         onSelectAddress={handleSelectAddress}
                                         onUseNewAddress={handleUseNewAddress}
+                                        placeholderText={
+                                            restrictManualAddressEntry || shouldShowAddressForm
+                                                ? undefined
+                                                : ENTER_OR_SELECT_ADDRESS_PLACEHOLDER
+                                        }
                                         selectedAddress={
                                             hasValidCustomerAddress ? billingAddress : undefined
                                         }
@@ -300,7 +336,7 @@ const PaymentBillingFormComponent = ({
                             </Fieldset>
                         )}
 
-                        {!restrictManualAddressEntry && !hasValidCustomerAddress && (
+                        {shouldShowAddressForm && (
                             <AddressFormSkeleton isLoading={isResettingAddress}>
                                 <div
                                     onBlur={handleAddressFieldBlur}
