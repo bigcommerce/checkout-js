@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.936.0](https://github.com/bigcommerce/checkout-js/compare/v1.935.0...v1.936.0) (2026-11-11)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10448 Improve Billing Address Options for Multi-shipping ([#3454](https://github.com/bigcommerce/checkout-js/issues/3454)) ([242dc51](https://github.com/bigcommerce/checkout-js/commit/242dc517c260037711b303a7c71a635e3c899761))
+
 ## [1.935.0](https://github.com/bigcommerce/checkout-js/compare/v1.934.4...v1.935.0) (2026-11-11)
 
 
