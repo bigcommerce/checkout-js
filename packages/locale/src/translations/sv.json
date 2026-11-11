@@ -188,6 +188,7 @@
             "returning_customer_text": "Återvändande kund",
             "sign_in_action": "Logga in",
             "sign_in_action_v2": "Logga in",
+            "sign_in_cart_unavailable_error": "Your cart is no longer available. You're now signed in. Select OK to return to your cart and add your items again.",
             "sign_in_error": "E-postadressen eller lösenordet som du angav är ogiltigt.",
             "sign_in_throttled_error": "Du har försökt logga in för många gånger. Vänta tio sekunder innan du försöker logga in igen.",
             "sign_out_action": "Logga ut",
@@ -319,6 +320,7 @@
             "redeemable_payments_text": "Inlösbara betalningar",
             "instrument_storage_options_text": "Betalningslagringsalternativ",
             "stripev3_auth_3ds_fail": "Användaren autentiserades inte",
+            "apple_pay_name_text": "Apple Pay",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm kan inte behandla din betalning för denna beställning. Vänligen välj en annan betalningsmetod.",
             "klarna_continue_action": "Fortsätt med Klarna",
@@ -539,6 +541,7 @@
             "total_savings_text": "Du sparade <span class=\"total-savings-highlight\">{totalDiscount}</span> totalt!"
         },
         "remote": {
+            "auto_vaulting_disclaimer_text": "Genom att betala med {methodNames} godkänner du att säljaren får debitera ditt kort för framtida betalningar enligt sina villkor.",
             "browser_unsupported": "Den valda betalningsmetoden kräver en annan webbläsare. Välj en annan betalningsmetod.",
             "connection_error": "Anslutning till fjärrkassan nekades, försök senare.",
             "continue_with_text": "Eller fortsätt med",

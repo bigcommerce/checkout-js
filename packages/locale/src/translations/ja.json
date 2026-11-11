@@ -188,6 +188,7 @@
             "returning_customer_text": "リピーター顧客",
             "sign_in_action": "ログイン",
             "sign_in_action_v2": "ログイン",
+            "sign_in_cart_unavailable_error": "Your cart is no longer available. You're now signed in. Select OK to return to your cart and add your items again.",
             "sign_in_error": "入力したメールアドレスまたはパスワードが無効です。",
             "sign_in_throttled_error": "連続したログインがありました、しばらく経ってから再度お試しください。",
             "sign_out_action": "サインアウト",
@@ -319,6 +320,7 @@
             "redeemable_payments_text": "引き換え可能な支払い",
             "instrument_storage_options_text": "決済情報保存オプション",
             "stripev3_auth_3ds_fail": "ユーザーが認証されませんでした",
+            "apple_pay_name_text": "Apple Pay",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "この注文を処理できません。別の支払方法を選択してください。",
             "klarna_continue_action": "Klarnaで続ける",
@@ -539,6 +541,7 @@
             "total_savings_text": "合計で<span class=\"total-savings-highlight\">{totalDiscount}</span>節約できました!"
         },
         "remote": {
+            "auto_vaulting_disclaimer_text": "{methodNames}で支払うことにより、加盟店がその利用規約に基づいて将来の支払いのためにあなたのカードに請求することに同意したことになります。",
             "browser_unsupported": "選択した支払方い法には、別のWebブラウザが必要です。他の支払方法を選んでください。",
             "connection_error": "リモートチェックアウトへの接続が拒否されました。しばらく経ってからお試しください。",
             "continue_with_text": "または続けて",

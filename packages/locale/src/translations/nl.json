@@ -188,6 +188,7 @@
             "returning_customer_text": "Terugkerende klant",
             "sign_in_action": "Inloggen",
             "sign_in_action_v2": "Inloggen",
+            "sign_in_cart_unavailable_error": "Your cart is no longer available. You're now signed in. Select OK to return to your cart and add your items again.",
             "sign_in_error": "Het e-mailadres of wachtwoord dat u hebt ingevoerd, is niet geldig.",
             "sign_in_throttled_error": "Vanwege te veel inlogpogingen moet u 10 seconden wachten voordat u opnieuw probeert in te loggen.",
             "sign_out_action": "Uitloggen",
@@ -319,6 +320,7 @@
             "redeemable_payments_text": "Inwisselbare betalingen",
             "instrument_storage_options_text": "Betalingsopslagopties",
             "stripev3_auth_3ds_fail": "De gebruiker heeft zich niet geverifieerd",
+            "apple_pay_name_text": "Apple Pay",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm kan uw betaling voor deze bestelling niet verwerken. Selecteer een andere betaalmethode.",
             "klarna_continue_action": "Doorgaan met Klarna",
@@ -539,6 +541,7 @@
             "total_savings_text": "Je hebt in totaal <span class=\"total-savings-highlight\">{totalDiscount}</span> bespaard!"
         },
         "remote": {
+            "auto_vaulting_disclaimer_text": "Door te betalen met {methodNames}, ga je ermee akkoord dat de verkoper volgens zijn voorwaarden bedragen voor toekomstige betalingen van je kaart mag afschrijven.",
             "browser_unsupported": "Voor de geselecteerde betaalmethode is een andere webbrowser vereist. Kies een andere betaalmethode.",
             "connection_error": "Verbinding met externe betaalmethode geweigerd, probeer het later opnieuw.",
             "continue_with_text": "Of ga door met",
