@@ -115,14 +115,11 @@ const PaymentBillingFormComponent = ({
         isUsingMultiShipping && !hasCompanyAddressBook && !hasPayPalFastlaneAddresses;
     const consignmentAddresses =
         shouldIncludeConsignmentAddresses && consignments
-            ? getConsignmentAddressOptions(consignments, baseAddresses).map((address) =>
-                  decodeAddressLabel(address, hasAddressLabel),
-              )
+            ? getConsignmentAddressOptions(consignments, baseAddresses)
             : [];
-    const billingAddresses = [
-        ...baseAddresses.map((address) => decodeAddressLabel(address, hasAddressLabel)),
-        ...consignmentAddresses,
-    ];
+    const billingAddresses = [...baseAddresses, ...consignmentAddresses].map((address) =>
+        decodeAddressLabel(address, hasAddressLabel),
+    );
     const hasAddresses = billingAddresses.length > 0;
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
@@ -217,9 +214,8 @@ const PaymentBillingFormComponent = ({
         setIsResettingAddress(true);
 
         try {
-            const isConsignmentAddress = consignmentAddresses.some(
-                (consignmentAddress) => consignmentAddress === address,
-            );
+            const isConsignmentAddress =
+                billingAddresses.findIndex((option) => option === address) >= baseAddresses.length;
 
             await onSelectAddress(
                 isConsignmentAddress ? omit(address, ['id', 'type']) : address,
