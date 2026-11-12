@@ -14,6 +14,10 @@ import { getStoreConfig } from '../config/config.mock';
 import { PaymentMethodId, PaymentMethodType } from './paymentMethod';
 import PaymentSubmitButton, { type PaymentSubmitButtonProps } from './PaymentSubmitButton';
 
+jest.mock('../currency', () => ({
+    ShopperCurrency: ({ amount }: { amount: number }) => <span>{`$${amount.toFixed(2)}`}</span>,
+}));
+
 describe('PaymentSubmitButton', () => {
     let PaymentSubmitButtonTest: FunctionComponent<PaymentSubmitButtonProps>;
     let checkoutService: CheckoutService;
@@ -38,6 +42,17 @@ describe('PaymentSubmitButton', () => {
         expect(
             screen.getByText(languageService.translate('payment.place_order_action')),
         ).toBeInTheDocument();
+    });
+
+    it('renders "Pay" with the final amount when a payAmount is given', () => {
+        render(<PaymentSubmitButtonTest payAmount={212.18} />);
+
+        expect(screen.getByRole('button')).toHaveTextContent(
+            `${languageService.translate('payment.pay_amount_action')} $212.18`,
+        );
+        expect(
+            screen.queryByText(languageService.translate('payment.place_order_action')),
+        ).not.toBeInTheDocument();
     });
 
     it('renders button with default label if payment data is not required', () => {

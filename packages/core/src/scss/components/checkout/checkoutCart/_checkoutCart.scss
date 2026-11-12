@@ -162,6 +162,22 @@ a.cart-backorder-link {
     }
 }
 
+// Card surcharge row: bold and shaded so the shopper notices what was added to the total.
+.cart-priceItem--surcharge {
+    background-color: rgba(color("greys", "lightest"), 0.6);
+    border-radius: 2px;
+    font-weight: fontWeight("bold");
+    margin-left: -#{spacing("quarter")};
+    margin-right: -#{spacing("quarter")};
+    padding: spacing("quarter");
+    width: calc(100% + #{spacing("half")});
+
+    .cart-priceItem-label,
+    .cart-priceItem-value {
+        font-weight: inherit;
+    }
+}
+
 .cart-priceItem--subtotal {
     font-weight: fontWeight("semibold");
 }

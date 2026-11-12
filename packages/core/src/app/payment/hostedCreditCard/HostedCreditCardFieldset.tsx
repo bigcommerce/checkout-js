@@ -3,6 +3,8 @@ import React, { type FunctionComponent, type ReactNode } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Fieldset, Legend } from '@bigcommerce/checkout/ui';
 
+import { SurchargeCardBoxNotices } from '../surcharge';
+
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
 import HostedCreditCardNameField from './HostedCreditCardNameField';
@@ -32,6 +34,8 @@ const HostedCreditCardFieldset: FunctionComponent<HostedCreditCardFieldsetProps>
             </Legend>
         }
     >
+        <SurchargeCardBoxNotices />
+
         <div className="form-ccFields">
             <HostedCreditCardNumberField
                 appearFocused={focusedFieldType === 'cardNumber'}

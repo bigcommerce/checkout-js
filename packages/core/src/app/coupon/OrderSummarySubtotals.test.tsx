@@ -348,6 +348,36 @@ describe('OrderSummarySubtotals', () => {
                 expect(screen.getByTestId('cart-fees')).toBeInTheDocument();
             });
 
+            it('renders the card surcharge as its own highlighted row', () => {
+                const fees: Fee[] = [
+                    {
+                        id: '1',
+                        cost: 2.5,
+                        type: 'custom_fee',
+                        source: 'test',
+                        name: 'Test Fee',
+                        displayName: 'Test Fee',
+                    },
+                    {
+                        id: '2',
+                        cost: 6.18,
+                        type: 'custom_fee',
+                        source: 'payment_surcharge',
+                        name: 'card_surcharge',
+                        displayName: 'Surcharge',
+                    },
+                ];
+
+                renderComponent({ fees, taxes: [{ name: 'Tax', amount: 1 }] });
+
+                const surcharge = screen.getByTestId('cart-surcharge');
+
+                expect(screen.getByTestId('cart-fees')).toBeInTheDocument();
+                expect(surcharge).toHaveTextContent('Surcharge');
+                expect(surcharge).toHaveTextContent(currencyService.toCustomerCurrency(6.18));
+                expect(surcharge).toContainHTML('cart-priceItem--surcharge');
+            });
+
             it('renders multiple fees', () => {
                 const fees: Fee[] = [
                     {
