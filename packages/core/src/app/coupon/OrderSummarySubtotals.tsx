@@ -5,6 +5,7 @@ import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice } from '../order';
+import { isSurchargeFee, SurchargeCalculatingRow } from '../payment/surcharge';
 
 import { AppliedGiftCertificates, CollapsibleCouponForm, Discounts } from './components';
 import { useMultiCoupon } from './useMultiCoupon';
@@ -71,14 +72,16 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     />
                 )}
 
-                {fees?.map((fee) => (
-                    <OrderSummaryPrice
-                        amount={fee.cost}
-                        key={fee.id}
-                        label={isOrderFee(fee) ? fee.customerDisplayName : fee.displayName}
-                        testId="cart-fees"
-                    />
-                ))}
+                {fees
+                    ?.filter((fee) => !isSurchargeFee(fee))
+                    .map((fee) => (
+                        <OrderSummaryPrice
+                            amount={fee.cost}
+                            key={fee.id}
+                            label={isOrderFee(fee) ? fee.customerDisplayName : fee.displayName}
+                            testId="cart-fees"
+                        />
+                    ))}
 
                 {!isTaxIncluded &&
                     (taxes || []).map((tax) => (
@@ -90,8 +93,20 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                         />
                     ))}
 
-                <AppliedGiftCertificates giftCertificates={appliedGiftCertificates} />
+                {fees
+                    ?.filter(isSurchargeFee)
+                    .map((fee) => (
+                        <OrderSummaryPrice
+                            amount={fee.cost}
+                            className="cart-priceItem--surcharge"
+                            key={fee.id}
+                            label={isOrderFee(fee) ? fee.customerDisplayName : fee.displayName}
+                            testId="cart-surcharge"
+                        />
+                    ))}
+                {!fees?.some(isSurchargeFee) && <SurchargeCalculatingRow />}
 
+                <AppliedGiftCertificates giftCertificates={appliedGiftCertificates} />
                 {!!storeCreditAmount && (
                     <OrderSummaryDiscount
                         amount={storeCreditAmount}
