@@ -25,13 +25,46 @@ export function matchesAddressType(address: CustomerAddress, type: AddressType):
     return type === AddressType.Shipping ? Boolean(address.isShipping) : Boolean(address.isBilling);
 }
 
+type CompanyAddressExtraField = CompanyAddress['extraFields'][number];
+
+function getExtraFieldValue(extraField: CompanyAddressExtraField): string | number {
+    switch (extraField.__typename) {
+        case 'TextExtraFieldValue':
+            return extraField.text;
+
+        case 'MultilineTextExtraFieldValue':
+            return extraField.multilineText;
+
+        case 'NumberExtraFieldValue':
+            return extraField.number;
+
+        case 'MultipleChoiceExtraFieldValue':
+            return extraField.value;
+    }
+}
+
+function mapToExtraFields(
+    extraFields: CompanyAddress['extraFields'],
+): NonNullable<CustomerAddress['extraFields']> {
+    return extraFields.flatMap((extraField) =>
+        extraField.fieldEntityId == null
+            ? []
+            : [
+                  {
+                      fieldId: String(extraField.fieldEntityId),
+                      fieldValue: getExtraFieldValue(extraField),
+                  },
+              ],
+    );
+}
+
 function mapToCustomerAddress(address: CompanyAddress): CustomerAddress {
     return {
         id: address.entityId,
         type: 'company',
         firstName: address.firstName,
         lastName: address.lastName,
-        company: '',
+        company: address.company ?? '',
         address1: address.address1,
         address2: address.address2 ?? '',
         city: address.city,
@@ -47,7 +80,7 @@ function mapToCustomerAddress(address: CompanyAddress): CustomerAddress {
         isBilling: address.isBilling ?? false,
         isDefaultShipping: address.isDefaultShipping ?? false,
         isDefaultBilling: address.isDefaultBilling ?? false,
-        extraFields: [],
+        extraFields: mapToExtraFields(address.extraFields),
     };
 }
 
@@ -106,10 +139,18 @@ export function useCompanyAddressSearch({
                 );
 
                 setSearchResults(
-                    (activeCompany.addresses.edges ?? []).map(
-                        ({ node }) =>
-                            addressesById.get(node.entityId) ?? mapToCustomerAddress(node),
-                    ),
+                    (activeCompany.addresses.edges ?? []).map(({ node }) => {
+                        const cachedAddress = addressesById.get(node.entityId);
+                        const address = mapToCustomerAddress(node);
+
+                        return cachedAddress
+                            ? {
+                                  ...cachedAddress,
+                                  ...address,
+                                  customFields: cachedAddress.customFields,
+                              }
+                            : address;
+                    }),
                 );
             } catch {
                 if (!isStale()) {
