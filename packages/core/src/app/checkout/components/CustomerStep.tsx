@@ -1,7 +1,9 @@
-import React, { lazy } from 'react';
+import { createBraintreeFastlaneCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
+import React, { lazy, useEffect } from 'react';
 
 import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { retry } from '../../common/utility';
@@ -14,6 +16,7 @@ import {
 } from '../../customer';
 import { attemptStorefrontLoginRedirect } from '../../customer/attemptStorefrontLoginRedirect';
 import { isEmbedded } from '../../embeddedCheckout';
+import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';
 import CheckoutStep from '../CheckoutStep';
 import type CheckoutStepType from '../CheckoutStepType';
 
@@ -56,18 +59,48 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
 }) => {
     const { enhancedThemeV1 } = useThemeContext();
     const {
+        checkoutService,
+        errorLogger,
         selectedState: {
             config,
+            customer,
             isContinuingAsGuest,
             isExecutingPaymentMethodCheckout,
             isInitializingCustomer,
         },
     } = useCheckout(({ data, statuses }) => ({
         config: data.getConfig(),
+        customer: data.getCustomer(),
         isContinuingAsGuest: statuses.isContinuingAsGuest(),
         isExecutingPaymentMethodCheckout: statuses.isExecutingPaymentMethodCheckout(),
         isInitializingCustomer: statuses.isInitializingCustomer(),
     }));
+
+    const { isFastlaneForKnownShoppersEnabled } = usePayPalFastlaneAddress();
+    const providerWithCustomCheckout = getProviderWithCustomCheckout(
+        config?.checkoutSettings.providerWithCustomCheckout,
+    );
+    const shouldInitializeBraintreeFastlaneForKnownShopper =
+        isFastlaneForKnownShoppersEnabled && !!customer && !customer.isGuest;
+
+    // Info: the Customer component (where customer strategies are normally initialized) is mounted
+    // only while the customer step is active, which never happens for logged in shoppers.
+    // So the Braintree Fastlane customer strategy is initialized here for known shoppers.
+    useEffect(() => {
+        if (!shouldInitializeBraintreeFastlaneForKnownShopper || !providerWithCustomCheckout) {
+            return;
+        }
+
+        checkoutService
+            .initializeCustomer({
+                methodId: providerWithCustomCheckout,
+                integrations: [createBraintreeFastlaneCustomerStrategy],
+                onErrorLog: (error: unknown) => {
+                    errorLogger?.log(error instanceof Error ? error : new Error(String(error)));
+                },
+            })
+            .catch(onUnhandledError);
+    }, [shouldInitializeBraintreeFastlaneForKnownShopper, providerWithCustomCheckout]);
 
     const handleShowLogin = () => {
         if (attemptStorefrontLoginRedirect(config)) {

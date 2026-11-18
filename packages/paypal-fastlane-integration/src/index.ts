@@ -1,5 +1,6 @@
 export * from './types';
 
+export { default as getPayPalFastlaneAddressesForCustomer } from './get-paypal-fastlane-addresses-for-customer';
 export { default as isPayPalFastlaneAddress } from './is-paypal-fastlane-address';
 export { default as isPayPalFastlaneCustomer } from './is-paypal-fastlane-customer';
 export { default as isPayPalFastlaneMethod } from './is-paypal-fastlane-method';

@@ -9,7 +9,10 @@ import {
     withLanguage,
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
-import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import {
+    getPayPalFastlaneAddressesForCustomer,
+    usePayPalFastlaneAddress,
+} from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton, Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import {
@@ -85,7 +88,8 @@ const PaymentBillingFormComponent = ({
 }: PaymentBillingFormProps & WithLanguageProps & FormikProps<PaymentBillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const [isEnteringNewAddress, setIsEnteringNewAddress] = useState(false);
-    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
+    const { isPayPalFastlaneEnabled, isFastlaneForKnownShoppersEnabled, paypalFastlaneAddresses } =
+        usePayPalFastlaneAddress();
     const paymentContext = useContext(PaymentContext);
 
     const {
@@ -110,7 +114,13 @@ const PaymentBillingFormComponent = ({
     const isGuest = customer.isGuest;
     const isPayPalFastlaneGuest = isGuest && isPayPalFastlaneEnabled;
     const hasPayPalFastlaneAddresses = isPayPalFastlaneGuest && paypalFastlaneAddresses.length > 0;
-    const baseAddresses = isPayPalFastlaneGuest ? paypalFastlaneAddresses : customer.addresses;
+    const baseAddresses = getPayPalFastlaneAddressesForCustomer({
+        isGuest,
+        isPayPalFastlaneEnabled,
+        isFastlaneForKnownShoppersEnabled,
+        paypalFastlaneAddresses,
+        bcAddresses: customer.addresses,
+    });
     const shouldIncludeConsignmentAddresses =
         isUsingMultiShipping && !hasCompanyAddressBook && !hasPayPalFastlaneAddresses;
     const consignmentAddresses =
