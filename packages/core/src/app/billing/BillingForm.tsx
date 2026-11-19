@@ -8,7 +8,10 @@ import {
     withLanguage,
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
-import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import {
+    getPayPalFastlaneAddressesForCustomer,
+    usePayPalFastlaneAddress,
+} from '@bigcommerce/checkout/paypal-fastlane-integration';
 import {
     AddressFormSkeleton,
     Button,
@@ -59,7 +62,8 @@ const BillingForm = ({
 }: BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
-    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
+    const { isPayPalFastlaneEnabled, isFastlaneForKnownShoppersEnabled, paypalFastlaneAddresses } =
+        usePayPalFastlaneAddress();
 
     const {
         selectedState: { customer, config, cart, isUpdatingBillingAddress, isUpdatingCheckout },
@@ -89,8 +93,13 @@ const BillingForm = ({
     const hasCustomOrExtraFields = customOrExtraFields.length > 0;
     const editableFormFields =
         shouldRenderStaticAddress && hasCustomOrExtraFields ? customOrExtraFields : allFormFields;
-    const rawBillingAddresses =
-        isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : rawAddresses;
+    const rawBillingAddresses = getPayPalFastlaneAddressesForCustomer({
+        isGuest,
+        isPayPalFastlaneEnabled,
+        isFastlaneForKnownShoppersEnabled,
+        paypalFastlaneAddresses,
+        bcAddresses: rawAddresses,
+    });
 
     const billingAddresses = rawBillingAddresses.map((address) =>
         decodeAddressLabel(address, hasAddressLabel),
