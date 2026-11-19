@@ -269,10 +269,15 @@ export const CreditCardPaymentMethodComponent = (
                     deinitializePayment,
                     method,
                     onUnhandledError,
-                    paymentForm: { setValidationSchema },
+                    paymentForm: { setFieldValue, setValidationSchema },
                 } = props;
 
                 setValidationSchema(method, null);
+
+                // The hosted card fields are destroyed with this component, so the card type they
+                // reported is no longer true. Left as is, coming back to the card shows a type for
+                // empty fields and the surcharge is calculated for a card that is not there.
+                setFieldValue('hostedForm.cardType', '');
 
                 try {
                     await deinitializePayment({

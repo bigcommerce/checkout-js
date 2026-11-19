@@ -57,8 +57,20 @@ import { PriceChangedAlert } from './PriceChangedAlert';
 import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPaymentsList';
 import SpamProtectionField from './SpamProtectionField';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
+import {
+    isSurchargeEnabled,
+    isSurchargeFee,
+    logSurchargeMethodDecision,
+    SurchargeNotice,
+    SurchargeStatus,
+    SurchargeSubmitHint,
+    useIsSurchargeCardBoxShown,
+    useSurchargeState,
+    useSurchargeTrigger,
+} from './surcharge';
 
 import './PaymentForm.scss';
+import './surcharge/Surcharge.scss';
 
 export interface PaymentFormProps {
     additionalField?: Capabilities['payment']['additionalField'];
@@ -173,7 +185,73 @@ const PaymentForm: FunctionComponent<
         ? isFloatingLabelEnabled(checkoutSettings)
         : false;
     const poMethodDisabledReason = usePoMethodDisabledReason(selectedMethod);
-    const isSubmitDisabled = shouldDisableSubmit || Boolean(poMethodDisabledReason);
+
+    // while the card is being checked the order cannot be placed.
+    const {
+        checkoutService,
+        selectedState: { checkoutId, orderAmount, hasSurchargeFee, surchargeFeeCost },
+    } = useCheckout(({ data }) => {
+        const surchargeFees = data.getCheckout()?.fees.filter(isSurchargeFee) ?? [];
+
+        return {
+            checkoutId: data.getCheckout()?.id,
+            orderAmount: data.getCheckout()?.outstandingBalance ?? 0,
+            hasSurchargeFee: surchargeFees.length > 0,
+            surchargeFeeCost: surchargeFees.reduce((sum, fee) => sum + fee.cost, 0),
+        };
+    });
+    const surchargeState = useSurchargeState();
+    // PoC: BlueSnap Direct cards only.
+    const isSurchargeOn = isSurchargeEnabled() && selectedMethod?.gateway === 'bluesnapdirect';
+    const isSurchargeCardBoxShown = useIsSurchargeCardBoxShown();
+    // Same rule PaymentMethod.tsx uses to pick the card form, plus "the form already holds card fields"
+    // for card methods that come from the newer payment integrations.
+    const isCardMethod =
+        selectedMethod?.method === 'credit-card' ||
+        selectedMethod?.type === 'PAYMENT_TYPE_API' ||
+        'ccNumber' in values ||
+        'hostedForm' in values;
+
+    useEffect(() => {
+        logSurchargeMethodDecision(selectedMethod, isCardMethod);
+    }, [selectedMethod?.id, selectedMethod?.gateway, isCardMethod]);
+
+    const hostedCardType = (values.hostedForm as { cardType?: string } | undefined)?.cardType;
+    const isCardBeingEntered =
+        Boolean(hostedCardType) ||
+        (typeof values.ccNumber === 'string' ? values.ccNumber : '').replace(/\D/g, '').length >= 6;
+    const surchargePfToken =
+        isSurchargeOn && isCardMethod && isCardBeingEntered
+            ? selectedMethod?.clientToken
+            : undefined;
+
+    useSurchargeTrigger({
+        pfToken: surchargePfToken,
+        checkoutId,
+        paymentMethod: selectedMethod
+            ? { id: selectedMethod.id, gateway: selectedMethod.gateway ?? null }
+            : undefined,
+        // The total WITHOUT the surcharge: the surcharge itself must not make us ask again.
+        total: orderAmount - surchargeFeeCost,
+        cardType: hostedCardType,
+        hasFee: hasSurchargeFee,
+        onResolved: async () => {
+            if (checkoutId) {
+                await checkoutService.loadCheckout(checkoutId);
+            }
+        },
+    });
+
+    // "Pay $X": the button shows the final amount once the surcharge is on the checkout.
+    const payAmount = isSurchargeOn && isCardMethod && hasSurchargeFee ? orderAmount : undefined;
+    const isSurchargeCalculating = surchargeState.status === 'calculating';
+    // A surcharge fee that could not be calculated or removed must not be paid (no current token).
+    const isSurchargeFeeUnresolved = surchargeState.status === 'error' && hasSurchargeFee;
+    const isSubmitDisabled =
+        shouldDisableSubmit ||
+        Boolean(poMethodDisabledReason) ||
+        isSurchargeCalculating ||
+        isSurchargeFeeUnresolved;
     const hideSubmitPaymentButton =
         shouldHidePaymentSubmitButton || (isPaymentDataRequired() && isEmpty(methods));
 
@@ -302,6 +380,14 @@ const PaymentForm: FunctionComponent<
                 <PriceChangedAlert onDismiss={onPriceChangedAlertDismiss ?? noop} />
             )}
 
+            {/* Hosted card forms render these inside the card box (HostedCreditCardFieldset). */}
+            {isSurchargeOn && isCardMethod && !isSurchargeCardBoxShown && (
+                <>
+                    <SurchargeNotice />
+                    <SurchargeStatus surcharge={surchargeState} />
+                </>
+            )}
+
             <div className="form-actions">
                 {hideSubmitPaymentButton ? (
                     <PaymentMethodSubmitButtonContainer />
@@ -319,9 +405,12 @@ const PaymentForm: FunctionComponent<
                             selectedMethod && getPaymentMethodName(language)(selectedMethod)
                         }
                         methodType={selectedMethod && selectedMethod.method}
+                        payAmount={payAmount}
                     />
                 )}
             </div>
+
+            {isSurchargeOn && isCardMethod && <SurchargeSubmitHint surcharge={surchargeState} />}
         </Form>
     );
 };

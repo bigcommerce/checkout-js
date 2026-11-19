@@ -1,9 +1,14 @@
 import classNames from 'classnames';
+import { noop } from 'lodash';
 import React, { type FunctionComponent, memo, useState } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { assignLocation, preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { ConfirmationModal } from '@bigcommerce/checkout/ui';
+
+import { removeSurcharge } from '../payment/surcharge/requestSurcharge';
+import { isSurchargeFee } from '../payment/surcharge/surchargeContract';
 
 export interface EditLinkProps {
     className?: string;
@@ -21,9 +26,28 @@ const EditLink: FunctionComponent<EditLinkProps> = ({
     label,
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const {
+        selectedState: { checkoutId, hasSurchargeFee },
+    } = useCheckout(({ data }) => ({
+        checkoutId: data.getCheckout()?.id,
+        hasSurchargeFee: Boolean(data.getCheckout()?.fees.some(isSurchargeFee)),
+    }));
+
+    // PoC surcharge: leaving for the cart page changes the order, so the card surcharge fee (and its
+    // token) would no longer match. Remove it first, and leave anyway if that fails: the payment step
+    // removes a leftover fee when it loads.
+    const leaveWithoutSurcharge = (leave: () => void) => {
+        if (!checkoutId || !hasSurchargeFee) {
+            leave();
+
+            return;
+        }
+
+        removeSurcharge({ checkoutId }).catch(noop).finally(leave);
+    };
 
     const gotoCartPage = () => {
-        assignLocation(url);
+        leaveWithoutSurcharge(() => assignLocation(url));
     };
 
     if (isInvoiceRedirectEnabled) {
@@ -69,6 +93,14 @@ const EditLink: FunctionComponent<EditLinkProps> = ({
             data-test="cart-edit-link"
             href={url}
             id="cart-edit-link"
+            onClick={(event) => {
+                if (!checkoutId || !hasSurchargeFee) {
+                    return;
+                }
+
+                event.preventDefault();
+                leaveWithoutSurcharge(() => window.open(url, '_top'));
+            }}
             target="_top"
         >
             {label || <TranslatedString id="cart.edit_cart_action" />}
