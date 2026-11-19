@@ -9,7 +9,10 @@ import classNames from 'classnames';
 import { compact } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
-import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcommerce-payments-utils';
+import {
+    BigCommercePaymentsPayLaterBanner,
+    BigCommercePaymentsShopperCurrencySection,
+} from '@bigcommerce/checkout/bigcommerce-payments-utils';
 import {
     type CheckoutContextProps,
     useCapabilities,
@@ -125,10 +128,13 @@ export function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
                 titleText: '',
                 subtitle: (props: PaymentMethodSubtitleProps) => (
-                    <BigCommercePaymentsPayLaterBanner
-                        containerId="bigcommerce-payments-banner-container"
-                        {...props}
-                    />
+                    <>
+                        <BigCommercePaymentsPayLaterBanner
+                            containerId="bigcommerce-payments-banner-container"
+                            {...props}
+                        />
+                        <BigCommercePaymentsShopperCurrencySection method={method} />
+                    </>
                 ),
             },
             [PaymentMethodId.BigCommercePaymentsPayLater]: {

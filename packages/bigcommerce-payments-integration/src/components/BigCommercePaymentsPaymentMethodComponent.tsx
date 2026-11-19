@@ -15,6 +15,7 @@ import {
 } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent, useCallback, useEffect, useRef } from 'react';
 
+import { getShopperCurrencyOffer } from '@bigcommerce/checkout/bigcommerce-payments-utils';
 import { InstrumentDeclinedError } from '@bigcommerce/checkout/error-handling-utils';
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -187,13 +188,18 @@ const BigCommercePaymentsPaymentMethodComponent: FunctionComponent<
         }
     };
 
+    // PAYPAL-7373: the PayPal SDK is loaded in the currency the shopper pays in, so a currency
+    // choice made after the buttons rendered re-initializes them in that currency
+    const offer = getShopperCurrencyOffer(method);
+    const shopperCurrency = offer?.isSelected ? offer.currency : undefined;
+
     useEffect(() => {
         void initializePayment();
 
         return () => {
             void deinitializePayment();
         };
-    }, []);
+    }, [shopperCurrency]);
 
     return children ? <>{children}</> : <></>;
 };

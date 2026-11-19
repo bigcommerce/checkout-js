@@ -3,6 +3,7 @@ import { createBigCommercePaymentsCreditCardsPaymentStrategy } from '@bigcommerc
 import { compact, forIn } from 'lodash';
 import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
 
+import { getShopperCurrencyOffer } from '@bigcommerce/checkout/bigcommerce-payments-utils';
 import {
     CreditCardPaymentMethodComponent,
     type CreditCardPaymentMethodProps,
@@ -267,9 +268,15 @@ const BigCommercePaymentsCreditCardsPaymentMethod: FunctionComponent<PaymentMeth
 
     // Info: isHostedFormEnabled is an option in store config which responsible for switching BigCommercePayments Credit Card form
     // rendering between Hosted Form and default BC fields (non-hosted)
+    // PAYPAL-7373: the card fields are loaded in the currency the shopper pays in, so a currency
+    // choice made after they rendered re-initializes them in that currency
+    const offer = getShopperCurrencyOffer(method);
+    const shopperCurrencyKey = offer?.isSelected ? offer.currency : 'cart-currency';
+
     return isHostedFormEnabled ? (
         <LoadingOverlay isLoading={isLoading}>
             <CreditCardPaymentMethodComponent
+                key={shopperCurrencyKey}
                 {...props}
                 cardFieldset={
                     <HostedCreditCardFieldset
@@ -298,6 +305,7 @@ const BigCommercePaymentsCreditCardsPaymentMethod: FunctionComponent<PaymentMeth
         </LoadingOverlay>
     ) : (
         <CreditCardPaymentMethodComponent
+            key={shopperCurrencyKey}
             {...props}
             deinitializePayment={checkoutService.deinitializePayment}
             initializePayment={initializeBigCommercePaymentsCreditCardPayment}
