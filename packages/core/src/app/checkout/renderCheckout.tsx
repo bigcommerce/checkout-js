@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import { configurePublicPath } from '../common/bundler';
 
@@ -22,8 +22,15 @@ export default function renderCheckout({
     // first before importing the app component and its dependencies.
     const { default: CheckoutApp } = require('./CheckoutApp');
 
-    ReactDOM.render(
+    const container = document.getElementById(containerId);
+
+    if (!container) {
+        throw new Error(`Unable to find checkout container: #${containerId}`);
+    }
+
+    const root = createRoot(container);
+
+    root.render(
         <CheckoutApp containerId={containerId} publicPath={configuredPublicPath} {...props} />,
-        document.getElementById(containerId),
     );
 }
