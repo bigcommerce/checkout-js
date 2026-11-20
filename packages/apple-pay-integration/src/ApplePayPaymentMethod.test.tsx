@@ -11,7 +11,7 @@ import React from 'react';
 import { CheckoutProvider } from '@bigcommerce/checkout/contexts';
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import { getCustomer, getGuestCustomer } from '@bigcommerce/checkout/test-mocks';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import ApplePayPaymentMethod from './ApplePayPaymentMethod';
 import { getMethod } from './paymentMethods.mock';
@@ -49,7 +49,46 @@ describe('ApplePayPaymentMethod', () => {
             applepay: {
                 shippingLabel: defaultProps.language.translate('cart.shipping_text'),
                 subtotalLabel: defaultProps.language.translate('cart.subtotal_text'),
+                onError: expect.any(Function) as unknown,
             },
+        });
+    });
+
+    describe('applepay.onError', () => {
+        const getOnError = () => {
+            const [[options]] = jest.mocked(checkoutService.initializePayment).mock.calls;
+
+            return options.applepay?.onError;
+        };
+
+        beforeEach(() => {
+            jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(
+                checkoutService.getState(),
+            );
+        });
+
+        it('reports translated error when merchant is not authorized (417)', () => {
+            render(<ApplePayPaymentMethod {...defaultProps} />);
+
+            getOnError()?.(Object.assign(new Error('Merchant validation failed'), { status: 417 }));
+
+            expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
+                new Error(
+                    defaultProps.language.translate(
+                        'payment.apple_pay_merchant_not_authorized_error',
+                    ),
+                ),
+            );
+        });
+
+        it('passes other errors to onUnhandledError as is', () => {
+            const error = new Error('test error');
+
+            render(<ApplePayPaymentMethod {...defaultProps} />);
+
+            getOnError()?.(error);
+
+            expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(error);
         });
     });
 
@@ -59,6 +98,16 @@ describe('ApplePayPaymentMethod', () => {
         render(<ApplePayPaymentMethod {...defaultProps} />);
 
         await expect(checkoutService.initializePayment).rejects.toThrow('test error');
+    });
+
+    it('passes initialization error to onUnhandledError', async () => {
+        const error = new Error('test error');
+
+        jest.spyOn(checkoutService, 'initializePayment').mockRejectedValue(error);
+
+        render(<ApplePayPaymentMethod {...defaultProps} />);
+
+        await waitFor(() => expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(error));
     });
 
     it('deinitializes payment method when component unmounts', () => {
