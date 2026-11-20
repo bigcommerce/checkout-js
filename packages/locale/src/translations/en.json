@@ -322,6 +322,7 @@
             "instrument_storage_options_text": "Payment Storage Options",
             "stripev3_auth_3ds_fail": "User did not authenticate",
             "apple_pay_name_text": "Apple Pay",
+            "apple_pay_merchant_not_authorized_error": "Apple Pay is unavailable: the merchant ID is not authorized to process transactions on behalf of the root merchant ID. Please check the Mass Enablement or WWDR registration.",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm cannot process your payment for this order, please select another payment method.",
             "klarna_continue_action": "Continue with Klarna",
