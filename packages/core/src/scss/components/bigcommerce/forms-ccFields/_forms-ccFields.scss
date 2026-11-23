@@ -49,16 +49,6 @@
     height: auto;
 }
 
-.mollie {
-    &-full {
-        flex-basis: 100%;
-    }
-
-    &-aside {
-        flex: 1 0 0;
-    }
-}
-
 .form-field--ccNumber--hasExpiryDate {
     flex-basis: 50%;
 }

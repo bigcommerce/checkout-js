@@ -272,13 +272,6 @@ export function getPaymentMethodTitle(
                 }.svg`,
                 titleText: methodDisplayName,
             },
-            [PaymentMethodId.Mollie]: {
-                logoUrl:
-                    method.method === 'credit_card'
-                        ? ''
-                        : cdnPath(`/img/payment-providers/mollie_${method.method}.svg`),
-                titleText: methodDisplayName,
-            },
             [PaymentMethodId.Checkoutcom]: {
                 logoUrl: ['credit_card', 'card', 'checkoutcom'].includes(method.id)
                     ? ''
