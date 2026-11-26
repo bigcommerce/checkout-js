@@ -34,6 +34,9 @@ export default function mapSubmitOrderErrorMessage(
         case 'empty_cart':
             return translate('cart.empty_cart_error_message');
 
+        case 'apple_pay_merchant_not_authorized_error':
+            return translate('payment.apple_pay_merchant_not_authorized_error');
+
         default:
             if (
                 includes(
