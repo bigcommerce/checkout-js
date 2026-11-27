@@ -49,6 +49,16 @@ describe('mapSubmitOrderErrorMessage()', () => {
         expect(message).toEqual(translate('cart.empty_cart_error_message'));
     });
 
+    it('returns correct message when Apple Pay merchant is not authorized', () => {
+        const message = mapSubmitOrderErrorMessage(
+            { type: 'apple_pay_merchant_not_authorized_error' },
+            translate,
+            false,
+        );
+
+        expect(message).toEqual(translate('payment.apple_pay_merchant_not_authorized_error'));
+    });
+
     it('returns correct message when payment error order_could_not_be_finalized_error', () => {
         const message = mapSubmitOrderErrorMessage(
             {
